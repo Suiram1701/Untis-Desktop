@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:WebUntis="clr-namespace:WebUntisAPI.Client.Models;assembly=WebUntisAPI.Client">
+    <DataTemplate x:Key="SchoolDataTemplate" DataType="{x:Type WebUntis:School}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{Binding DisplayName, Mode=OneTime}" FontSize="18" Grid.Row="0"/>
+            <TextBlock Text="{Binding Address, Mode=OneTime}" FontSize="12" Grid.Row="1"/>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\search_off.png" />
+    <None Remove="Views\SearchOff.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
@@ -21,8 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
-    <Folder Include="Views\" />
+    <Folder Include="ValidationRules\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\search_off.png" />
+    <Resource Include="Views\SearchOff.svg" />
   </ItemGroup>
 
 </Project>
