@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <StartupObject>Update.App</StartupObject>
+    <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Localization\Strings.de.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
