@@ -34,7 +34,6 @@ public partial class App : Application
         };
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
         base.OnStartup(e);
-        Shutdown();
 
         // Check for updates
         using HttpClient client = new();

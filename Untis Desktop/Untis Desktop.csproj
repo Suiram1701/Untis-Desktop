@@ -13,7 +13,6 @@
     <None Remove="Assets\search_off.png" />
     <None Remove="Assets\visibility.png" />
     <None Remove="Assets\visibility_off.png" />
-    <None Remove="Views\SearchOff.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +32,6 @@
     <Resource Include="Assets\search_off.png" />
     <Resource Include="Assets\visibility.png" />
     <Resource Include="Assets\visibility_off.png" />
-    <Resource Include="Views\SearchOff.svg" />
   </ItemGroup>
 
 </Project>

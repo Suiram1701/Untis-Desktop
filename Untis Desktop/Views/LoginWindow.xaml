@@ -108,8 +108,9 @@
 
                 <Grid Grid.Row="1" HorizontalAlignment="Center" Margin="0,10,0,10">
                     <Label Content="{Localization:Localize Key=LoginWindow.D.SN}" FontSize="16" Visibility="{Binding IsSchoolNameEmpty, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Hidden, Mode=OneWay}" Foreground="Gray"/>
-                    <TextBox Text="{Binding SchoolName, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" FontSize="16" Background="Transparent"
+                    <TextBox Text="{Binding SchoolName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="16" Background="Transparent"
                              VerticalContentAlignment="Center" Width="250"/>
+                    <Label Content="{Binding Error[SchoolName]}" FontSize="10" Foreground="Red" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-5,0,0,-18"/>
                 </Grid>
             </Grid>
 
@@ -123,7 +124,7 @@
                 <Label Content="{Localization:Localize Key=LoginWindow.D.PWD}" FontSize="16" Visibility="{Binding IsPasswordEmpty, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Hidden, Mode=OneWay}" Foreground="Gray"/>
                 <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Visibility="{Binding IsPasswordVisible, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}"
                          FontSize="16"  Background="Transparent" VerticalContentAlignment="Center"/>
-                <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" PasswordChar="⬤" Visibility="{Binding IsPasswordVisible, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Inv, Mode=OneWay}" IsVisibleChanged="PasswordBox_IsVisibleChanged"
+                <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" PasswordChar="●" Visibility="{Binding IsPasswordVisible, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Inv, Mode=OneWay}" IsVisibleChanged="PasswordBox_IsVisibleChanged"
                              FontSize="16" Background="Transparent" VerticalContentAlignment="Center"/>
                 <Button Command="{Binding PasswordVisibilityCommand, Mode=OneTime}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="20" Width="20" Margin="5">
                     <Button.Template>

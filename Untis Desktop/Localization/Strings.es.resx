@@ -124,4 +124,10 @@
   <data name="LoginWindow.Err.NWU" xml:space="preserve">
     <value>Esta no es una URL de servidor WebUntis válida.</value>
   </data>
+  <data name="LoginWindow.Err.SNE" xml:space="preserve">
+    <value>No se encontró ninguna escuela con este nombre.</value>
+  </data>
+  <data name="LoginWindow.Err.SSNE" xml:space="preserve">
+    <value>No se encontró ninguna escuela con este nombre en el servidor de WebUntis.</value>
+  </data>
 </root>

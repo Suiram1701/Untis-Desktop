@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using UntisDesktop.Localization;
 using UntisDesktop.Views;
 using WebUntisAPI.Client;
@@ -142,22 +143,37 @@ internal class LoginWindowViewModel : ViewModelBase
 
                 // Validation
                 ClearErrors();
-                Match match = Regex.Match(_serverUrl, @"(?<=https?:[/\\]{2})?[a-zA-Z]+\.webuntis\.com");
+                Match match = Regex.Match(_serverUrl, @"^(?<=https?:[/\\]{2})?[a-zA-Z]+\.webuntis\.com$");
                 if (!match.Success)
                     AddError(LangHelper.GetString("LoginWindow.Err.NWU"));
-                Application.Current.Dispatcher.Invoke(async () =>
+
+                _ = Application.Current.Dispatcher.Invoke(async () =>
                 {
                     try
                     {
                         await Dns.GetHostAddressesAsync(match.Value);
+
+                        // Validate SchoolName
+                        School? school = await WebUntisAPI.Client.SchoolSearch.GetSchoolByNameAsync(SchoolName);
+
+                        ClearErrors(nameof(SchoolName));
+                        if (school is not null)
+                        {
+                            if (!ServerUrl.Contains(school.Server) && !HasError())
+                                AddError(LangHelper.GetString("LoginWindow.Err.SSNE"), nameof(SchoolName));
+                        }
+                        else
+                            AddError(LangHelper.GetString("LoginWindow.Err.SNE"), nameof(SchoolName));
+                        RaiseErrorsChanged(nameof(SchoolName));
                     }
                     catch
                     {
                         AddError(LangHelper.GetString("LoginWindow.Err.WU404"));
                     }
+
                     RaiseErrorsChanged();
                     LoginCommand.RaiseCanExecuteChanged();
-                });
+                }, DispatcherPriority.Input);
             }
         }
     }
@@ -174,7 +190,23 @@ internal class LoginWindowViewModel : ViewModelBase
                 _schoolName = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsSchoolNameEmpty));
-                LoginCommand.RaiseCanExecuteChanged();
+
+                _ = Application.Current.Dispatcher.Invoke(async () =>
+                {
+                    School? school = await WebUntisAPI.Client.SchoolSearch.GetSchoolByNameAsync(value);
+
+                    ClearErrors();
+                    if (school is not null)
+                    {
+                        if (!ServerUrl.Contains(school.Server) && !HasError(nameof(ServerUrl)))
+                            AddError(LangHelper.GetString("LoginWindow.Err.SSNE"));
+                    }
+                    else
+                        AddError(LangHelper.GetString("LoginWindow.Err.SNE"));
+
+                    RaiseErrorsChanged();
+                    LoginCommand.RaiseCanExecuteChanged();
+                }, DispatcherPriority.Input);
             }
         }
     }
@@ -250,7 +282,7 @@ internal class LoginWindowViewModel : ViewModelBase
 
         PasswordVisibilityCommand = new DelegateCommand(_ => IsPasswordVisible = !IsPasswordVisible);
 
-        LoginCommand = new DelegateCommand(_ => !HasErrors && !IsSchoolNameEmpty && !IsUserNameEmpty && !IsPasswordEmpty, _ =>
+        LoginCommand = new DelegateCommand(_ => !HasErrors && !IsServerUrlEmpty && !IsSchoolNameEmpty && !IsUserNameEmpty && !IsPasswordEmpty, _ =>
         {
         });
     }

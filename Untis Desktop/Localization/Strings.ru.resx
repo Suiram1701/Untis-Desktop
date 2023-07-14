@@ -124,4 +124,10 @@
   <data name="LoginWindow.Err.NWU" xml:space="preserve">
     <value>Это недопустимый URL-адрес сервера WebUntis.</value>
   </data>
+  <data name="LoginWindow.Err.SNE" xml:space="preserve">
+    <value>Школа с таким названием не найдена.</value>
+  </data>
+  <data name="LoginWindow.Err.SSNE" xml:space="preserve">
+    <value>На сервере WebUntis не найдено ни одной школы с таким названием.</value>
+  </data>
 </root>

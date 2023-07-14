@@ -14,8 +14,17 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+        {
+            Exception ex = (Exception)e.ExceptionObject;
+            Logger.LogException(ex);
+
+            if (e.IsTerminating)
+                MessageBox.Show($"An unhandled exception: {ex.Source}\nMessage: {ex.Message}\nStack trace: {ex.StackTrace}", "unhandled exception", MessageBoxButton.OK, MessageBoxImage.Error);
+        };
         Logger.LogInformation("Application started with args: " + (e.Args.Length > 0 ? string.Join("; ", e.Args) : "No args available"));
 
+#if RELEASE
         ProcessStartInfo updateStartInf = new()     // Update checking
         {
             FileName = Environment.CurrentDirectory + @"\Update.exe",
@@ -45,6 +54,7 @@ public partial class App : Application
         }
         else
             Logger.LogError("Update check could not be started!");
+#endif
     }
 
     protected override void OnExit(ExitEventArgs e)
