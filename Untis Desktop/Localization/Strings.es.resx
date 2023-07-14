@@ -106,4 +106,22 @@
   <data name="LoginWindow.Search.NR" xml:space="preserve">
     <value>No se encontraron escuelas.</value>
   </data>
+  <data name="LoginWindow.Btn.MA" xml:space="preserve">
+    <value>Iniciar sesión manualmente</value>
+  </data>
+  <data name="LoginWindow.D.PWD" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="LoginWindow.D.SN" xml:space="preserve">
+    <value>Nombre de escuela</value>
+  </data>
+  <data name="LoginWindow.D.USR" xml:space="preserve">
+    <value>Nombre de usuario</value>
+  </data>
+  <data name="LoginWindow.Err.WU404" xml:space="preserve">
+    <value>No se pudo encontrar el servidor WebUntis.</value>
+  </data>
+  <data name="LoginWindow.Err.NWU" xml:space="preserve">
+    <value>Esta no es una URL de servidor WebUntis válida.</value>
+  </data>
 </root>

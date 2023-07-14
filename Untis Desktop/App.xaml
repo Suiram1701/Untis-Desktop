@@ -9,7 +9,7 @@
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Buttons.xaml"/>
-                <ResourceDictionary Source="/Resources/DataTemplates/SchoolDataTemplate.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/SchoolDataTemplate.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

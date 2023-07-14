@@ -8,7 +8,7 @@
 
         <Style.Resources>
             <Style TargetType="{x:Type Border}">
-                <Setter Property="CornerRadius" Value="6"/>
+                <Setter Property="CornerRadius" Value="8"/>
             </Style>
         </Style.Resources>
 
@@ -18,6 +18,7 @@
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#FF71B2FB"/>
+                <Setter Property="Foreground" Value="Gray"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="#FF3A97FF"/>

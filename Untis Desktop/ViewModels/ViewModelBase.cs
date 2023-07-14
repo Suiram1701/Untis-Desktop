@@ -54,7 +54,7 @@ internal abstract class ViewModelBase : INotifyPropertyChanged, INotifyDataError
     /// <returns>Error message</returns>
     public string this[string propertyName]
     {
-        get => GetErrors(propertyName).Cast<string>().First();
+        get => GetErrors(propertyName).Cast<string>().FirstOrDefault() ?? string.Empty;
     }
 
     /// <summary>
