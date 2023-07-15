@@ -30,7 +30,7 @@ public partial class LoginWindow : Window
         try
         {
             using Ping ping = new();
-            ping.Send("https://www.google.com");
+            ping.Send("google.com");
         }
         catch (PingException)
         {

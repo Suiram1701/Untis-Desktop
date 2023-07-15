@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.Profiles;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -289,21 +290,59 @@ internal class LoginWindowViewModel : ViewModelBase
             {
                 if (await client.LoginAsync(ServerUrl, SchoolName, UserName, Password, "LoginCheck"))
                 {
+                    if (ProfileCollection.s_DefaultInstance.Any(profile => profile.User?.Name == UserName))
+                    {
+                        ErrorBoxContent = LangHelper.GetString("LoginWindow.Inf.PAL");
+                        return;
+                    }
 
+                    // Create new profile
+                    ProfileFile profile = ProfileCollection.s_DefaultInstance.Add(client.User.Id.ToString());
+                    profile.ServerUrl = ServerUrl;
+                    profile.SchoolName = SchoolName;
+                    profile.Password = Password;
+                    if (client.UserType == UserType.Student)
+                        profile.Student = client.User as Student;
+                    else
+                        profile.Teacher = client.User as Teacher;
+
+                    profile.Update();
+                    ProfileCollection.s_DefaultInstance.ReloadCollection();
+
+                    ProfileCollection.SetActiveProfile(profile);
                 }
                 else
                     ErrorBoxContent = LangHelper.GetString("LoginWindow.Login.InvC");
             }
             catch (WebUntisException ex)
             {
-                ErrorBoxContent = $"Während der Anfrage ist ein Fehler aufgetreten: {ex.Message}";
+                if (ex.Code == -8500)
+                    ErrorBoxContent = LangHelper.GetString("LoginWindow.D.InvSN");
+                else
+                {
+                    ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.OEX", ex.Message, ex.Code.ToString());
+                    Logger.LogError($"WebUntis exception: {ex.Message}; Code {ex.Code}");
+                }
             }
             catch (HttpRequestException ex)
             {
                 if (ex.Source == "System.Net.Http")
-                    ErrorBoxContent = "Es konnte keine Verbindung zum WebUntis Server hergestellt werden.\nBitte überprüfen sie ihre Internet Verbindung.";
+                    ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.NIC");
                 else
-                    ErrorBoxContent = $"Während der Anfrage ist ein Fehler aufgetreten: {ex.Message}";
+                {
+                    ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.OEX", ex.Message, ((int)(ex.StatusCode ?? 0)).ToString());
+                    Logger.LogError($"Unexpected HttpRequestException was thrown: {ex.Message}; Code: {ex.StatusCode}");
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.RTL");
+                Logger.LogWarning($"The answer from the WebUntis server took too long. Server: {ServerUrl}");
+            }
+            catch (Exception ex)
+            {
+                ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
+                Logger.LogError($"An occurred {ex.Source} was thrown; Message: {ex.Message}");
             }
             finally
             {

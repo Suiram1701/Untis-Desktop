@@ -136,4 +136,13 @@
   <data name="LoginWindow.Err.NIC" xml:space="preserve">
     <value>Asegúrese de que haya una conexión a Internet disponible.</value>
   </data>
+  <data name="LoginWindow.Inf.PAL" xml:space="preserve">
+    <value>Este perfil ya está registrado.</value>
+  </data>
+  <data name="LoginWindow.D.InvSN" xml:space="preserve">
+    <value>No se encontró la escuela especificada.</value>
+  </data>
+  <data name="LoginWindow.Err.RTL" xml:space="preserve">
+    <value>La respuesta del servidor de WebUntis tardó demasiado.</value>
+  </data>
 </root>

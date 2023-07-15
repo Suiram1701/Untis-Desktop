@@ -14,7 +14,7 @@ public abstract class FileBase<TFile>
     [XmlIgnore]
     private readonly XmlSerializer _serializer = new(typeof(TFile));
 
-    internal static FileAttribute s_attribute = FileAttribute.GetAttribute<TFile>();
+    internal readonly static FileAttribute s_Attribute = FileAttribute.GetAttribute<TFile>();
 
     /// <summary>
     /// The raw name of the file (without extension)
@@ -32,7 +32,7 @@ public abstract class FileBase<TFile>
             {
                 try
                 {
-                    string newPath = Path[..(Path.LastIndexOf('\\') + 1)] + $"{value}.{s_attribute.Extension}";
+                    string newPath = Path[..(Path.LastIndexOf('\\') + 1)] + $"{value}.{s_Attribute.Extension}";
 
                     if (File.Exists(newPath))
                         return;
@@ -108,8 +108,8 @@ public abstract class FileBase<TFile>
         {
             TFile file = new();
             string savePath = Regex.Replace(path, @"\.[^(?:/|\\)]+$", string.Empty);
-            file._name = savePath[(savePath.LastIndexOf('\\') + 1)..(savePath.Length - 2)];
-            savePath += $".{s_attribute.Extension}";
+            file._name = savePath[(savePath.LastIndexOf('\\') + 1)..(savePath.Length)];
+            savePath += $".{s_Attribute.Extension}";
             file._path = savePath;
 
             string saveFolder = savePath[..savePath.LastIndexOf('\\')];

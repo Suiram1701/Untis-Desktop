@@ -136,4 +136,13 @@
   <data name="LoginWindow.Err.NIC" xml:space="preserve">
     <value>Se till att en internetanslutning är tillgänglig.</value>
   </data>
+  <data name="LoginWindow.Inf.PAL" xml:space="preserve">
+    <value>Den här profilen är redan registrerad.</value>
+  </data>
+  <data name="LoginWindow.D.InvSN" xml:space="preserve">
+    <value>Den angivna skolan hittades inte.</value>
+  </data>
+  <data name="LoginWindow.Err.RTL" xml:space="preserve">
+    <value>Svaret från WebUntis-servern tog för lång tid.</value>
+  </data>
 </root>

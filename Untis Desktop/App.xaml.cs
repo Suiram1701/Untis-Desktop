@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.Profiles;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -6,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using UntisDesktop.Views;
 
 namespace UntisDesktop;
 
@@ -55,6 +57,13 @@ public partial class App : Application
         else
             Logger.LogError("Update check could not be started!");
 #endif
+
+        if (!ProfileCollection.s_DefaultInstance.Any())
+            new LoginWindow().Show();
+        else
+        {
+
+        }
     }
 
     protected override void OnExit(ExitEventArgs e)

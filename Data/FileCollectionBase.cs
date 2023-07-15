@@ -11,7 +11,7 @@ namespace Data;
 /// </summary>
 /// <typeparam name="TCollection">The collection</typeparam>
 /// <typeparam name="TFile">The files</typeparam>
-public abstract class FileCollectionBase<TCollection, TFile> : IEnumerable<KeyValuePair<string, TFile>>
+public abstract class FileCollectionBase<TCollection, TFile> : IEnumerable<TFile>
     where TCollection : FileCollectionBase<TCollection, TFile>, new()
     where TFile : FileBase<TFile>, new()
 {
@@ -19,7 +19,7 @@ public abstract class FileCollectionBase<TCollection, TFile> : IEnumerable<KeyVa
     /// The save path of this collection
     /// </summary>
     public string SavePath { get => _savePath; }
-    private string _savePath = string.Empty;
+    private readonly string _savePath = FileBase<TFile>.s_Attribute.DefaultPath;
 
     private readonly List<TFile> _list = new();
 
@@ -29,7 +29,7 @@ public abstract class FileCollectionBase<TCollection, TFile> : IEnumerable<KeyVa
     /// <param name="name">The filename</param>
     /// <returns>The file</returns>
     /// <exception cref="KeyNotFoundException">Thrown when the file don't exist</exception>
-    public TFile this[string name] => _list.FirstOrDefault(file => file.Name == name) ?? throw new KeyNotFoundException("The file was not found in the collection");
+    public virtual TFile this[string name] => _list.FirstOrDefault(file => file.Name == name) ?? throw new KeyNotFoundException("The file was not found in the collection");
 
     static FileCollectionBase()
     {
@@ -44,19 +44,21 @@ public abstract class FileCollectionBase<TCollection, TFile> : IEnumerable<KeyVa
     /// <param name="name">The name of the file</param>
     /// <returns>The file</returns>
     /// <exception cref="ArgumentException">Thrown when a file with this name already exist</exception>
-    public TFile Add(string name)
+    public virtual TFile Add(string name)
     {
         if (_list.Any(file => file.Name == name))
             throw new ArgumentException("The name already exist");
 
-        return FileBase<TFile>.Create((SavePath.EndsWith('\\') ? SavePath : SavePath + "\\") + name);
+        TFile file = FileBase<TFile>.Create((SavePath.EndsWith('\\') ? SavePath : SavePath + "\\") + name);
+        _list.Add(file);
+        return file;
     }
 
     /// <summary>
     /// Delete a file of the collection
     /// </summary>
     /// <param name="name"></param>
-    public void Remove(string name)
+    public virtual void Remove(string name)
     {
         this[name].Delete();
         _list.Remove(this[name]);
@@ -67,13 +69,9 @@ public abstract class FileCollectionBase<TCollection, TFile> : IEnumerable<KeyVa
     /// </summary>
     /// <param name="loadPath">The folder (<see langword="null"/> is the default path of <typeparamref name="TFile"/>)</param>
     /// <returns>The collection</returns>
-    public static TCollection LoadCollection(string? loadPath = null)
+    public static TCollection LoadCollection()
     {
-        TCollection collection = new()
-        {
-            _savePath = loadPath ?? FileBase<TFile>.s_attribute.DefaultPath
-        };
-
+        TCollection collection = new();
         foreach (string path in Directory.EnumerateFiles(collection.SavePath))
         {
             TFile file = FileBase<TFile>.Load(path);
@@ -83,13 +81,23 @@ public abstract class FileCollectionBase<TCollection, TFile> : IEnumerable<KeyVa
         return collection;
     }
 
-    IEnumerator<KeyValuePair<string, TFile>> IEnumerable<KeyValuePair<string, TFile>>.GetEnumerator()
+    public void ReloadCollection()
     {
-        return _list.Select(file => new KeyValuePair<string, TFile>(file.Name, file)).GetEnumerator();
+        _list.Clear();
+        foreach (string path in Directory.EnumerateFiles(SavePath))
+        {
+            TFile file = FileBase<TFile>.Load(path);
+            _list.Add(file);
+        }
+    }
+
+    IEnumerator<TFile> IEnumerable<TFile>.GetEnumerator()
+    {
+        return _list.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return _list.Select(file => new KeyValuePair<string, TFile>(file.Name, file)).GetEnumerator();
+        return _list.GetEnumerator();
     }
 }

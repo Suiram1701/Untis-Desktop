@@ -17,7 +17,7 @@ internal sealed class FileAttribute : Attribute
 
     public FileAttribute(string defaultPath, string extension = "xml")
     {
-        DefaultPath = defaultPath;
+        DefaultPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + defaultPath;
         Extension = extension;
     }
 

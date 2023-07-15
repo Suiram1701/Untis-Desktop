@@ -136,4 +136,13 @@
   <data name="LoginWindow.Err.NIC" xml:space="preserve">
     <value>Пожалуйста, убедитесь, что подключение к Интернету доступно.</value>
   </data>
+  <data name="LoginWindow.Inf.PAL" xml:space="preserve">
+    <value>Этот профиль уже зарегистрирован.</value>
+  </data>
+  <data name="LoginWindow.D.InvSN" xml:space="preserve">
+    <value>Указанная школа не найдена.</value>
+  </data>
+  <data name="LoginWindow.Err.RTL" xml:space="preserve">
+    <value>Ответ от сервера WebUntis занял слишком много времени.</value>
+  </data>
 </root>
