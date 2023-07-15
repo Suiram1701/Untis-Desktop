@@ -124,10 +124,16 @@
   <data name="LoginWindow.Err.WU404" xml:space="preserve">
     <value>Der WebUntis Server konnte nicht gefunden werden.</value>
   </data>
-  <data name="LoginWindow.Err.SNE" xml:space="preserve">
-    <value>Es wurde keine Schule mit diesem Namen gefunden.</value>
+  <data name="LoginWindow.Login.InvC" xml:space="preserve">
+    <value>Die Anmeldedaten sind falsch.</value>
   </data>
-  <data name="LoginWindow.Err.SSNE" xml:space="preserve">
-    <value>Auf dem WebUntis-Server wurde keine Schule mit diesem Namen gefunden.</value>
+  <data name="LoginWindow.Err.OEX" xml:space="preserve">
+    <value>Es ist ein Unerwarteter Fehler aufgetreten: {0}.\nFehler: {1}</value>
+  </data>
+  <data name="LoginWindow.Search.NNC" xml:space="preserve">
+    <value>Die Schulsuche ist fehlgeschlagen. Bitte überprüfen sie ihre Internetverbindung.</value>
+  </data>
+  <data name="LoginWindow.Err.NIC" xml:space="preserve">
+    <value>Bitte stellen sie sicher das eine Internetverbindung verfügbar ist.</value>
   </data>
 </root>

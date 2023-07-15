@@ -6,7 +6,7 @@ namespace Update;
 
 internal static class Logger
 {
-    private static readonly string s_SaveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\UntisDesktop\Logs\";
+    private static readonly string s_SaveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Untis Desktop\Logs\";
     private static readonly FileStream s_LogStream;
 
     static Logger()

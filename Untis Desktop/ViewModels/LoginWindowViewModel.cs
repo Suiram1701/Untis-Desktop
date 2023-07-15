@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Threading;
 using UntisDesktop.Localization;
 using UntisDesktop.Views;
 using WebUntisAPI.Client;
+using WebUntisAPI.Client.Exceptions;
 using WebUntisAPI.Client.Models;
 
 namespace UntisDesktop.ViewModels;
@@ -28,6 +30,17 @@ internal class LoginWindowViewModel : ViewModelBase
     public DelegateCommand LoginCommand { get; }
 
     // views
+    public string ErrorBoxContent
+    {
+        get => _errorBoxContent;
+        set
+        {
+            _errorBoxContent = value;
+            RaisePropertyChanged();
+        }
+    }
+    private string _errorBoxContent = string.Empty;
+
     public bool IsLoginPage
     {
         get => _isLoginPage;
@@ -70,9 +83,25 @@ internal class LoginWindowViewModel : ViewModelBase
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsSchoolSearchEmpty));
 
-                Application.Current.Dispatcher.Invoke(async () =>
+                _ = Application.Current.Dispatcher.Invoke(async () =>
                 {
-                    School[]? search = await WebUntisAPI.Client.SchoolSearch.SearchAsync(value, "UntisDesktop_Search");
+                    School[]? search = null;
+                    try
+                    {
+                        search = await WebUntisAPI.Client.SchoolSearch.SearchAsync(value, "UntisDesktop_Search");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.Source != "System.Net.Http")
+                            ErrorBoxContent = LangHelper.GetString("LoginWindow.Search.NNC");
+                        else
+                            ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
+                        Logger.LogError($"School search: {ex.Source ?? "System.Exception"}; {ex.Message}");
+
+                        SearchResults.Clear();
+                        Search_TooManyResults = false;
+                        goto Reload;
+                    }
 
                     SearchResults.Clear();
                     if (search is School[] schools)
@@ -84,6 +113,7 @@ internal class LoginWindowViewModel : ViewModelBase
                     else
                         Search_TooManyResults = true;
 
+                    Reload:
                     RaisePropertyChanged(nameof(SearchResults));
                     RaisePropertyChanged(nameof(Search_TooManyResults));
                     RaisePropertyChanged(nameof(Search_Results));
@@ -152,19 +182,6 @@ internal class LoginWindowViewModel : ViewModelBase
                     try
                     {
                         await Dns.GetHostAddressesAsync(match.Value);
-
-                        // Validate SchoolName
-                        School? school = await WebUntisAPI.Client.SchoolSearch.GetSchoolByNameAsync(SchoolName);
-
-                        ClearErrors(nameof(SchoolName));
-                        if (school is not null)
-                        {
-                            if (!ServerUrl.Contains(school.Server) && !HasError())
-                                AddError(LangHelper.GetString("LoginWindow.Err.SSNE"), nameof(SchoolName));
-                        }
-                        else
-                            AddError(LangHelper.GetString("LoginWindow.Err.SNE"), nameof(SchoolName));
-                        RaiseErrorsChanged(nameof(SchoolName));
                     }
                     catch
                     {
@@ -190,23 +207,6 @@ internal class LoginWindowViewModel : ViewModelBase
                 _schoolName = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsSchoolNameEmpty));
-
-                _ = Application.Current.Dispatcher.Invoke(async () =>
-                {
-                    School? school = await WebUntisAPI.Client.SchoolSearch.GetSchoolByNameAsync(value);
-
-                    ClearErrors();
-                    if (school is not null)
-                    {
-                        if (!ServerUrl.Contains(school.Server) && !HasError(nameof(ServerUrl)))
-                            AddError(LangHelper.GetString("LoginWindow.Err.SSNE"));
-                    }
-                    else
-                        AddError(LangHelper.GetString("LoginWindow.Err.SNE"));
-
-                    RaiseErrorsChanged();
-                    LoginCommand.RaiseCanExecuteChanged();
-                }, DispatcherPriority.Input);
             }
         }
     }
@@ -282,8 +282,33 @@ internal class LoginWindowViewModel : ViewModelBase
 
         PasswordVisibilityCommand = new DelegateCommand(_ => IsPasswordVisible = !IsPasswordVisible);
 
-        LoginCommand = new DelegateCommand(_ => !HasErrors && !IsServerUrlEmpty && !IsSchoolNameEmpty && !IsUserNameEmpty && !IsPasswordEmpty, _ =>
+        LoginCommand = new DelegateCommand(_ => !HasErrors && !IsServerUrlEmpty && !IsSchoolNameEmpty && !IsUserNameEmpty && !IsPasswordEmpty, async _ =>
         {
+            using WebUntisClient client = new("UntisDesktop", TimeSpan.FromSeconds(5));
+            try
+            {
+                if (await client.LoginAsync(ServerUrl, SchoolName, UserName, Password, "LoginCheck"))
+                {
+
+                }
+                else
+                    ErrorBoxContent = LangHelper.GetString("LoginWindow.Login.InvC");
+            }
+            catch (WebUntisException ex)
+            {
+                ErrorBoxContent = $"Während der Anfrage ist ein Fehler aufgetreten: {ex.Message}";
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.Source == "System.Net.Http")
+                    ErrorBoxContent = "Es konnte keine Verbindung zum WebUntis Server hergestellt werden.\nBitte überprüfen sie ihre Internet Verbindung.";
+                else
+                    ErrorBoxContent = $"Während der Anfrage ist ein Fehler aufgetreten: {ex.Message}";
+            }
+            finally
+            {
+                client.Dispose();
+            }
         });
     }
 }

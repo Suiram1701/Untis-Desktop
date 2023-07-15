@@ -124,10 +124,16 @@
   <data name="LoginWindow.Err.NWU" xml:space="preserve">
     <value>Esta no es una URL de servidor WebUntis válida.</value>
   </data>
-  <data name="LoginWindow.Err.SNE" xml:space="preserve">
-    <value>No se encontró ninguna escuela con este nombre.</value>
+  <data name="LoginWindow.Login.InvC" xml:space="preserve">
+    <value>Los datos de inicio de sesión son incorrectos.</value>
   </data>
-  <data name="LoginWindow.Err.SSNE" xml:space="preserve">
-    <value>No se encontró ninguna escuela con este nombre en el servidor de WebUntis.</value>
+  <data name="LoginWindow.Err.OEX" xml:space="preserve">
+    <value>Ocurrió un error inesperado: {0}.\nError: {1}</value>
+  </data>
+  <data name="LoginWindow.Search.NNC" xml:space="preserve">
+    <value>La búsqueda de la escuela fracasó. Por favor revise su conexion a internet.</value>
+  </data>
+  <data name="LoginWindow.Err.NIC" xml:space="preserve">
+    <value>Asegúrese de que haya una conexión a Internet disponible.</value>
   </data>
 </root>

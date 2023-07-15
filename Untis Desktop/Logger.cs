@@ -6,14 +6,14 @@ namespace UntisDesktop;
 
 internal static class Logger
 {
-    private static readonly string s_SaveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\UntisDesktop\Logs\";
+    private static readonly string s_SaveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Untis Desktop\Logs\";
     private static readonly FileStream s_LogStream;
 
     static Logger()
     {
         if (!Directory.Exists(s_SaveDirectory))
             Directory.CreateDirectory(s_SaveDirectory);
-        s_LogStream = new(s_SaveDirectory + "UntisDesktop.log", FileMode.OpenOrCreate, FileAccess.Write);
+        s_LogStream = new(s_SaveDirectory + "Untis Desktop.log", FileMode.OpenOrCreate, FileAccess.Write);
 
         s_LogStream.Position = s_LogStream.Length;
         s_LogStream.Write(Encoding.UTF8.GetBytes($"==================== {DateTime.UtcNow:s} Start logging ====================\n"));

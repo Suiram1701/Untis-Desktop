@@ -12,6 +12,39 @@
         <ViewModels:LoginWindowViewModel/>
     </Window.DataContext>
     <Grid>
+        <Border x:Name="ErrorBox" Panel.ZIndex="1" Background="#FFFB4D4D" BorderBrush="Red" BorderThickness="1" CornerRadius="10"
+                HorizontalAlignment="Center" VerticalAlignment="Top" Padding="20,10,20,10" Margin="0,15,0,0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding ErrorBoxContent, Mode=OneWay}" VerticalAlignment="Center"/>
+                <Button Click="ErrorBoxClose_Click" VerticalAlignment="Center">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Name="Border" CornerRadius="25">
+                                <Label Content="❌" Foreground="Black"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="#e24141"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+            <Border.RenderTransform>
+                <TranslateTransform x:Name="ErrorBoxTranslation" Y="-75"/>
+            </Border.RenderTransform>
+            <Border.Resources>
+                <Storyboard x:Key="PopUpAnimation">
+                    <DoubleAnimation Storyboard.TargetName="ErrorBoxTranslation" Storyboard.TargetProperty="Y" From="-75" To="10" Duration="0:0:1">
+                        <DoubleAnimation.EasingFunction>
+                            <QuadraticEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </Border.Resources>
+        </Border>
+
         <!-- Page for school search -->
         <Grid Visibility="{Binding IsSchoolSearchPage, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}">
             <Grid.RowDefinitions>
@@ -110,7 +143,6 @@
                     <Label Content="{Localization:Localize Key=LoginWindow.D.SN}" FontSize="16" Visibility="{Binding IsSchoolNameEmpty, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Hidden, Mode=OneWay}" Foreground="Gray"/>
                     <TextBox Text="{Binding SchoolName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="16" Background="Transparent"
                              VerticalContentAlignment="Center" Width="250"/>
-                    <Label Content="{Binding Error[SchoolName]}" FontSize="10" Foreground="Red" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-5,0,0,-18"/>
                 </Grid>
             </Grid>
 

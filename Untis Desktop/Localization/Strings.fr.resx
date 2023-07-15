@@ -124,10 +124,16 @@
   <data name="LoginWindow.Err.NWU" xml:space="preserve">
     <value>Ceci n'est pas une URL WebUntis Server valide.</value>
   </data>
-  <data name="LoginWindow.Err.SNE" xml:space="preserve">
-    <value>Aucune école portant ce nom n'a été trouvée.</value>
+  <data name="LoginWindow.Login.InvC" xml:space="preserve">
+    <value>Les informations de connexion sont incorrectes.</value>
   </data>
-  <data name="LoginWindow.Err.SSNE" xml:space="preserve">
-    <value>Aucune école portant ce nom n'a été trouvée sur le serveur WebUntis.</value>
+  <data name="LoginWindow.Err.OEX" xml:space="preserve">
+    <value>Une erreur inattendue s'est produite : {0}.\nErreur : {1}</value>
+  </data>
+  <data name="LoginWindow.Search.NNC" xml:space="preserve">
+    <value>La recherche de l'école a échoué. S'il vous plait, vérifiez votre connexion internet.</value>
+  </data>
+  <data name="LoginWindow.Err.NIC" xml:space="preserve">
+    <value>Veuillez vous assurer qu'une connexion Internet est disponible.</value>
   </data>
 </root>

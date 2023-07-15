@@ -124,10 +124,16 @@
   <data name="LoginWindow.Err.NWU" xml:space="preserve">
     <value>Это недопустимый URL-адрес сервера WebUntis.</value>
   </data>
-  <data name="LoginWindow.Err.SNE" xml:space="preserve">
-    <value>Школа с таким названием не найдена.</value>
+  <data name="LoginWindow.Login.InvC" xml:space="preserve">
+    <value>Данные для входа неверны.</value>
   </data>
-  <data name="LoginWindow.Err.SSNE" xml:space="preserve">
-    <value>На сервере WebUntis не найдено ни одной школы с таким названием.</value>
+  <data name="LoginWindow.Err.OEX" xml:space="preserve">
+    <value>Произошла непредвиденная ошибка: {0}.\nОшибка: {1}</value>
+  </data>
+  <data name="LoginWindow.Search.NNC" xml:space="preserve">
+    <value>Поиски школы не увенчались успехом. Пожалуйста, проверьте ваше интернет-соединение.</value>
+  </data>
+  <data name="LoginWindow.Err.NIC" xml:space="preserve">
+    <value>Пожалуйста, убедитесь, что подключение к Интернету доступно.</value>
   </data>
 </root>
