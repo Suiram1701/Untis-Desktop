@@ -25,4 +25,18 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <ControlTemplate x:Key="MenuBtn" TargetType="{x:Type Button}">
+        <Border Name="Border" Background="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" CornerRadius="5" Padding="5">
+            <ContentPresenter/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="LightGray"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="DarkGray"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 </ResourceDictionary>

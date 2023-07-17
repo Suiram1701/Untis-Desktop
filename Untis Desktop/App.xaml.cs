@@ -61,9 +61,7 @@ public partial class App : Application
         if (!ProfileCollection.s_DefaultInstance.Any())
             new LoginWindow().Show();
         else
-        {
-
-        }
+            new MainWindow().Show();
     }
 
     protected override void OnExit(ExitEventArgs e)

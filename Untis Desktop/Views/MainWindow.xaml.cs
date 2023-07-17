@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,50 +13,17 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using UntisDesktop.Localization;
 using UntisDesktop.ViewModels;
 
 namespace UntisDesktop.Views;
 
-public partial class LoginWindow : Window
+public partial class MainWindow : Window
 {
-    private LoginWindowViewModel ViewModel => (LoginWindowViewModel)DataContext;
+    private MainWindowViewModel ViewModel => (MainWindowViewModel)DataContext;
 
-    public LoginWindow()
+    public MainWindow()
     {
-        try
-        {
-            using Ping ping = new();
-            ping.Send("google.com");
-        }
-        catch (PingException)
-        {
-            Logger.LogWarning("No internet connection available");
-            MessageBox.Show(LangHelper.GetString("LoginWindow.Err.NIC"), LangHelper.GetString("LoginWindow.Title"), MessageBoxButton.OK, MessageBoxImage.Warning);
-            Close();
-            Application.Current.Shutdown(0);
-        }
-
         InitializeComponent();
-
-        ViewModel.PropertyChanged += ErrorBoxContent_PropertyChanged;
-    }
-
-    private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-    {
-        PasswordBox pwdBox = (PasswordBox)sender;
-        ViewModel.Password = pwdBox.Password;
-        
-        e.Handled = true;
-    }
-
-    private void PasswordBox_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-    {
-        if ((bool)e.NewValue)
-        {
-            PasswordBox pwdBox = (PasswordBox)sender;
-            pwdBox.Password = ViewModel.Password;
-        }
     }
 
     private void ErrorBoxClose_Click(object sender, RoutedEventArgs e)
@@ -87,6 +53,29 @@ public partial class LoginWindow : Window
                 popupAnimation.AutoReverse = false;
                 popupAnimation.Begin();
             }
+        }
+    }
+
+    private void MenuBtn_Click(object sender, RoutedEventArgs e)
+    {
+        string targetName = ((FrameworkElement)sender).Name;
+        switch (targetName)
+        {
+            case "TodayBtn":
+                TodayItem.IsSelected = true;
+                break;
+            case "TimetableBtn":
+                TimetableItem.IsSelected = true;
+                break;
+            case "MailBtn":
+                MailItem.IsSelected = true;
+                break;
+            case "SettingsBtn":
+                SettingsItem.IsSelected = true;
+                break;
+            case "ProfileBtn":
+                ProfileItem.IsSelected = true;
+                break;
         }
     }
 }

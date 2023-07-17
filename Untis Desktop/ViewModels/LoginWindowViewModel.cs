@@ -308,8 +308,10 @@ internal class LoginWindowViewModel : ViewModelBase
 
                     profile.Update();
                     ProfileCollection.s_DefaultInstance.ReloadCollection();
-
                     ProfileCollection.SetActiveProfile(profile);
+
+                    Application.Current.MainWindow.Close();
+                    new MainWindow().Show();
                 }
                 else
                     ErrorBoxContent = LangHelper.GetString("LoginWindow.Login.InvC");

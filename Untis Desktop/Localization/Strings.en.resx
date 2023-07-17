@@ -145,4 +145,19 @@
   <data name="LoginWindow.Err.RTL" xml:space="preserve">
     <value>The response from the WebUntis server took too long.</value>
   </data>
+  <data name="MainWindow.Menu.Mail" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="MainWindow.Menu.Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="MainWindow.Menu.Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="MainWindow.Menu.Timetable" xml:space="preserve">
+    <value>Timetable</value>
+  </data>
+  <data name="MainWindow.Menu.Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
 </root>

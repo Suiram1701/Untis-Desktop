@@ -145,4 +145,19 @@
   <data name="LoginWindow.Err.RTL" xml:space="preserve">
     <value>Svaret från WebUntis-servern tog för lång tid.</value>
   </data>
+  <data name="MainWindow.Menu.Mail" xml:space="preserve">
+    <value>Meddelanden</value>
+  </data>
+  <data name="MainWindow.Menu.Profile" xml:space="preserve">
+    <value>Profiler</value>
+  </data>
+  <data name="MainWindow.Menu.Settings" xml:space="preserve">
+    <value>Idéer</value>
+  </data>
+  <data name="MainWindow.Menu.Timetable" xml:space="preserve">
+    <value>Tidtabell</value>
+  </data>
+  <data name="MainWindow.Menu.Today" xml:space="preserve">
+    <value>I dag</value>
+  </data>
 </root>

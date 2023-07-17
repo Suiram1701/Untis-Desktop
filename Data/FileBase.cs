@@ -124,7 +124,7 @@ public abstract class FileBase<TFile>
         }
         catch (Exception ex)
         {
-            Logger.LogError($"$An occurred error happened while reading file at {path}; Error: {ex.Source}; Message: {ex.Message}");
+            Logger.LogError($"$An occurred error happened while creating file at {path}; Error: {ex.Source}; Message: {ex.Message}");
             throw;
         }
     }
@@ -135,9 +135,9 @@ public abstract class FileBase<TFile>
     /// <param name="path">The path of the file</param>
     /// <returns>The <see cref="TFile"/> instance</returns>
     /// <exception cref="Exception">An exception that happened while loading a file</exception>
-    public static TFile Load(string path)
+    public static TFile? Load(string path)
     {
-        TFile file;
+        TFile? file = null;
         try
         {
             using FileStream loadStream = new(path, FileMode.Open, FileAccess.Read);
@@ -149,12 +149,10 @@ public abstract class FileBase<TFile>
         catch (InvalidDataException)
         {
             Logger.LogWarning($"Unexpected XML file format at \"{path}\"");
-            file = new();
         }
         catch (Exception ex)
         {
             Logger.LogError($"An occurred error happened while reading file at {path}; Error: {ex.Source}; Message: {ex.Message}");
-            throw;
         }
 
         return file;

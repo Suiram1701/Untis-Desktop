@@ -74,8 +74,10 @@ public abstract class FileCollectionBase<TCollection, TFile> : IEnumerable<TFile
         TCollection collection = new();
         foreach (string path in Directory.EnumerateFiles(collection.SavePath))
         {
-            TFile file = FileBase<TFile>.Load(path);
-            collection._list.Add(file);
+            if (FileBase<TFile>.Load(path) is TFile file)
+                collection._list.Add(file);
+            else
+                File.Delete(path);
         }
 
         return collection;
@@ -86,8 +88,10 @@ public abstract class FileCollectionBase<TCollection, TFile> : IEnumerable<TFile
         _list.Clear();
         foreach (string path in Directory.EnumerateFiles(SavePath))
         {
-            TFile file = FileBase<TFile>.Load(path);
-            _list.Add(file);
+            if (FileBase<TFile>.Load(path) is TFile file)
+                _list.Add(file);
+            else
+                File.Delete(path);
         }
     }
 
