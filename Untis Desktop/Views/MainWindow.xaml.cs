@@ -78,4 +78,11 @@ public partial class MainWindow : Window
                 break;
         }
     }
+
+    private void ListViewScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        ScrollViewer scrollViewer = (ScrollViewer)sender;
+        scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+        e.Handled = true;
+    }
 }

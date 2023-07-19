@@ -160,4 +160,13 @@
   <data name="MainWindow.Menu.Today" xml:space="preserve">
     <value>I dag</value>
   </data>
+  <data name="MainWindow.Today.NFC" xml:space="preserve">
+    <value>Underrättelse</value>
+  </data>
+  <data name="MainWindow.Today.NNFC" xml:space="preserve">
+    <value>Det finns inga aviseringar</value>
+  </data>
+  <data name="MainWindow.Today.SysNFC" xml:space="preserve">
+    <value>systemavisering</value>
+  </data>
 </root>

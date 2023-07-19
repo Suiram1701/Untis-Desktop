@@ -152,12 +152,21 @@
     <value>Stundenplan</value>
   </data>
   <data name="MainWindow.Menu.Mail" xml:space="preserve">
-    <value>Benachrichtigungen</value>
+    <value>Mitteilungen</value>
   </data>
   <data name="MainWindow.Menu.Settings" xml:space="preserve">
     <value>Einstellungen</value>
   </data>
   <data name="MainWindow.Menu.Profile" xml:space="preserve">
     <value>Profil</value>
+  </data>
+  <data name="MainWindow.Today.NFC" xml:space="preserve">
+    <value>Benachrichtigung</value>
+  </data>
+  <data name="MainWindow.Today.SysNFC" xml:space="preserve">
+    <value>Systembenachrichtigung</value>
+  </data>
+  <data name="MainWindow.Today.NNFC" xml:space="preserve">
+    <value>Es sind keine Benachrichtigungen vorhanden</value>
   </data>
 </root>

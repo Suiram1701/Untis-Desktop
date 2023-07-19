@@ -146,7 +146,7 @@
     <value>Ответ от сервера WebUntis занял слишком много времени.</value>
   </data>
   <data name="MainWindow.Menu.Mail" xml:space="preserve">
-    <value>Уведомления</value>
+    <value>Сообщения</value>
   </data>
   <data name="MainWindow.Menu.Profile" xml:space="preserve">
     <value>Профиль</value>
@@ -159,5 +159,14 @@
   </data>
   <data name="MainWindow.Menu.Today" xml:space="preserve">
     <value>Сегодня</value>
+  </data>
+  <data name="MainWindow.Today.NFC" xml:space="preserve">
+    <value>уведомление</value>
+  </data>
+  <data name="MainWindow.Today.NNFC" xml:space="preserve">
+    <value>Нет уведомлений</value>
+  </data>
+  <data name="MainWindow.Today.SysNFC" xml:space="preserve">
+    <value>системное уведомление</value>
   </data>
 </root>

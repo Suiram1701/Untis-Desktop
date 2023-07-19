@@ -16,6 +16,11 @@ internal class LocalizeExtension : MarkupExtension
     [Required]
     public string Key { get; set; } = string.Empty;
 
+    public LocalizeExtension(string key)
+    {
+        Key = key;
+    }
+
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         return LangHelper.GetString(Key);

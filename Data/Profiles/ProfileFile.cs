@@ -16,11 +16,8 @@ public class ProfileFile : FileBase<ProfileFile>
     [XmlAttribute("isActive")]
     public bool IsActive { get; set; } = false;
 
-    [XmlElement("server")]
-    public string ServerUrl { get; set; } = string.Empty;
-
     [XmlElement("school")]
-    public string SchoolName { get; set; } = string.Empty;
+    public School? School { get; set; } = null;
 
     [XmlIgnore]
     public string Password
@@ -42,12 +39,20 @@ public class ProfileFile : FileBase<ProfileFile>
     public Teacher? Teacher = null;
     public bool ShouldSerialize_teacher() => Teacher != null;
 
+    /// <summary>
+    /// Login into the profile
+    /// </summary>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>The logged in client</returns>
+    /// <exception cref="UnauthorizedAccessException"></exception>
+    /// <exception cref="HttpRequestException"></exception>
+    /// <exception cref="Exception"></exception>
     public async Task<WebUntisClient> LoginAsync(CancellationToken ct)
     {
         WebUntisClient client = new("UntisDesktop", TimeSpan.FromSeconds(5));
         try
         {
-            bool loggedIn = await client.LoginAsync(ServerUrl, SchoolName, User?.Name, Password, "UntisDesktop_Login", ct);
+            bool loggedIn = await client.LoginAsync(School?.Server, School?.LoginName, User?.Name, Password, "UntisDesktop_Login", ct);
 
             if (!loggedIn)
             {
@@ -57,9 +62,13 @@ public class ProfileFile : FileBase<ProfileFile>
 
             if (User != client.User)
             {
-                Student ??= client.User as Student;
-                Teacher ??= client.User as Teacher;
+                Student = client.User as Student;
+                Teacher = client.User as Teacher;
             }
+
+            School school = await SchoolSearch.GetSchoolByNameAsync(School?.LoginName, "UpdateSchoolData", ct);
+            if (School != school)
+                School = school;
         }
         catch (HttpRequestException ex)
         {

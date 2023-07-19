@@ -6,11 +6,12 @@
         xmlns:ViewModels="clr-namespace:UntisDesktop.ViewModels"
         xmlns:Localization="clr-namespace:UntisDesktop.Localization"
         mc:Ignorable="d"
-        Title="Untis Desktop" Height="600" Width="1000">
+        Title="Untis Desktop"
+        MinHeight="0" MinWidth="0" Height="600" Width="1000">
     <Window.DataContext>
         <ViewModels:MainWindowViewModel/>
     </Window.DataContext>
-    <Grid x:Name="MainGrid">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60"/>
             <ColumnDefinition Width="*"/>
@@ -55,9 +56,15 @@
             </Grid.RowDefinitions>
             <StackPanel Orientation="Vertical" Grid.Row="0" VerticalAlignment="Center">
                 <!-- Today -->
-                <Button Name="TodayBtn" ToolTip="{Localization:Localize Key=MainWindow.Menu.Today}" Template="{StaticResource MenuBtn}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
-                        Click="MenuBtn_Click">
-                    <Image Source="/Assets/today.png" Height="50"/>
+                <Button Name="TodayBtn" ToolTip="{Localization:Localize MainWindow.Menu.Today}" Template="{StaticResource MenuBtn}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
+                        Click="MenuBtn_Click" Command="{Binding ReloadTabCommand, Mode=OneTime}" CommandParameter="TodayBtn">
+                    <Grid>
+                        <Image Source="/Assets/today.png" Height="50" Panel.ZIndex="0"/>
+                        <Border Background="{Binding ElementName=TodayBtn, Path=Background, Mode=OneWay}" Visibility="{Binding IsUnreadNewsAvailable, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" CornerRadius="50"
+                                Height="16" Width="16" Margin="0,-32,-26,0" Padding="2.5" Panel.ZIndex="1">
+                            <Ellipse Fill="Red"/>
+                        </Border>
+                    </Grid>
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="Transparent"/>
@@ -71,8 +78,8 @@
                 </Button>
 
                 <!-- Timetable -->
-                <Button Name="TimetableBtn" ToolTip="{Localization:Localize Key=MainWindow.Menu.Timetable}" Template="{StaticResource MenuBtn}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
-                        Click="MenuBtn_Click">
+                <Button Name="TimetableBtn" ToolTip="{Localization:Localize MainWindow.Menu.Timetable}" Template="{StaticResource MenuBtn}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
+                        Click="MenuBtn_Click" Command="{Binding ReloadTabCommand, Mode=OneTime}" CommandParameter="TimetableBtn">
                     <Image Source="/Assets/calendar_month.png" Height="50"/>
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
@@ -87,8 +94,8 @@
                 </Button>
 
                 <!-- Messages -->
-                <Button Name="MailBtn" ToolTip="{Localization:Localize Key=MainWindow.Menu.Mail}" Template="{StaticResource MenuBtn}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
-                        Click="MenuBtn_Click">
+                <Button Name="MailBtn" ToolTip="{Localization:Localize MainWindow.Menu.Mail}" Template="{StaticResource MenuBtn}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
+                        Click="MenuBtn_Click" Command="{Binding ReloadTabCommand, Mode=OneTime}" CommandParameter="MailBtn">
                     <Image Source="/Assets/mail.png" Height="50"/>
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
@@ -105,8 +112,8 @@
 
             <StackPanel Orientation="Vertical" Grid.Row="1" VerticalAlignment="Bottom">
                 <!-- Settings -->
-                <Button Name="SettingsBtn" ToolTip="{Localization:Localize Key=MainWindow.Menu.Settings}" Template="{StaticResource MenuBtn}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
-                        Click="MenuBtn_Click">
+                <Button Name="SettingsBtn" ToolTip="{Localization:Localize MainWindow.Menu.Settings}" Template="{StaticResource MenuBtn}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
+                        Click="MenuBtn_Click" Command="{Binding ReloadTabCommand, Mode=OneTime}" CommandParameter="SettingsBtn">
                     <Image Source="/Assets/settings.png" Height="50"/>
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
@@ -121,8 +128,8 @@
                 </Button>
                 
                 <!-- Profiles -->
-                <Button Name="ProfileBtn" ToolTip="{Localization:Localize Key=MainWindow.Menu.Profile}" Template="{StaticResource MenuBtn}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
-                        Click="MenuBtn_Click">
+                <Button Name="ProfileBtn" ToolTip="{Localization:Localize MainWindow.Menu.Profile}" Template="{StaticResource MenuBtn}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
+                        Click="MenuBtn_Click" Command="{Binding ReloadTabCommand, Mode=OneTime}" CommandParameter="ProfileBtn">
                     <Image Source="/Assets/person.png" Height="50"/>
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
@@ -145,7 +152,66 @@
                 </Style>
             </TabControl.ItemContainerStyle>
             <TabItem x:Name="TodayItem" IsSelected="True">
-                <TextBlock Text="Today"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{Binding CurrentDate, Mode=OneWay, StringFormat=\{0:D\}, ConverterCulture={x:Static Localization:LangHelper.Culture}}" FontSize="16" Margin="15"
+                               Grid.Row="0" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding CurrentProfile.School.DisplayName}" FontSize="26" Margin="5" Grid.Row="1" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding CurrentProfile.School.Address}" FontSize="10" Grid.Row="2" HorizontalAlignment="Center"/>
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="3" Margin="0,30,0,0" Padding="10,0,10,0"
+                                  PreviewMouseWheel="ListViewScrollViewer_PreviewMouseWheel">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <!-- No news -->
+                            <Grid Grid.Row="0" Visibility="{Binding IsAnyNewsAvailable, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Inv, Mode=OneWay}"
+                                  HorizontalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Image Source="/Assets/notifications_off.png" Stretch="None" Grid.Row="0"/>
+                                <TextBlock Text="{Localization:Localize MainWindow.Today.NNFC}" Grid.Row="1" HorizontalAlignment="Center"/>
+                            </Grid>
+                            
+                            <!-- System news -->
+                            <Grid Grid.Row="0" HorizontalAlignment="Center" Visibility="{Binding IsSysNewsAvailable, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" Margin="0,0,0,10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label Content="{Localization:Localize MainWindow.Today.SysNFC}" FontSize="16" HorizontalAlignment="Center"/>
+                                <ContentControl Content="{Binding TodayNews.SystemMessage}" ContentTemplate="{StaticResource ResourceKey=NewsMessageDataTemplate}" Grid.Row="1"/>
+                            </Grid>
+
+                            <!-- News -->
+                            <Grid Visibility="{Binding IsNewsAvailable, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" Grid.Row="1" HorizontalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label Content="{Localization:Localize MainWindow.Today.NFC}" FontSize="16" Grid.Row="0" HorizontalAlignment="Center"/>
+                                <ListView ItemsSource="{Binding TodayNews.Messages}" ItemTemplate="{StaticResource NewsMessageDataTemplate}"
+                                          BorderThickness="0" HorizontalContentAlignment="Center" Grid.Row="1" Padding="0">
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListViewItem}">
+                                            <Setter Property="IsHitTestVisible" Value="False"/>
+                                            <Setter Property="Focusable" Value="False"/>
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                </ListView>
+                            </Grid>
+                        </Grid>
+                    </ScrollViewer>
+                </Grid>
             </TabItem>
             <TabItem x:Name="TimetableItem" IsSelected="False">
                 <TextBlock Text="Timetable"/>

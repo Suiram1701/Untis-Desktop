@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Localization="clr-namespace:Update.Localization"
         mc:Ignorable="d"
-        Title="{Localization:Localize Key=App.Title}" Height="160" Width="400" ResizeMode="NoResize"
+        Title="{Localization:Localize App.Title}" Height="160" Width="400" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen" Initialized="Window_InitializedAsync" >
     <Grid>
         <Grid.RowDefinitions>
@@ -17,6 +17,6 @@
 
         <ProgressBar x:Name="Progress" Grid.Row="0" Margin="10"/>
         <Label x:Name="State" Grid.Row="1" Margin="5"/>
-        <Button Content="{Localization:Localize Key=UpdateWin.Btn.Cancel}" Click="CancelBtn_Click" Grid.Row="3" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+        <Button Content="{Localization:Localize UpdateWin.Btn.Cancel}" Click="CancelBtn_Click" Grid.Row="3" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

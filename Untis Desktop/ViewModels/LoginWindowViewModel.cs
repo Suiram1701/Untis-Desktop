@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -298,8 +300,7 @@ internal class LoginWindowViewModel : ViewModelBase
 
                     // Create new profile
                     ProfileFile profile = ProfileCollection.s_DefaultInstance.Add(client.User.Id.ToString());
-                    profile.ServerUrl = ServerUrl;
-                    profile.SchoolName = SchoolName;
+                    profile.School = await WebUntisAPI.Client.SchoolSearch.GetSchoolByNameAsync(SchoolName);
                     profile.Password = Password;
                     if (client.UserType == UserType.Student)
                         profile.Student = client.User as Student;

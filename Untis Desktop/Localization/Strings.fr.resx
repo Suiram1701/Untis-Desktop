@@ -146,7 +146,7 @@
     <value>La réponse du serveur WebUntis a pris trop de temps.</value>
   </data>
   <data name="MainWindow.Menu.Mail" xml:space="preserve">
-    <value>Notifications</value>
+    <value>Messages</value>
   </data>
   <data name="MainWindow.Menu.Profile" xml:space="preserve">
     <value>Profil</value>
@@ -159,5 +159,14 @@
   </data>
   <data name="MainWindow.Menu.Today" xml:space="preserve">
     <value>Aujourd'hui</value>
+  </data>
+  <data name="MainWindow.Today.NFC" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="MainWindow.Today.NNFC" xml:space="preserve">
+    <value>Il n'y a pas de notifications</value>
+  </data>
+  <data name="MainWindow.Today.SysNFC" xml:space="preserve">
+    <value>notification du système</value>
   </data>
 </root>

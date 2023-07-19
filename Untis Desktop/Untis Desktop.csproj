@@ -14,6 +14,7 @@
     <None Remove="Assets\dark_mode.png" />
     <None Remove="Assets\mail.png" />
     <None Remove="Assets\menu.png" />
+    <None Remove="Assets\notifications_off.png" />
     <None Remove="Assets\person.png" />
     <None Remove="Assets\search_off.png" />
     <None Remove="Assets\settings.png" />
@@ -42,6 +43,7 @@
     <Resource Include="Assets\dark_mode.png" />
     <Resource Include="Assets\mail.png" />
     <Resource Include="Assets\menu.png" />
+    <Resource Include="Assets\notifications_off.png" />
     <Resource Include="Assets\person.png" />
     <Resource Include="Assets\search_off.png" />
     <Resource Include="Assets\settings.png" />
