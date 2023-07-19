@@ -39,4 +39,16 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
+    <ControlTemplate x:Key="ErrBoxBtn" TargetType="{x:Type Button}">
+        <Label Name="Btn" Content="❌" Foreground="Black"/>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Btn" Property="Foreground" Value="Gray"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Btn" Property="Foreground" Value="DarkGray"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 </ResourceDictionary>

@@ -17,18 +17,7 @@
                 HorizontalAlignment="Center" VerticalAlignment="Top" Padding="20,10,20,10" Margin="0,15,0,0">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding ErrorBoxContent, Mode=OneWay}" VerticalAlignment="Center"/>
-                <Button Click="ErrorBoxClose_Click" VerticalAlignment="Center">
-                    <Button.Template>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Label Name="Btn" Content="❌" Foreground="Black"/>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="Btn" Property="Foreground" Value="Gray"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
+                <Button Template="{StaticResource ErrBoxBtn}" Click="ErrorBoxClose_Click" VerticalAlignment="Center"/>
             </StackPanel>
             <Border.RenderTransform>
                 <TranslateTransform x:Name="ErrorBoxTranslation" Y="-75"/>

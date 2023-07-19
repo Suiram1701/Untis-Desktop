@@ -127,7 +127,7 @@
   <data name="LoginWindow.Login.InvC" xml:space="preserve">
     <value>Данные для входа неверны.</value>
   </data>
-  <data name="LoginWindow.Err.OEX" xml:space="preserve">
+  <data name="App.Err.OEX" xml:space="preserve">
     <value>Произошла непредвиденная ошибка: {0}.\nОшибка: {1}</value>
   </data>
   <data name="LoginWindow.Search.NNC" xml:space="preserve">
@@ -168,5 +168,26 @@
   </data>
   <data name="MainWindow.Today.SysNFC" xml:space="preserve">
     <value>системное уведомление</value>
+  </data>
+  <data name="App.Err.WU.NA" xml:space="preserve">
+    <value>Во время аутентификации произошла ошибка.</value>
+  </data>
+  <data name="App.Err.WU.NRFM" xml:space="preserve">
+    <value>Вы не авторизованы для доступа к этим данным!</value>
+  </data>
+  <data name="App.Err.WU" xml:space="preserve">
+    <value>Сервер WebUntis вернул непредвиденную ошибку: {0}.</value>
+  </data>
+  <data name="App.Err.NNC" xml:space="preserve">
+    <value>Не удалось установить соединение с сервером WebUntis.\nПроверьте подключение к Интернету.</value>
+  </data>
+  <data name="MainWindow.Inf.NNC" xml:space="preserve">
+    <value>Нет соединения с интернетом</value>
+  </data>
+  <data name="MainWindow.G.Reload" xml:space="preserve">
+    <value>Перезагрузить</value>
+  </data>
+  <data name="App.Err.NERR" xml:space="preserve">
+    <value>В запросе обнаружена ошибка: {0}, код: {1}</value>
   </data>
 </root>

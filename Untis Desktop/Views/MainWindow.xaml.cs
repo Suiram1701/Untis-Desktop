@@ -24,6 +24,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        ViewModel.PropertyChanged += ErrorBoxContent_PropertyChanged;
     }
 
     private void ErrorBoxClose_Click(object sender, RoutedEventArgs e)
@@ -45,7 +47,7 @@ public partial class MainWindow : Window
 
     private void ErrorBoxContent_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(LoginWindowViewModel.ErrorBoxContent))
+        if (e.PropertyName == nameof(MainWindowViewModel.ErrorBoxContent))
         {
             if (ViewModel.ErrorBoxContent != string.Empty)
             {

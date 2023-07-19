@@ -127,7 +127,7 @@
   <data name="LoginWindow.Login.InvC" xml:space="preserve">
     <value>Les informations de connexion sont incorrectes.</value>
   </data>
-  <data name="LoginWindow.Err.OEX" xml:space="preserve">
+  <data name="App.Err.OEX" xml:space="preserve">
     <value>Une erreur inattendue s'est produite : {0}.\nErreur : {1}</value>
   </data>
   <data name="LoginWindow.Search.NNC" xml:space="preserve">
@@ -168,5 +168,26 @@
   </data>
   <data name="MainWindow.Today.SysNFC" xml:space="preserve">
     <value>notification du système</value>
+  </data>
+  <data name="App.Err.WU.NA" xml:space="preserve">
+    <value>Une erreur s'est produite lors de l'authentification.</value>
+  </data>
+  <data name="App.Err.WU.NRFM" xml:space="preserve">
+    <value>Vous n'êtes pas autorisé à accéder à ces données !</value>
+  </data>
+  <data name="App.Err.WU" xml:space="preserve">
+    <value>Le serveur WebUntis a renvoyé une erreur inattendue : {0}.</value>
+  </data>
+  <data name="App.Err.NNC" xml:space="preserve">
+    <value>Une connexion au serveur WebUntis n'a pas pu être établie.\nVeuillez vérifier votre connexion Internet.</value>
+  </data>
+  <data name="MainWindow.Inf.NNC" xml:space="preserve">
+    <value>Pas de connexion Internet</value>
+  </data>
+  <data name="MainWindow.G.Reload" xml:space="preserve">
+    <value>Recharger</value>
+  </data>
+  <data name="App.Err.NERR" xml:space="preserve">
+    <value>La requête a rencontré une erreur : {0}, code : {1}</value>
   </data>
 </root>

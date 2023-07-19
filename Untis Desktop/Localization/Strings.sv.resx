@@ -127,7 +127,7 @@
   <data name="LoginWindow.Login.InvC" xml:space="preserve">
     <value>Inloggningsuppgifterna är felaktiga.</value>
   </data>
-  <data name="LoginWindow.Err.OEX" xml:space="preserve">
+  <data name="App.Err.OEX" xml:space="preserve">
     <value>Ett oväntat fel inträffade: {0}.\nFel: {1}</value>
   </data>
   <data name="LoginWindow.Search.NNC" xml:space="preserve">
@@ -168,5 +168,26 @@
   </data>
   <data name="MainWindow.Today.SysNFC" xml:space="preserve">
     <value>systemavisering</value>
+  </data>
+  <data name="App.Err.WU.NA" xml:space="preserve">
+    <value>Det uppstod ett fel under autentiseringen.</value>
+  </data>
+  <data name="App.Err.WU.NRFM" xml:space="preserve">
+    <value>Du har inte behörighet att komma åt denna data!</value>
+  </data>
+  <data name="App.Err.WU" xml:space="preserve">
+    <value>WebUntis-servern returnerade ett oväntat fel: {0}.</value>
+  </data>
+  <data name="App.Err.NNC" xml:space="preserve">
+    <value>En anslutning till WebUntis-servern kunde inte upprättas.\nKontrollera din internetanslutning.</value>
+  </data>
+  <data name="MainWindow.Inf.NNC" xml:space="preserve">
+    <value>Ingen internetanslutning</value>
+  </data>
+  <data name="MainWindow.G.Reload" xml:space="preserve">
+    <value>Ladda om</value>
+  </data>
+  <data name="App.Err.NERR" xml:space="preserve">
+    <value>Begäran stötte på ett fel: {0}, kod: {1}</value>
   </data>
 </root>

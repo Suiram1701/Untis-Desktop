@@ -95,10 +95,10 @@ internal class LoginWindowViewModel : ViewModelBase
                     }
                     catch (Exception ex)
                     {
-                        if (ex.Source != "System.Net.Http")
+                        if (ex.Source == "System.Net.Http")
                             ErrorBoxContent = LangHelper.GetString("LoginWindow.Search.NNC");
                         else
-                            ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
+                            ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
                         Logger.LogError($"School search: {ex.Source ?? "System.Exception"}; {ex.Message}");
 
                         SearchResults.Clear();
@@ -323,7 +323,7 @@ internal class LoginWindowViewModel : ViewModelBase
                     ErrorBoxContent = LangHelper.GetString("LoginWindow.D.InvSN");
                 else
                 {
-                    ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.OEX", ex.Message, ex.Code.ToString());
+                    ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Message, ex.Code.ToString());
                     Logger.LogError($"WebUntis exception: {ex.Message}; Code {ex.Code}");
                 }
             }
@@ -333,7 +333,7 @@ internal class LoginWindowViewModel : ViewModelBase
                     ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.NIC");
                 else
                 {
-                    ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.OEX", ex.Message, ((int)(ex.StatusCode ?? 0)).ToString());
+                    ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Message, ((int)(ex.StatusCode ?? 0)).ToString());
                     Logger.LogError($"Unexpected HttpRequestException was thrown: {ex.Message}; Code: {ex.StatusCode}");
                 }
             }
@@ -344,7 +344,7 @@ internal class LoginWindowViewModel : ViewModelBase
             }
             catch (Exception ex)
             {
-                ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
+                ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
                 Logger.LogError($"An occurred {ex.Source} was thrown; Message: {ex.Message}");
             }
             finally

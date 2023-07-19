@@ -127,7 +127,7 @@
   <data name="LoginWindow.Login.InvC" xml:space="preserve">
     <value>The login credentials are incorrect.</value>
   </data>
-  <data name="LoginWindow.Err.OEX" xml:space="preserve">
+  <data name="App.Err.OEX" xml:space="preserve">
     <value>An unexpected error occurred: {0}.\nError: {1}</value>
   </data>
   <data name="LoginWindow.Search.NNC" xml:space="preserve">
@@ -168,5 +168,26 @@
   </data>
   <data name="MainWindow.Today.SysNFC" xml:space="preserve">
     <value>System notification</value>
+  </data>
+  <data name="App.Err.WU.NA" xml:space="preserve">
+    <value>There was an error during authentication.</value>
+  </data>
+  <data name="App.Err.WU.NRFM" xml:space="preserve">
+    <value>You are not authorized to access this data!</value>
+  </data>
+  <data name="App.Err.WU" xml:space="preserve">
+    <value>The WebUntis server returned an unexpected error: {0}.</value>
+  </data>
+  <data name="App.Err.NNC" xml:space="preserve">
+    <value>A connection to the WebUntis server could not be established.\nPlease check your Internet connection.</value>
+  </data>
+  <data name="MainWindow.Inf.NNC" xml:space="preserve">
+    <value>No Internet connection</value>
+  </data>
+  <data name="MainWindow.G.Reload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="App.Err.NERR" xml:space="preserve">
+    <value>The request encountered an error: {0}, code : {1}</value>
   </data>
 </root>
