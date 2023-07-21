@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="SubjectsSchema"
+    targetNamespace="http://tempuri.org/SubjectsSchema.xsd"
+    xmlns="http://tempuri.org/SubjectsSchema.xsd"
+    xmlns:mstns="http://tempuri.org/SubjectsSchema.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:complexType name="Color">
+		<xs:attribute name="A" type="xs:byte"/>
+		<xs:attribute name="R" type="xs:byte"/>
+		<xs:attribute name="G" type="xs:byte"/>
+		<xs:attribute name="B" type="xs:byte"/>
+	</xs:complexType>
+	<xs:element name="SubjectFile">
+		<xs:complexType>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="subject">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="name" type="xs:string"/>
+							<xs:element name="longName" type="xs:string"/>
+							<xs:element name="alternateName" type="xs:string"/>
+							<xs:element name="foreColor" type="Color"/>
+							<xs:element name="backColor" type="Color"/>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:int"/>
+						<xs:attribute name="Active" type="xs:boolean"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

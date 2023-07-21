@@ -1,4 +1,5 @@
 ﻿using Data.Profiles;
+using Data.Static;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,8 +7,10 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using UntisDesktop.Views;
+using WebUntisAPI.Client;
 
 namespace UntisDesktop;
 
@@ -61,7 +64,22 @@ public partial class App : Application
         if (!ProfileCollection.s_DefaultInstance.Any())
             new LoginWindow().Show();
         else
+        {
+            // Update static data
+            Task.Run(async () =>
+            {
+                using WebUntisClient client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None);
+
+                Task teacherTask = TeacherFile.UpdateFromClientAsync(client);
+                Task roomTask = RoomFile.UpdateFromClientAsync(client);
+                Task subjectTask = SubjectFile.UpdateFromClientAsync(client);
+                Task statusDataTask = StatusDataFile.UpdateFromClientAsync(client);
+
+                await Task.WhenAll(teacherTask, roomTask, subjectTask, statusDataTask);
+            });
+
             new MainWindow().Show();
+        }
     }
 
     protected override void OnExit(ExitEventArgs e)

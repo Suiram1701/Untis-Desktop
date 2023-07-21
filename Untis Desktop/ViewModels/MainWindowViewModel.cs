@@ -191,7 +191,7 @@ internal class MainWindowViewModel : ViewModelBase
                 return;
             }
 
-            await LoadTodayTabAsync().ConfigureAwait(true);
+            Task loadTodayTask = LoadTodayTabAsync();
         }, DispatcherPriority.Loaded);
     }
 }

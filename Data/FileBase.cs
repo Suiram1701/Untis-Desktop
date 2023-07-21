@@ -11,9 +11,6 @@ namespace Data;
 public abstract class FileBase<TFile>
     where TFile : FileBase<TFile>, new()
 {
-    [XmlIgnore]
-    private readonly XmlSerializer _serializer = new(typeof(TFile));
-
     internal readonly static FileAttribute s_Attribute = FileAttribute.GetAttribute<TFile>();
 
     /// <summary>
@@ -62,13 +59,26 @@ public abstract class FileBase<TFile>
     [XmlIgnore]
     private string _path = string.Empty;
 
+    protected virtual void Serialize(Stream stream, FileBase<TFile> file)
+    {
+        new XmlSerializer(typeof(TFile)).Serialize(stream, file);
+    }
+
+    protected virtual TFile? Deserialize(Stream stream)
+    {
+        return new XmlSerializer(typeof(TFile)).Deserialize(stream) as TFile;
+    }
+
+    /// <summary>
+    /// Update the file
+    /// </summary>
     public void Update()
     {
         try
         {
             using FileStream updateStream = new(Path, FileMode.OpenOrCreate, FileAccess.Write);
             updateStream.SetLength(0);
-            _serializer.Serialize(updateStream, this);
+            Serialize(updateStream, this);
         }
         catch (Exception ex)
         {
@@ -108,7 +118,7 @@ public abstract class FileBase<TFile>
         {
             TFile file = new();
             string savePath = Regex.Replace(path, @"\.[^(?:/|\\)]+$", string.Empty);
-            file._name = savePath[(savePath.LastIndexOf('\\') + 1)..(savePath.Length)];
+            file._name = savePath[(savePath.LastIndexOf('\\') + 1)..savePath.Length];
             savePath += $".{s_Attribute.Extension}";
             file._path = savePath;
 
@@ -118,7 +128,7 @@ public abstract class FileBase<TFile>
 
             using FileStream createStream = new(savePath, FileMode.OpenOrCreate, FileAccess.Write);
             createStream.SetLength(0);
-            file._serializer.Serialize(createStream, file);
+            file.Serialize(createStream, file);
 
             return file;
         }
@@ -142,7 +152,7 @@ public abstract class FileBase<TFile>
         {
             using FileStream loadStream = new(path, FileMode.Open, FileAccess.Read);
 
-            file = new XmlSerializer(typeof(TFile)).Deserialize(loadStream) as TFile ?? throw new InvalidDataException("Unexpected XML file format");
+            file = new TFile().Deserialize(loadStream) ?? throw new InvalidDataException("Unexpected XML file format");
             file._name = Regex.Match(path, @"(?<=(?:/|\\))[^(?:/|\\)]+(?=\..+)").Value;
             file._path = path;
         }

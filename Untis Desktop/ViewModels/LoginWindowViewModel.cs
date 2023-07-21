@@ -309,7 +309,7 @@ internal class LoginWindowViewModel : ViewModelBase
 
                     profile.Update();
                     ProfileCollection.s_DefaultInstance.ReloadCollection();
-                    ProfileCollection.SetActiveProfile(profile);
+                    _ = ProfileCollection.SetActiveProfileAsync(profile);
 
                     Application.Current.MainWindow.Close();
                     new MainWindow().Show();
