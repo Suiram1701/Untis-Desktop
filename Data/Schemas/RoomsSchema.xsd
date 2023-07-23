@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="RoomsSchema"
 	elementFormDefault="qualified"
-    xmlns="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/Types.xsd"
+    xmlns="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/RoomsSchema.xsd"
     targetNamespace="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/RoomsSchema.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="RoomFile">
 		<xs:complexType>
-			<xs:sequence minOccurs="0" maxOccurs="unbounded">
-				<xs:element name="room">
+			<xs:sequence>
+				<xs:element name="room" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="Id" type="xs:int"/>
