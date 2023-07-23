@@ -1,15 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="SubjectsSchema"
-    targetNamespace="http://tempuri.org/SubjectsSchema.xsd"
-    xmlns="http://tempuri.org/SubjectsSchema.xsd"
-    xmlns:mstns="http://tempuri.org/SubjectsSchema.xsd"
+	elementFormDefault="qualified"
+	xmlns="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/Types.xsd"
+    targetNamespace="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/SubjectsSchema.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:complexType name="Color">
-		<xs:attribute name="A" type="xs:byte"/>
-		<xs:attribute name="R" type="xs:byte"/>
-		<xs:attribute name="G" type="xs:byte"/>
-		<xs:attribute name="B" type="xs:byte"/>
-	</xs:complexType>
 	<xs:element name="SubjectFile">
 		<xs:complexType>
 			<xs:sequence minOccurs="0" maxOccurs="unbounded">

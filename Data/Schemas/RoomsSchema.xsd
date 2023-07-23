@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="RoomsSchema"
-    targetNamespace="http://tempuri.org/RoomFileSchema.xsd"
-    xmlns="http://tempuri.org/RoomFileSchema.xsd"
-    xmlns:mstns="http://tempuri.org/RoomFileSchema.xsd"
+	elementFormDefault="qualified"
+    xmlns="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/Types.xsd"
+    targetNamespace="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/RoomsSchema.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="RoomFile">
 		<xs:complexType>

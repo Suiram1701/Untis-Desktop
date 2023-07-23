@@ -12,10 +12,12 @@ using System.Drawing;
 using System.Xml.Schema;
 using System.Xml;
 using Data.Extensions;
+using System.Reflection;
 
 namespace Data.Static;
 
 [File(@"\Untis Desktop\Static\{UserId}\")]
+[XmlRoot(Namespace = "https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/SubjectsSchema.xsd")]
 public class SubjectFile : FileBase<SubjectFile>
 {
     [XmlIgnore]
@@ -36,13 +38,13 @@ public class SubjectFile : FileBase<SubjectFile>
         using XmlWriter xmlWriter = XmlWriter.Create(stream, new XmlWriterSettings() { Indent = true });
 
         xmlWriter.WriteStartDocument();
-        xmlWriter.WriteStartElement("SubjectFile");
+        xmlWriter.WriteStartElement("SubjectFile", GetType().GetCustomAttribute<XmlRootAttribute>()?.Namespace);
 
         foreach (Subject subject in Subjects)
         {
             xmlWriter.WriteStartElement("subject");
             xmlWriter.WriteAttributeString("id", subject.Id.ToString());
-            xmlWriter.WriteAttributeString("Active", subject.Active.ToString());
+            xmlWriter.WriteAttributeString("Active", subject.Active ? "true" : "false");
 
             xmlWriter.WriteElementString("name", subject.Name);
             xmlWriter.WriteElementString("longName", subject.LongName);

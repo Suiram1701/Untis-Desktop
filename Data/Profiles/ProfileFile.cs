@@ -9,8 +9,8 @@ using WebUntisAPI.Client.Models;
 
 namespace Data.Profiles;
 
-[XmlRoot("Profile")]
 [File(@"\Untis Desktop\Profiles\")]
+[XmlRoot(Namespace = "https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/ProfileSchema.xsd")]
 public class ProfileFile : FileBase<ProfileFile>
 {
     [XmlAttribute("isActive")]

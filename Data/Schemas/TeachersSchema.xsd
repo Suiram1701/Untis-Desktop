@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="TeacherSchema"
-    targetNamespace="http://tempuri.org/TeacherSchema.xsd"
-    xmlns="http://tempuri.org/TeacherSchema.xsd"
-    xmlns:mstns="http://tempuri.org/TeacherSchema.xsd"
+	attributeFormDefault="unqualified" elementFormDefault="qualified"
+    targetNamespace="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/TeachersSchema.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="TeacherFile">
 		<xs:complexType>
-			<xs:sequence>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
 				<xs:element name="teacher">
 					<xs:complexType>
 						<xs:sequence>

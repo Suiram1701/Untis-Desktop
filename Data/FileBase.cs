@@ -1,5 +1,8 @@
 ﻿using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace Data;
@@ -61,7 +64,12 @@ public abstract class FileBase<TFile>
 
     protected virtual void Serialize(Stream stream, FileBase<TFile> file)
     {
-        new XmlSerializer(typeof(TFile)).Serialize(stream, file);
+        XmlSerializerNamespaces namespaces = new();
+        string? xmlns = GetType().GetCustomAttribute<XmlRootAttribute>()?.Namespace;
+        if (xmlns is string ns)
+            namespaces.Add("", ns);
+
+        new XmlSerializer(typeof(TFile)).Serialize(stream, file, namespaces);
     }
 
     protected virtual TFile? Deserialize(Stream stream)

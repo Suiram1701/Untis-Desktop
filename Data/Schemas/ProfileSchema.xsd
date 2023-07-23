@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="ProfileSchema"
-    targetNamespace="http://tempuri.org/ProfileSchema.xsd"
-    xmlns="http://tempuri.org/ProfileSchema.xsd"
-    xmlns:mstns="http://tempuri.org/ProfileSchema.xsd"
+	attributeFormDefault="unqualified" elementFormDefault="qualified"
+    targetNamespace="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/ProfileSchema.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:element name="Profile">
+	<xs:element name="ProfileFile">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="encodedPassword" type="xs:string"/>
@@ -17,7 +16,7 @@
 								<xs:element name="ForeName" type="xs:string"/>
 								<xs:element name="LongName" type="xs:string"/>
 								<xs:element name="Key" type="xs:string"/>
-								<xs:element name="Gender" type="xs:string"/>
+								<xs:element name="Gender" type="xs:string" nillable="true"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>

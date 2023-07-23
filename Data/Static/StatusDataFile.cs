@@ -11,10 +11,12 @@ using WebUntisAPI.Client;
 using Data.Extensions;
 using System.Xml;
 using System.Drawing;
+using System.Reflection;
 
 namespace Data.Static;
 
 [File(@"\Untis Desktop\Static\{UserId}\")]
+[XmlRoot(Namespace = "https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/StatusDataSchema.xsd")]
 public class StatusDataFile : FileBase<StatusDataFile>
 {
     [XmlIgnore]
@@ -33,7 +35,7 @@ public class StatusDataFile : FileBase<StatusDataFile>
         using XmlWriter xmlWriter = XmlWriter.Create(stream, new XmlWriterSettings() { Indent = true });
 
         xmlWriter.WriteStartDocument();
-        xmlWriter.WriteStartElement("SubjectFile");
+        xmlWriter.WriteStartElement("SubjectFile", GetType().GetCustomAttribute<XmlRootAttribute>()?.Namespace);
 
         StatusData.LsColors.WriteToXml("lsColors", xmlWriter);
         StatusData.OhColors.WriteToXml("ohColors", xmlWriter);

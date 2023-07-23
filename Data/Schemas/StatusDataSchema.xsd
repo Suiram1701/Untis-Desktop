@@ -1,21 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="StatusDataSchema"
-    targetNamespace="http://tempuri.org/StatusDataSchema.xsd"
-    xmlns="http://tempuri.org/StatusDataSchema.xsd"
-    xmlns:mstns="http://tempuri.org/StatusDataSchema.xsd"
+	elementFormDefault="qualified"
+	xmlns="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/Types.xsd"
+    targetNamespace="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/StatusDataSchema.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:complexType name="Color">
-		<xs:attribute name="A" type="xs:byte"/>
-		<xs:attribute name="R" type="xs:byte"/>
-		<xs:attribute name="G" type="xs:byte"/>
-		<xs:attribute name="B" type="xs:byte"/>
-	</xs:complexType>
-	<xs:complexType name="ForeBackColor">
-		<xs:sequence>
-			<xs:element name="foreColor" type="Color"/>
-			<xs:element name="backColor" type="Color"/>
-		</xs:sequence>
-	</xs:complexType>
 	<xs:element name="SubjectFile">
 		<xs:complexType>
 			<xs:sequence>

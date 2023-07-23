@@ -13,6 +13,7 @@ using WebUntisAPI.Client.Models;
 namespace Data.Static;
 
 [File(@"\Untis Desktop\Static\{UserId}\")]
+[XmlRoot(Namespace = "https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/TeachersSchema.xsd")]
 public class TeacherFile : FileBase<TeacherFile>
 {
     [XmlIgnore]

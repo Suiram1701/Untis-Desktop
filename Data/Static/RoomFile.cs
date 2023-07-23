@@ -12,6 +12,7 @@ using WebUntisAPI.Client;
 namespace Data.Static;
 
 [File(@"\Untis Desktop\Static\{UserId}\")]
+[XmlRoot(Namespace = "https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/RoomsSchema.xsd")]
 public class RoomFile : FileBase<RoomFile>
 {
     [XmlIgnore]
