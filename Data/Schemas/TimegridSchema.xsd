@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="TimegridSchema"
+    elementFormDefault="qualified"
+    targetNamespace="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/TimegridSchema.xsd"
+    xmlns="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/TimegridSchema.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:simpleType name="Day">
+		<xs:annotation>
+			<xs:documentation>
+				The diferent school days
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Sunday"/>
+			<xs:enumeration value="Monday"/>
+			<xs:enumeration value="Tuesday"/>
+			<xs:enumeration value="Wednesday"/>
+			<xs:enumeration value="Thursday"/>
+			<xs:enumeration value="Friday"/>
+			<xs:enumeration value="Saturday"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Time">
+		<xs:annotation>
+			<xs:documentation>
+				Restrict a string to a time in the format Hour:Minute (example: 19:53)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="^(\d{1,2}):(\d{1,2})$"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="SchoolHour">
+		<xs:annotation>
+			<xs:documentation>
+				A school hour
+			</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="startTime" type="Time" use="required"/>
+		<xs:attribute name="endTime" type="Time" use="required"/>
+	</xs:complexType>
+</xs:schema>
