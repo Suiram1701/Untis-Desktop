@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="ProfileSchema"
-	attributeFormDefault="unqualified" elementFormDefault="qualified"
+	elementFormDefault="qualified"
+	xmlns="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/Types.xsd"
     targetNamespace="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/ProfileSchema.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="ProfileFile">
@@ -20,25 +21,7 @@
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="teacherUser">
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="Id" type="xs:int"/>
-								<xs:element name="Name" type="xs:string"/>
-								<xs:element name="ForeName" type="xs:string"/>
-								<xs:element name="LongName" type="xs:string"/>
-								<xs:element name="Title" type="xs:string"/>
-								<xs:element name="Active" type="xs:boolean"/>
-								<xs:element name="Dids">
-									<xs:complexType>
-										<xs:sequence>
-											<xs:any minOccurs="0" maxOccurs="unbounded"/>
-										</xs:sequence>
-									</xs:complexType>
-								</xs:element>
-							</xs:sequence>
-						</xs:complexType>
-					</xs:element>
+					<xs:element name="teacherUser" type="Teacher"/>
 				</xs:choice>
 				<xs:element name="school">
 					<xs:complexType>

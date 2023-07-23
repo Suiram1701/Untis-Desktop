@@ -34,4 +34,22 @@
 			<xs:element name="backColor" type="Color"/>
 		</xs:sequence>
 	</xs:complexType>
+
+	<xs:complexType name="Teacher">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:int"/>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="ForeName" type="xs:string"/>
+			<xs:element name="LongName" type="xs:string"/>
+			<xs:element name="Title" type="xs:string"/>
+			<xs:element name="Active" type="xs:boolean"/>
+			<xs:element name="Dids" nillable="true">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 </xs:schema>

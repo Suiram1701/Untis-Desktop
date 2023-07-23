@@ -53,7 +53,10 @@ public class ProfileCollection : FileCollectionBase<ProfileCollection, ProfileFi
             StatusDataFile.SetProfile(profile);
             Task statusDataTask = StatusDataFile.UpdateFromClientAsync(client);
 
-            await Task.WhenAll(teacherTask, roomTask, subjectTask, statusDataTask);
+            TimegridFile.SetProfile(profile);
+            Task timegridTask = TimegridFile.UpdateFromClientAsync(client);
+
+            await Task.WhenAll(teacherTask, roomTask, subjectTask, statusDataTask, timegridTask);
         }
     }
 }
