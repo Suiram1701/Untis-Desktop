@@ -122,15 +122,15 @@ public class TimegridFile : FileBase<TimegridFile>
             //s_DefaultInstance.Timegrid = await client.GetTimegridAsync("reloadTimegrid", CancellationToken.None);
             SchoolHour[] nomalDay = new SchoolHour[]
             {
-                new() { Name = "1", StartTime = new DateTime(2020, 1, 1, 7, 40, 0), EndTime = new DateTime(2020, 1, 1, 8, 25, 0) },
-                new() { Name = "2", StartTime = new DateTime(2020, 1, 1, 8, 35, 0), EndTime = new DateTime(2020, 1, 1, 9, 20, 0) },
-                new() { Name = "3", StartTime = new DateTime(2020, 1, 1, 9, 35, 0), EndTime = new DateTime(2020, 1, 1, 10, 20, 0) },
-                new() { Name = "4", StartTime = new DateTime(2020, 1, 1, 10, 20, 0), EndTime = new DateTime(2020, 1, 1, 11, 05, 0) },
-                new() { Name = "5", StartTime = new DateTime(2020, 1, 1, 11, 35, 0), EndTime = new DateTime(2020, 1, 1, 12, 20, 0) },
-                new() { Name = "6", StartTime = new DateTime(2020, 1, 1, 12, 20, 0), EndTime = new DateTime(2020, 1, 1, 13, 05, 0) },
-                new() { Name = "7", StartTime = new DateTime(2020, 1, 1, 13, 25, 0), EndTime = new DateTime(2020, 1, 1, 14, 20, 0) },
-                new() { Name = "8", StartTime = new DateTime(2020, 1, 1, 14, 30, 0), EndTime = new DateTime(2020, 1, 1, 15, 15, 0) },
-                new() { Name = "9", StartTime = new DateTime(2020, 1, 1, 15, 25, 0), EndTime = new DateTime(2020, 1, 1, 16, 10, 0) }
+                new() { Name = "1.", StartTime = new DateTime(2020, 1, 1, 7, 40, 0), EndTime = new DateTime(2020, 1, 1, 8, 25, 0) },
+                new() { Name = "2.", StartTime = new DateTime(2020, 1, 1, 8, 35, 0), EndTime = new DateTime(2020, 1, 1, 9, 20, 0) },
+                new() { Name = "3.", StartTime = new DateTime(2020, 1, 1, 9, 35, 0), EndTime = new DateTime(2020, 1, 1, 10, 20, 0) },
+                new() { Name = "4.", StartTime = new DateTime(2020, 1, 1, 10, 20, 0), EndTime = new DateTime(2020, 1, 1, 11, 05, 0) },
+                new() { Name = "5.", StartTime = new DateTime(2020, 1, 1, 11, 35, 0), EndTime = new DateTime(2020, 1, 1, 12, 20, 0) },
+                new() { Name = "6.", StartTime = new DateTime(2020, 1, 1, 12, 20, 0), EndTime = new DateTime(2020, 1, 1, 13, 05, 0) },
+                new() { Name = "7.", StartTime = new DateTime(2020, 1, 1, 13, 35, 0), EndTime = new DateTime(2020, 1, 1, 14, 20, 0) },
+                new() { Name = "8.", StartTime = new DateTime(2020, 1, 1, 14, 30, 0), EndTime = new DateTime(2020, 1, 1, 15, 15, 0) },
+                new() { Name = "9.", StartTime = new DateTime(2020, 1, 1, 15, 25, 0), EndTime = new DateTime(2020, 1, 1, 16, 10, 0) }
             };
             s_DefaultInstance.Timegrid = new Timegrid()
             {
@@ -148,7 +148,7 @@ public class TimegridFile : FileBase<TimegridFile>
         }
         catch (WebUntisException ex)
         {
-             Logger.LogWarning($"Timegrid file: Reloading timegrid failed with a {nameof(WebUntisException)}: {ex.Message}, Code: {ex.Code}");
+            Logger.LogWarning($"Timegrid file: Reloading timegrid failed with a {nameof(WebUntisException)}: {ex.Message}, Code: {ex.Code}");
             throw;
         }
         catch (Exception ex)

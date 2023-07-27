@@ -190,4 +190,25 @@
   <data name="App.Err.NERR" xml:space="preserve">
     <value>La requête a rencontré une erreur : {0}, code : {1}</value>
   </data>
+  <data name="MainWindow.Inf.Sunday" xml:space="preserve">
+    <value>Dimanche</value>
+  </data>
+  <data name="MainWindow.Inf.Monday" xml:space="preserve">
+    <value>Lundi</value>
+  </data>
+  <data name="MainWindow.Inf.Tuesday" xml:space="preserve">
+    <value>Mardi</value>
+  </data>
+  <data name="MainWindow.Inf.Wednesday" xml:space="preserve">
+    <value>Mercredi</value>
+  </data>
+  <data name="MainWindow.Inf.Thursday" xml:space="preserve">
+    <value>Jeudi</value>
+  </data>
+  <data name="MainWindow.Inf.Friday" xml:space="preserve">
+    <value>Vendredi</value>
+  </data>
+  <data name="MainWindow.Inf.Saturday" xml:space="preserve">
+    <value>Vendredi</value>
+  </data>
 </root>

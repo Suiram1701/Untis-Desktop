@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using UntisDesktop.Localization;
+using UntisDesktop.Views;
 using WebUntisAPI.Client;
 using WebUntisAPI.Client.Exceptions;
 using WebUntisAPI.Client.Models;
@@ -22,6 +23,8 @@ internal class MainWindowViewModel : ViewModelBase
     public DelegateCommand ReloadOfflineCommand { get; }
 
     public DelegateCommand ReloadTabCommand { get; }
+
+    public DelegateCommand OtherWeekBtnCommand { get; }
 
     // views
     public string ErrorBoxContent
@@ -142,6 +145,21 @@ internal class MainWindowViewModel : ViewModelBase
     public bool IsAnyNewsAvailable { get => TodayNews.Messages is not null && IsNewsAvailable; }
     #endregion
 
+    #region Timetable
+    public DateTime SelectedWeek
+    {
+        get => MainWindow.SelectedWeek;
+        set
+        {
+            MainWindow.SelectedWeek = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(NextWeek));
+        }
+
+    }
+    public DateTime NextWeek { get => SelectedWeek.AddDays(6); }
+    #endregion
+
     public MainWindowViewModel()
     {
         ReloadOfflineCommand = new(async _ =>
@@ -178,7 +196,15 @@ internal class MainWindowViewModel : ViewModelBase
             }
         });
 
-        _ = Application.Current.Dispatcher.Invoke(async () =>
+        OtherWeekBtnCommand = new(parameter =>
+        {
+            if (int.TryParse(parameter as string, out int result))
+            {
+                SelectedWeek = SelectedWeek.AddDays(result);
+            }
+        });
+
+        _ = Task.Run(async () =>
         {
             using Ping ping = new();
             try
@@ -192,6 +218,6 @@ internal class MainWindowViewModel : ViewModelBase
             }
 
             Task loadTodayTask = LoadTodayTabAsync();
-        }, DispatcherPriority.Loaded);
+        });
     }
 }

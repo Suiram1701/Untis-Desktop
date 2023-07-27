@@ -1,0 +1,10 @@
+﻿<UserControl x:Class="UntisDesktop.UserControls.SchoolHour"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Border CornerRadius="8" Background="Orange" Margin="1">
+        <Label Content="{Binding Lesson.Id}"/>
+    </Border>
+</UserControl>

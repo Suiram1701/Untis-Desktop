@@ -7,6 +7,7 @@
         <ResourceDictionary>
             <!-- Converters -->
             <Converter:BoolVisibilityConverter x:Key="BoolVisibilityConverter"/>
+            <Converter:ColorToColorConverter x:Key="DrawingCMediaCConverter"/>
 
             <!-- Other styles and templates -->
             <ResourceDictionary.MergedDictionaries>

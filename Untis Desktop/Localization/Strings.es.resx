@@ -190,4 +190,25 @@
   <data name="App.Err.NERR" xml:space="preserve">
     <value>La solicitud encontró un error: {0}, código: {1}</value>
   </data>
+  <data name="MainWindow.Inf.Sunday" xml:space="preserve">
+    <value>Domingo</value>
+  </data>
+  <data name="MainWindow.Inf.Friday" xml:space="preserve">
+    <value>Viernes</value>
+  </data>
+  <data name="MainWindow.Inf.Monday" xml:space="preserve">
+    <value>Lunes</value>
+  </data>
+  <data name="MainWindow.Inf.Saturday" xml:space="preserve">
+    <value>Sábado</value>
+  </data>
+  <data name="MainWindow.Inf.Thursday" xml:space="preserve">
+    <value>Jueves</value>
+  </data>
+  <data name="MainWindow.Inf.Tuesday" xml:space="preserve">
+    <value>Martes</value>
+  </data>
+  <data name="MainWindow.Inf.Wednesday" xml:space="preserve">
+    <value>Miércoles</value>
+  </data>
 </root>

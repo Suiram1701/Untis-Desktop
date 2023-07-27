@@ -190,4 +190,25 @@
   <data name="App.Err.NERR" xml:space="preserve">
     <value>В запросе обнаружена ошибка: {0}, код: {1}</value>
   </data>
+  <data name="MainWindow.Inf.Sunday" xml:space="preserve">
+    <value>воскресенье</value>
+  </data>
+  <data name="MainWindow.Inf.Friday" xml:space="preserve">
+    <value>Пятница</value>
+  </data>
+  <data name="MainWindow.Inf.Monday" xml:space="preserve">
+    <value>Понедельник</value>
+  </data>
+  <data name="MainWindow.Inf.Saturday" xml:space="preserve">
+    <value>Суббота</value>
+  </data>
+  <data name="MainWindow.Inf.Thursday" xml:space="preserve">
+    <value>Четверг</value>
+  </data>
+  <data name="MainWindow.Inf.Tuesday" xml:space="preserve">
+    <value>Вторник</value>
+  </data>
+  <data name="MainWindow.Inf.Wednesday" xml:space="preserve">
+    <value>Среда</value>
+  </data>
 </root>

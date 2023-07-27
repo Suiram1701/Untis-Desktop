@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Assets\arrow_back_ios.png" />
+    <None Remove="Assets\arrow_forward_ios.png" />
     <None Remove="Assets\calendar_month.png" />
     <None Remove="Assets\dark_mode.png" />
     <None Remove="Assets\mail.png" />
@@ -41,6 +42,7 @@
 
   <ItemGroup>
     <Resource Include="Assets\arrow_back_ios.png" />
+    <Resource Include="Assets\arrow_forward_ios.png" />
     <Resource Include="Assets\calendar_month.png" />
     <Resource Include="Assets\dark_mode.png" />
     <Resource Include="Assets\mail.png" />

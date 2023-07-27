@@ -14,13 +14,13 @@
     <Grid>
         <!-- Error Box -->
         <Border x:Name="ErrorBox" Panel.ZIndex="1" Background="#FFFB4D4D" BorderBrush="Red" BorderThickness="1" CornerRadius="10"
-                HorizontalAlignment="Center" VerticalAlignment="Top" Padding="20,10,20,10" Margin="0,15,0,0">
+                HorizontalAlignment="Center" VerticalAlignment="Top" Padding="20,10,20,10">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding ErrorBoxContent, Mode=OneWay}" VerticalAlignment="Center"/>
                 <Button Template="{StaticResource ErrBoxBtn}" Click="ErrorBoxClose_Click" VerticalAlignment="Center"/>
             </StackPanel>
             <Border.RenderTransform>
-                <TranslateTransform x:Name="ErrorBoxTranslation" Y="-75"/>
+                <TranslateTransform x:Name="ErrorBoxTranslation" Y="-90"/>
             </Border.RenderTransform>
             <Border.Resources>
                 <Storyboard x:Key="PopUpAnimation">
