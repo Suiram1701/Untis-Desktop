@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -21,9 +22,11 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using UntisDesktop.Extensions;
+using UntisDesktop.Localization;
 using UntisDesktop.UserControls;
 using UntisDesktop.ViewModels;
 using WebUntisAPI.Client;
+using WebUntisAPI.Client.Exceptions;
 using WebUntisAPI.Client.Models;
 using WebUntis = WebUntisAPI.Client.Models;
 
@@ -74,7 +77,7 @@ public partial class MainWindow : Window
         SetupTimegrid();
     }
 
-    [GeneratedRegex(@"^Hour(\d{2}){2}_(\d{2}){2}$")]
+    [GeneratedRegex(@"^Hour(\d{2}){2}_(?:\d{2}){2}$")]
     private static partial Regex HourColumnRegex();
 
     public void SetupTimegrid()
@@ -131,12 +134,42 @@ public partial class MainWindow : Window
 
     public async Task UpdateTimetableAsync()
     {
-        using WebUntisClient client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None).ConfigureAwait(true);
-        List<Period> periods = (await client.GetOwnTimetableAsync(new DateTime(2023, 6, 12), new DateTime(2023, 6, 16)).ConfigureAwait(true)).ToList();
-
         // Remove old
-        foreach (UserControls.SchoolHour schoolHour in Timegrid.Children.OfType<UserControls.SchoolHour>().ToArray())
-            Timegrid.Children.Remove(schoolHour);
+        foreach (UIElement element in Timegrid.Children.Cast<UIElement>()
+            .Where(e => e.GetType() == typeof(UserControls.SchoolHour) || e.GetType() == typeof(Grid)).ToArray())
+            Timegrid.Children.Remove(element);
+
+        Period[] periods = Array.Empty<Period>();
+        try
+        {
+            using WebUntisClient client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None).ConfigureAwait(true);
+            periods = await client.GetOwnTimetableAsync(SelectedWeek, SelectedWeek.AddDays(6)).ConfigureAwait(true);
+        }
+        catch (WebUntisException ex)
+        {
+            ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Message, ex.Code.ToString());
+            Logger.LogError($"WebUntis exception: {ex.Message}; Code {ex.Code}");
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.Source == "System.Net.Http")
+                ViewModel.ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.NIC");
+            else
+            {
+                ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Message, ((int)(ex.StatusCode ?? 0)).ToString());
+                Logger.LogError($"Unexpected HttpRequestException was thrown: {ex.Message}; Code: {ex.StatusCode}");
+            }
+        }
+        catch (TaskCanceledException)
+        {
+            ViewModel.ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.RTL");
+            Logger.LogWarning($"The answer from the WebUntis server took too long.");
+        }
+        catch (Exception ex)
+        {
+            ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
+            Logger.LogError($"An occurred {ex.Source} was thrown; Message: {ex.Message}");
+        }
 
         List<int> addedHours = new();
 
@@ -217,6 +250,7 @@ public partial class MainWindow : Window
             }
 
             Period firstPeriod = sameHourLessons.MinBy(p => p.StartTime)!;
+            Period lastPeriod = sameHourLessons.MaxBy(p => p.StartTime)!;
             int targetRow = Timegrid.RowDefinitions.IndexOf(Timegrid.RowDefinitions.FirstOrDefault(r => r.Name == firstPeriod.Date.DayOfWeek.ToString()));
             int targetColumn = Timegrid.ColumnDefinitions.IndexOf(Timegrid.ColumnDefinitions.MinBy(c =>
             {
@@ -227,7 +261,15 @@ public partial class MainWindow : Window
                 DateTime hourStartTime = new(2020, 1, 1, int.Parse(nameMatch.Groups[1].Captures[0].Value), int.Parse(nameMatch.Groups[1].Captures[1].Value), 0);
                 return hourStartTime >= firstPeriod.StartTime ? hourStartTime - firstPeriod.StartTime : firstPeriod.StartTime - hourStartTime;
             }));
-            int targetColumnSpan = (columnCount - 1) * 2 + 1;
+            int targetColumnSpan = Timegrid.ColumnDefinitions.IndexOf(Timegrid.ColumnDefinitions.MinBy(c =>
+            {
+                Match nameMatch = HourColumnRegex().Match(c.Name);
+                if (!nameMatch.Success)
+                    return new TimeSpan(9999, 9, 9);
+
+                DateTime hourStartTime = new(2020, 1, 1, int.Parse(nameMatch.Groups[1].Captures[0].Value), int.Parse(nameMatch.Groups[1].Captures[1].Value), 0);
+                return hourStartTime >= lastPeriod.StartTime ? hourStartTime - lastPeriod.StartTime : lastPeriod.StartTime - hourStartTime;
+            })) - targetColumn + 1;
 
             _ = Timegrid.Children.Add(grid);
             Grid.SetRow(grid, targetRow);

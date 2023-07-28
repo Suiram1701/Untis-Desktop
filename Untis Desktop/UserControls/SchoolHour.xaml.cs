@@ -1,19 +1,11 @@
 ﻿using Data.Static;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Claims;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using UntisDesktop.ViewModels;
+using UntisDesktop.Extensions;
 using WebUntisAPI.Client.Models;
 
 namespace UntisDesktop.UserControls
@@ -25,13 +17,19 @@ namespace UntisDesktop.UserControls
     {
         public Period Lesson { get; }
 
-        public Color BackgroundColor
-        {
-            get
-            {
-                return StatusDataFile.s_DefaultInstance.StatusData.GetLessonTypeColor(Lesson.LessonType).BackColor;
-            }
-        }
+        public Color Border { get => Lesson.Code == WebUntisAPI.Client.Code.Cancelled ? Color.Red : Color.Transparent; }
+
+        public Color ForegroundColor { get => Lesson.GetForeColor(); }
+
+        public Color BackgroundColor { get => Lesson.GetBackColor(); }
+
+        public string Subjects { get => string.Join(", ", Lesson.GetSubjectStrings()); }
+
+        public string Rooms { get => string.Join(", ", Lesson.GetRoomStrings()); }
+
+        public string Teachers { get => string.Join(", ", Lesson.GetTeacherStrings()); }
+
+        public string Classes { get => string.Join(", ", Lesson.GetClassesString()); }
 
         public SchoolHour(Period period)
         {

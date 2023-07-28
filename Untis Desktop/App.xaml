@@ -1,13 +1,12 @@
 ﻿<Application x:Class="UntisDesktop.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Converter="clr-namespace:UntisDesktop.Converter"
-             xmlns:system="clr-namespace:System;assembly=netstandard">
+             xmlns:Converter="clr-namespace:UntisDesktop.Converter">
     <Application.Resources>
         <ResourceDictionary>
             <!-- Converters -->
             <Converter:BoolVisibilityConverter x:Key="BoolVisibilityConverter"/>
-            <Converter:ColorToColorConverter x:Key="DrawingCMediaCConverter"/>
+            <Converter:ColorToBrushConverter x:Key="DrawingBrushConverter"/>
 
             <!-- Other styles and templates -->
             <ResourceDictionary.MergedDictionaries>

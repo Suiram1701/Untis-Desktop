@@ -4,7 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" DataContext="{Binding RelativeSource={RelativeSource Self}}">
-    <Border CornerRadius="8" Background="Orange" Margin="1">
-        <Label Content="{Binding Lesson.Id}"/>
+    <Border CornerRadius="8" BorderBrush="{Binding Border, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}" BorderThickness="4" Background="{Binding BackgroundColor, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}" Padding="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{Binding Subjects, Mode=OneTime}" FontSize="11" TextWrapping="Wrap" Grid.Row="0" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Rooms, Mode=OneTime}" FontSize="11" TextWrapping="Wrap" Grid.Row="1" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Teachers, Mode=OneTime}" FontSize="11" TextWrapping="Wrap" Grid.Row="2" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Classes, Mode=OneTime}" FontSize="11" TextWrapping="Wrap" Grid.Row="3" HorizontalAlignment="Center"/>
+
+            <Line X1="0" Y1="0" X2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=ActualWidth}" Y2="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=ActualHeight}"
+                  Stroke="{Binding Border, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}" StrokeThickness="4" Grid.RowSpan="4" Margin="-10"/>
+        </Grid>
     </Border>
 </UserControl>

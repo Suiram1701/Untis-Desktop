@@ -73,10 +73,11 @@ public partial class App : Application
                 Task teacherTask = TeacherFile.UpdateFromClientAsync(client);
                 Task roomTask = RoomFile.UpdateFromClientAsync(client);
                 Task subjectTask = SubjectFile.UpdateFromClientAsync(client);
+                Task classesTask = ClassFile.UpdateFromClientAsync(client);
                 Task statusDataTask = StatusDataFile.UpdateFromClientAsync(client);
                 Task timegridTask = TimegridFile.UpdateFromClientAsync(client);
 
-                await Task.WhenAll(teacherTask, roomTask, subjectTask, statusDataTask, timegridTask);
+                await Task.WhenAll(teacherTask, roomTask, subjectTask, classesTask, statusDataTask, timegridTask);
             });
 
             new MainWindow().Show();

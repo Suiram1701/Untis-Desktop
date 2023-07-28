@@ -50,13 +50,16 @@ public class ProfileCollection : FileCollectionBase<ProfileCollection, ProfileFi
             SubjectFile.SetProfile(profile);
             Task subjectTask = SubjectFile.UpdateFromClientAsync(client);
 
+            ClassFile.SetProfile(profile);
+            Task classesTask = ClassFile.UpdateFromClientAsync(client);
+
             StatusDataFile.SetProfile(profile);
             Task statusDataTask = StatusDataFile.UpdateFromClientAsync(client);
 
             TimegridFile.SetProfile(profile);
             Task timegridTask = TimegridFile.UpdateFromClientAsync(client);
 
-            await Task.WhenAll(teacherTask, roomTask, subjectTask, statusDataTask, timegridTask);
+            await Task.WhenAll(teacherTask, roomTask, subjectTask, classesTask, statusDataTask, timegridTask);
         }
     }
 }
