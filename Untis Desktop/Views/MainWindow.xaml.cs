@@ -171,9 +171,12 @@ public partial class MainWindow : Window
             Logger.LogError($"An occurred {ex.Source} was thrown; Message: {ex.Message}");
         }
 
+        if (periods.Length == 0)
+            return;
+
         List<int> addedHours = new();
 
-        // Set nomal lessons (hours that contains only one lesson)
+        // Set normal lessons (hours that contains only one lesson)
         Period[] normalLessons = periods.Where(p => !periods.Any(ls =>
         {
             if (ls.Id == p.Id)
@@ -198,6 +201,9 @@ public partial class MainWindow : Window
                 return hourStartTime >= period.StartTime ? hourStartTime - period.StartTime : period.StartTime - hourStartTime;
             }));
             int targetColumnSpan = (sameLessons.Count() * 2) + 1;
+
+            if (targetRow == -1 || targetColumn == -1)
+                continue;
 
             int id = Timegrid.Children.Add(new UserControls.SchoolHour(period));
             Grid.SetRow(Timegrid.Children[id], targetRow);
@@ -270,6 +276,9 @@ public partial class MainWindow : Window
                 DateTime hourStartTime = new(2020, 1, 1, int.Parse(nameMatch.Groups[1].Captures[0].Value), int.Parse(nameMatch.Groups[1].Captures[1].Value), 0);
                 return hourStartTime >= lastPeriod.StartTime ? hourStartTime - lastPeriod.StartTime : lastPeriod.StartTime - hourStartTime;
             })) - targetColumn + 1;
+
+            if (targetRow == -1 || targetColumn == -1)
+                continue;
 
             _ = Timegrid.Children.Add(grid);
             Grid.SetRow(grid, targetRow);

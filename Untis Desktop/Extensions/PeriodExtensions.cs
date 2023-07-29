@@ -46,10 +46,6 @@ internal static class PeriodExtensions
             if ((subjectStr is null && subject.Id != 0) || (subject.OriginalId is not null && orgSubjectStr is null))
                 Logger.LogWarning($"Period load: period = {period.Id}{(subjectStr is null ? $", subject not found = {subject.Id}" : string.Empty)}{((orgSubjectStr is null && subject.OriginalId is not null) ? $", original subject not found = {subject.OriginalId}" : string.Empty)}");
 
-            // Id = 0 means the subject is cancelled
-            if (subject.Id == 0)
-                return (orgSubjectStr ?? "Err").StrikeThrough();
-
             string subjectString = subjectStr ?? "Err";
             if (subject.OriginalId is not null)
                 subjectString += $" ({orgSubjectStr ?? "Err"})";
@@ -68,10 +64,6 @@ internal static class PeriodExtensions
             if ((roomStr is null && room.Id != 0) || (room.OriginalId is not null && orgRoomsStr is null))
                 Logger.LogWarning($"Period load: period = {period.Id}{(roomStr is null ? $", room not found = {room.Id}" : string.Empty)}{((orgRoomsStr is null && room.OriginalId is not null) ? $", original room not found = {room.OriginalId}" : string.Empty)}");
 
-            // Id = 0 means the room is cancelled
-            if (room.Id == 0)
-                return (orgRoomsStr ?? "Err").StrikeThrough();
-
             string roomString = roomStr ?? "Err";
             if (room.OriginalId is not null)
                 roomString += $" ({orgRoomsStr ?? "Err"})";
@@ -89,10 +81,6 @@ internal static class PeriodExtensions
 
             if ((classStr is null && @class.Id != 0) || (@class.OriginalId is not null && orgClassStr is null))
                 Logger.LogWarning($"Period load: period = {period.Id}{(classStr is null ? $", class not found = {@class.Id}" : string.Empty)}{((orgClassStr is null && @class.OriginalId is not null) ? $"original class not found = {@class.OriginalId}" : string.Empty)}");
-
-            // Id = 0 means the class is cancelled
-            if (@class.Id == 0)
-                return (orgClassStr ?? "Err").StrikeThrough();
 
             string classString = classStr ?? "Err";
             if (@class.OriginalId is not null)
@@ -113,10 +101,6 @@ internal static class PeriodExtensions
 
             if ((teacherStr is null && teachers.Id != 0) || (teachers.OriginalId is not null && orgTeacherStr is null))
                 Logger.LogWarning($"Period load: period = {period.Id}{(teacherStr is null ? $", teacher not found = {teachers.Id}" : string.Empty)}{((orgTeacherStr is null && teachers.OriginalId is not null) ? $", original teacher not found = {teachers.OriginalId}" : string.Empty)}");
-
-            // Id = 0 means the teacher is cancelled
-            if (teachers.Id == 0)
-                return (orgTeacherStr ?? "Err").StrikeThrough();
 
             string teacherString = teacherStr == string.Empty || teacherStr is null ? "Err" : teacherStr;
             if (teachers.OriginalId is not null)
