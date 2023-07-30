@@ -29,11 +29,11 @@
                 <Button Template="{StaticResource ErrBoxBtn}" Click="ErrorBoxClose_Click" VerticalAlignment="Center"/>
             </StackPanel>
             <Border.RenderTransform>
-                <TranslateTransform x:Name="ErrorBoxTranslation" Y="0"/>
+                <TranslateTransform x:Name="ErrorBoxTranslation" Y="15"/>
             </Border.RenderTransform>
             <Border.Resources>
                 <Storyboard x:Key="PopUpAnimation">
-                    <DoubleAnimation Storyboard.TargetName="ErrorBoxTranslation" Storyboard.TargetProperty="Y" From="-328" To="-243" Duration="0:0:1">
+                    <DoubleAnimation Storyboard.TargetName="ErrorBoxTranslation" Storyboard.TargetProperty="Y" From="15" To="95" Duration="0:0:1">
                         <DoubleAnimation.EasingFunction>
                             <QuadraticEase EasingMode="EaseInOut"/>
                         </DoubleAnimation.EasingFunction>

@@ -20,7 +20,7 @@
                 <Button Template="{StaticResource ErrBoxBtn}" Click="ErrorBoxClose_Click" VerticalAlignment="Center"/>
             </StackPanel>
             <Border.RenderTransform>
-                <TranslateTransform x:Name="ErrorBoxTranslation" Y="-90"/>
+                <TranslateTransform x:Name="ErrorBoxTranslation" Y="-75"/>
             </Border.RenderTransform>
             <Border.Resources>
                 <Storyboard x:Key="PopUpAnimation">

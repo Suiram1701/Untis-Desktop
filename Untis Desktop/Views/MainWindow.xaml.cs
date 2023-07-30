@@ -3,24 +3,15 @@ using Data.Static;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Common;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using UntisDesktop.Extensions;
 using UntisDesktop.Localization;
 using UntisDesktop.UserControls;
@@ -49,8 +40,6 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
-        SelectedWeek = DateTime.Now;
-
         InitializeComponent();
         ViewModel.PropertyChanged += async (_, e) =>
         {
@@ -134,21 +123,35 @@ public partial class MainWindow : Window
 
     public async Task UpdateTimetableAsync()
     {
-        // Remove old
+        // Remove old elements
         foreach (UIElement element in Timegrid.Children.Cast<UIElement>()
-            .Where(e => e.GetType() == typeof(UserControls.SchoolHour) || e.GetType() == typeof(Grid)).ToArray())
+            .Where(e => e.GetType() == typeof(UserControls.SchoolHour) || e.GetType() == typeof(Grid) || e.GetType() == typeof(UserControls.Holidays)).ToArray())
             Timegrid.Children.Remove(element);
 
+        WebUntis.Holidays[] holidays = new WebUntis.Holidays[]
+        {
+            new() {Id = 0, Name = "WF", LongName = "Winterferien", StartDate = new(2023, 1, 30), EndDate = new(2023, 2, 3)},
+            new() {Id = 1, Name = "OSF", LongName = "Osterferien", StartDate = new(2023, 4, 3), EndDate = new(2023, 4, 14)},
+            new() {Id = 2, Name = "PF", LongName = "Pfingsten", StartDate = new(2023, 5, 19), EndDate = new(2023, 5, 19)},
+            new() {Id = 3, Name = "SF", LongName = "Sommerferien", StartDate = new(2023, 7, 13), EndDate = new(2023, 8, 26)},
+            new() {Id = 4, Name = "HF", LongName = "Herbstferien", StartDate = new(2023, 10, 23), EndDate = new(2023, 11, 4)},
+            new() {Id = 5, Name = "W", LongName = "Weinachten", StartDate = new(2023, 12, 23), EndDate = new(2024, 1, 5)}
+        };
         Period[] periods = Array.Empty<Period>();
         try
         {
             using WebUntisClient client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None).ConfigureAwait(true);
+
             periods = await client.GetOwnTimetableAsync(SelectedWeek, SelectedWeek.AddDays(6)).ConfigureAwait(true);
+            holidays = await client.GetHolidaysAsync().ConfigureAwait(true);
         }
         catch (WebUntisException ex)
         {
-            ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Message, ex.Code.ToString());
-            Logger.LogError($"WebUntis exception: {ex.Message}; Code {ex.Code}");
+            if (ex.Code != -7004)
+            {
+                ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Message, ex.Code.ToString());
+                Logger.LogError($"WebUntis exception: {ex.Message}; Code {ex.Code}");
+            }
         }
         catch (HttpRequestException ex)
         {
@@ -169,6 +172,29 @@ public partial class MainWindow : Window
         {
             ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
             Logger.LogError($"An occurred {ex.Source} was thrown; Message: {ex.Message}");
+        }
+
+        // Set holidays
+        foreach (WebUntis.Holidays holiday in holidays.Where(h => h.StartDate <= SelectedWeek && SelectedWeek.AddDays(6) <= h.EndDate))
+        {
+            for (DateTime date = SelectedWeek; date <= SelectedWeek.AddDays(6); date = date.AddDays(1))
+            {
+                if (holiday.StartDate <= date.Date && holiday.EndDate >= date.Date)
+                {
+                    int targetRow = Timegrid.RowDefinitions.IndexOf(Timegrid.RowDefinitions.FirstOrDefault(r => r.Name == date.DayOfWeek.ToString()));
+
+                    if (targetRow == -1)
+                        continue;
+
+                    int id = Timegrid.Children.Add(new UserControls.Holidays(holiday.LongName));
+                    Grid.SetRow(Timegrid.Children[id], targetRow);
+                    Grid.SetColumn(Timegrid.Children[id], 1);
+                    Grid.SetColumnSpan(Timegrid.Children[id], Timegrid.ColumnDefinitions.Count - 1);
+
+                    // Remove overlayed periods
+                    periods = periods.Where(p => date == p.Date).ToArray();
+                }
+            }
         }
 
         if (periods.Length == 0)

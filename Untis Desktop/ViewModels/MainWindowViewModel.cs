@@ -214,8 +214,9 @@ internal class MainWindowViewModel : ViewModelBase
             catch
             {
                 IsOffline = true;
-                return;
             }
+
+            MainWindow.SelectedWeek = DateTime.Now;
 
             Task loadTodayTask = LoadTodayTabAsync();
         });
