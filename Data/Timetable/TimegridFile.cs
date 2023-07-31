@@ -14,9 +14,9 @@ using WebUntisAPI.Client;
 using WebUntisAPI.Client.Exceptions;
 using WebUntisAPI.Client.Models;
 
-namespace Data.Static;
+namespace Data.Timetable;
 
-[File(@"\Untis Desktop\Static\{UserId}\")]
+[File(@"\Untis Desktop\Timetable\{UserId}\")]
 [XmlRoot(Namespace = "https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/TimegridSchema.xsd")]
 public class TimegridFile : FileBase<TimegridFile>
 {
@@ -99,9 +99,9 @@ public class TimegridFile : FileBase<TimegridFile>
     public static void SetProfile(ProfileFile profile)
     {
         int currentProfileId = profile.User?.Id ?? throw new InvalidDataException($"Static {nameof(TimegridFile)} constructor: {nameof(ProfileFile.User)} is null");
-        string filePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + $@"\Untis Desktop\Static\{currentProfileId}\Timegrid.xml";
+        string filePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + $@"\Untis Desktop\Timetable\{currentProfileId}\Timegrid.xml";
 
-        string fileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + $@"\Untis Desktop\Static\{currentProfileId}\";
+        string fileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + $@"\Untis Desktop\Timetable\{currentProfileId}\";
         if (!Directory.Exists(fileDirectory))
             Directory.CreateDirectory(fileDirectory);
 
@@ -120,7 +120,7 @@ public class TimegridFile : FileBase<TimegridFile>
              */
 
             //s_DefaultInstance.Timegrid = await client.GetTimegridAsync("reloadTimegrid", CancellationToken.None);
-            SchoolHour[] nomalDay = new SchoolHour[]
+            SchoolHour[] normalDay = new SchoolHour[]
             {
                 new() { Name = "1.", StartTime = new DateTime(2020, 1, 1, 7, 40, 0), EndTime = new DateTime(2020, 1, 1, 8, 25, 0) },
                 new() { Name = "2.", StartTime = new DateTime(2020, 1, 1, 8, 35, 0), EndTime = new DateTime(2020, 1, 1, 9, 20, 0) },
@@ -136,11 +136,11 @@ public class TimegridFile : FileBase<TimegridFile>
             {
                 SchoolDays = new Dictionary<Day, SchoolHour[]>(new List<KeyValuePair<Day, SchoolHour[]>>()
                 {
-                    new(Day.Monday, nomalDay),
-                    new(Day.Tuesday, nomalDay),
-                    new(Day.Wednesday, nomalDay),
-                    new(Day.Thursday, nomalDay),
-                    new(Day.Friday, nomalDay),
+                    new(Day.Monday, normalDay),
+                    new(Day.Tuesday, normalDay),
+                    new(Day.Wednesday, normalDay),
+                    new(Day.Thursday, normalDay),
+                    new(Day.Friday, normalDay),
                 })
             };
 

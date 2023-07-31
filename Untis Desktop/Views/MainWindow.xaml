@@ -21,6 +21,7 @@
             <ColumnDefinition Width="60"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        
         <!-- Error box -->
         <Border x:Name="ErrorBox" Panel.ZIndex="1" Background="#FFFB4D4D" BorderBrush="Red" BorderThickness="1" CornerRadius="10"
                 Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="20,10,20,10" Margin="0,-90,0,0">
@@ -265,6 +266,8 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
+                    
+                    <!-- Date selection -->
                     <StackPanel Orientation="Horizontal" Height="30" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left">
                         <Button Template="{StaticResource MenuBtn}" Command="{Binding OtherWeekBtnCommand, Mode=OneTime}" CommandParameter="-7">
                             <Image Source="/Assets/arrow_back_ios.png"/>
@@ -277,6 +280,24 @@
                         <Button Template="{StaticResource MenuBtn}" Command="{Binding OtherWeekBtnCommand, Mode=OneTime}" CommandParameter="7">
                             <Image Source="/Assets/arrow_forward_ios.png"/>
                         </Button>
+                        
+                        <!-- Loading view -->
+                        <Image x:Name="TimetableLoadingProgressImg" Source="/Assets/progress_activity.png" Margin="20,0,0,0">
+                            <Image.RenderTransform>
+                                <RotateTransform x:Name="Rotation" Angle="0"
+                                                 CenterY="{Binding ElementName=TimetableLoadingProgressImg, Path=ActualHeight, Converter={StaticResource MathConverter}, ConverterParameter=/2}"
+                                                 CenterX="{Binding ElementName=TimetableLoadingProgressImg, Path=ActualWidth, Converter={StaticResource MathConverter}, ConverterParameter=/2}"/>
+                            </Image.RenderTransform>
+                            <Image.Resources>
+                                <Storyboard x:Key="LoadingAnimation">
+                                    <DoubleAnimation Storyboard.TargetName="Rotation" Storyboard.TargetProperty="Angle" From="0" To="360" Duration="0:0:0.5" RepeatBehavior="Forever">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </Image.Resources>
+                        </Image>
                     </StackPanel>
                     <TextBlock Text="Schuljahr 23/24" FontSize="20" Grid.Row="0" HorizontalAlignment="Center" Margin="10"/>
                     <Grid x:Name="Timegrid" Grid.Row="1">

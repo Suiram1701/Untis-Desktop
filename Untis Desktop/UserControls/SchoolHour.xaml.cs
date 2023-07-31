@@ -35,8 +35,8 @@ namespace UntisDesktop.UserControls
             for (int i = 0; i < period.SubjectsIds.Length; i++)
             {
                 ObjectId subject = period.SubjectsIds[i];
-                string? subjectStr = SubjectFile.s_DefaultInstance.Subjects.FirstOrDefault(s => s.Id == subject.Id)?.LongName;
-                string? orgSubjectStr = SubjectFile.s_DefaultInstance.Subjects.FirstOrDefault(s => s.Id == subject.OriginalId)?.LongName;
+                string? subjectStr = SubjectFile.s_DefaultInstance[subject.Id]?.LongName;
+                string? orgSubjectStr = SubjectFile.s_DefaultInstance[subject.OriginalId ?? -1]?.LongName;
 
                 if ((subjectStr is null && subject.Id != 0) || (subject.OriginalId is not null && orgSubjectStr is null))     // One of the subjects was not found
                     Logger.LogWarning($"Period load: period = {period.Id}{(subjectStr is null ? $", subject not found = {subject.Id}" : string.Empty)}{((orgSubjectStr is null && subject.OriginalId is not null) ? $", original subject not found = {subject.OriginalId}" : string.Empty)}");
@@ -81,8 +81,8 @@ namespace UntisDesktop.UserControls
             for (int i = 0; i < period.TeacherIds.Length; i++)
             {
                 ObjectId teachers = period.TeacherIds[i];
-                Teacher? teacher = TeacherFile.s_DefaultInstance.Teachers.FirstOrDefault(s => s.Id == teachers.Id);
-                Teacher? orgTeacher = TeacherFile.s_DefaultInstance.Teachers.FirstOrDefault(s => s.Id == teachers.OriginalId);
+                Teacher? teacher = TeacherFile.s_DefaultInstance[teachers.Id];
+                Teacher? orgTeacher = TeacherFile.s_DefaultInstance[teachers.OriginalId ?? -1];
                 string? teacherStr = teacher?.Title + teacher?.LongName;
                 string? orgTeacherStr = orgTeacher?.Title + orgTeacher?.LongName;
 
@@ -129,8 +129,8 @@ namespace UntisDesktop.UserControls
             for (int i = 0; i < period.RoomIds.Length; i++)
             {
                 ObjectId room = period.RoomIds[i];
-                string? roomStr = RoomFile.s_DefaultInstance.Rooms.FirstOrDefault(s => s.Id == room.Id)?.LongName;
-                string? orgRoomStr = RoomFile.s_DefaultInstance.Rooms.FirstOrDefault(s => s.Id == room.OriginalId)?.LongName;
+                string? roomStr = RoomFile.s_DefaultInstance[room.Id]?.LongName;
+                string? orgRoomStr = RoomFile.s_DefaultInstance[room.OriginalId ?? -1]?.LongName;
 
                 if ((roomStr is null && room.Id != 0) || (room.OriginalId is not null && orgRoomStr is null))     // One of the subjects was not found
                     Logger.LogWarning($"Period load: period = {period.Id}{(roomStr is null ? $", room not found = {room.Id}" : string.Empty)}{((orgRoomStr is null && room.OriginalId is not null) ? $", original room not found = {room.OriginalId}" : string.Empty)}");
@@ -175,8 +175,8 @@ namespace UntisDesktop.UserControls
             for (int i = 0; i < period.ClassIds.Length; i++)
             {
                 ObjectId @class = period.ClassIds[i];
-                string? classStr = ClassFile.s_DefaultInstance.Classes.FirstOrDefault(s => s.Id == @class.Id)?.LongName;
-                string? orgClassStr = ClassFile.s_DefaultInstance.Classes.FirstOrDefault(s => s.Id == @class.OriginalId)?.LongName;
+                string? classStr = ClassFile.s_DefaultInstance[@class.Id]?.LongName;
+                string? orgClassStr = ClassFile.s_DefaultInstance[@class.OriginalId ?? -1]?.LongName;
 
                 if ((classStr is null && @class.Id != 0) || (@class.OriginalId is not null && orgClassStr is null))     // One of the subjects was not found
                     Logger.LogWarning($"Period load: period = {period.Id}{(classStr is null ? $", class not found = {@class.Id}" : string.Empty)}{((orgClassStr is null && @class.OriginalId is not null) ? $", original class not found = {@class.OriginalId}" : string.Empty)}");

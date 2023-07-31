@@ -39,6 +39,9 @@ public class ProfileFile : FileBase<ProfileFile>
     public Teacher? Teacher = null;
     public bool ShouldSerialize_teacher() => Teacher != null;
 
+    [XmlElement("options")]
+    public ProfileOptions Options { get; set; } = new();
+
     /// <summary>
     /// Login into the profile
     /// </summary>

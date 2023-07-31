@@ -1,4 +1,5 @@
 ﻿using Data.Static;
+using Data.Timetable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,7 +60,10 @@ public class ProfileCollection : FileCollectionBase<ProfileCollection, ProfileFi
             TimegridFile.SetProfile(profile);
             Task timegridTask = TimegridFile.UpdateFromClientAsync(client);
 
-            await Task.WhenAll(teacherTask, roomTask, subjectTask, classesTask, statusDataTask, timegridTask);
+            HolidaysFile.SetProfile(profile);
+            Task holidaysTask = HolidaysFile.UpdateFromClientAsync(client);
+
+            await Task.WhenAll(teacherTask, roomTask, subjectTask, classesTask, statusDataTask, timegridTask, holidaysTask);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Data.Profiles;
-using Data.Static;
+using Data.Timetable;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -32,6 +32,10 @@ public partial class MainWindow : Window
         {
             int offset = DayOfWeek.Sunday - value.DayOfWeek;
             s_SelectedWeek = value.AddDays(offset);
+
+            ProfileFile activeProfile = ProfileCollection.GetActiveProfile();
+            activeProfile.Options.SelectedWeek = s_SelectedWeek;
+            activeProfile.Update();
         }
     }
     private static DateTime s_SelectedWeek;
@@ -40,7 +44,10 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
+        SelectedWeek = ProfileCollection.GetActiveProfile().Options.SelectedWeek;
+
         InitializeComponent();
+
         ViewModel.PropertyChanged += async (_, e) =>
         {
             // Error box update
@@ -64,6 +71,7 @@ public partial class MainWindow : Window
         };
 
         SetupTimegrid();
+        _ = UpdateTimetableAsync();
     }
 
     [GeneratedRegex(@"^Hour(\d{2}){2}_(?:\d{2}){2}$")]
@@ -123,27 +131,20 @@ public partial class MainWindow : Window
 
     public async Task UpdateTimetableAsync()
     {
+        ToggleTimetableLoadingAnimation(true);
+
         // Remove old elements
         foreach (UIElement element in Timegrid.Children.Cast<UIElement>()
             .Where(e => e.GetType() == typeof(UserControls.SchoolHour) || e.GetType() == typeof(Grid) || e.GetType() == typeof(UserControls.Holidays)).ToArray())
             Timegrid.Children.Remove(element);
 
-        WebUntis.Holidays[] holidays = new WebUntis.Holidays[]
-        {
-            new() {Id = 0, Name = "WF", LongName = "Winterferien", StartDate = new(2023, 1, 30), EndDate = new(2023, 2, 3)},
-            new() {Id = 1, Name = "OSF", LongName = "Osterferien", StartDate = new(2023, 4, 3), EndDate = new(2023, 4, 14)},
-            new() {Id = 2, Name = "PF", LongName = "Pfingsten", StartDate = new(2023, 5, 19), EndDate = new(2023, 5, 19)},
-            new() {Id = 3, Name = "SF", LongName = "Sommerferien", StartDate = new(2023, 7, 13), EndDate = new(2023, 8, 26)},
-            new() {Id = 4, Name = "HF", LongName = "Herbstferien", StartDate = new(2023, 10, 23), EndDate = new(2023, 11, 4)},
-            new() {Id = 5, Name = "W", LongName = "Weinachten", StartDate = new(2023, 12, 23), EndDate = new(2024, 1, 5)}
-        };
+        WebUntis.Holidays[] holidays = HolidaysFile.s_DefaultInstance.Holidays.ToArray();
         Period[] periods = Array.Empty<Period>();
         try
         {
             using WebUntisClient client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None).ConfigureAwait(true);
 
             periods = await client.GetOwnTimetableAsync(SelectedWeek, SelectedWeek.AddDays(6)).ConfigureAwait(true);
-            holidays = await client.GetHolidaysAsync().ConfigureAwait(true);
         }
         catch (WebUntisException ex)
         {
@@ -196,9 +197,6 @@ public partial class MainWindow : Window
                 }
             }
         }
-
-        if (periods.Length == 0)
-            return;
 
         List<int> addedHours = new();
 
@@ -315,6 +313,8 @@ public partial class MainWindow : Window
                 addedHours.Add(p.Id);
             addedHours.Add(period.Id);
         }
+
+        ToggleTimetableLoadingAnimation(false);
     }
 
     private void ErrorBoxClose_Click(object sender, RoutedEventArgs e)
@@ -362,5 +362,21 @@ public partial class MainWindow : Window
         ScrollViewer scrollViewer = (ScrollViewer)sender;
         scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
         e.Handled = true;
+    }
+
+    private void ToggleTimetableLoadingAnimation(bool turnOn)
+    {
+        Storyboard animation = (Storyboard)TimetableLoadingProgressImg.FindResource("LoadingAnimation");
+
+        if (turnOn)
+        {
+            TimetableLoadingProgressImg.Visibility = Visibility.Visible;
+            animation.Begin();
+        }
+        else
+        {
+            TimetableLoadingProgressImg.Visibility = Visibility.Collapsed;
+            animation.Stop();
+        }
     }
 }

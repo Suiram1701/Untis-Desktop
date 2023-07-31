@@ -7,6 +7,7 @@
             <!-- Converters -->
             <Converter:BoolVisibilityConverter x:Key="BoolVisibilityConverter"/>
             <Converter:ColorToBrushConverter x:Key="DrawingBrushConverter"/>
+            <Converter:MathConverter x:Key="MathConverter"/>
 
             <!-- Other styles and templates -->
             <ResourceDictionary.MergedDictionaries>

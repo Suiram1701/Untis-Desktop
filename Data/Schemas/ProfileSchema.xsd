@@ -60,6 +60,15 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
+				<xs:element name="options">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="selectedWeek" type="xs:dateTime"/>
+							<xs:element name="pastWeeks" type="xs:unsignedInt"/>
+							<xs:element name="preloadWeeks" type="xs:unsignedInt"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
 			</xs:sequence>
 			<xs:attribute name="isActive" type="xs:boolean"/>
 		</xs:complexType>

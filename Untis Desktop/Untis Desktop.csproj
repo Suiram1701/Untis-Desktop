@@ -17,6 +17,7 @@
     <None Remove="Assets\menu.png" />
     <None Remove="Assets\notifications_off.png" />
     <None Remove="Assets\person.png" />
+    <None Remove="Assets\progress_activity.png" />
     <None Remove="Assets\refresh.png" />
     <None Remove="Assets\search_off.png" />
     <None Remove="Assets\settings.png" />
@@ -49,6 +50,7 @@
     <Resource Include="Assets\menu.png" />
     <Resource Include="Assets\notifications_off.png" />
     <Resource Include="Assets\person.png" />
+    <Resource Include="Assets\progress_activity.png" />
     <Resource Include="Assets\refresh.png" />
     <Resource Include="Assets\search_off.png" />
     <Resource Include="Assets\settings.png" />

@@ -216,8 +216,6 @@ internal class MainWindowViewModel : ViewModelBase
                 IsOffline = true;
             }
 
-            MainWindow.SelectedWeek = DateTime.Now;
-
             Task loadTodayTask = LoadTodayTabAsync();
         });
     }

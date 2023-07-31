@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows;
 using UntisDesktop.Views;
 using WebUntisAPI.Client;
+using Data.Timetable;
 
 namespace UntisDesktop;
 
@@ -66,19 +67,7 @@ public partial class App : Application
         else
         {
             // Update static data
-            Task.Run(async () =>
-            {
-                using WebUntisClient client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None);
-
-                Task teacherTask = TeacherFile.UpdateFromClientAsync(client);
-                Task roomTask = RoomFile.UpdateFromClientAsync(client);
-                Task subjectTask = SubjectFile.UpdateFromClientAsync(client);
-                Task classesTask = ClassFile.UpdateFromClientAsync(client);
-                Task statusDataTask = StatusDataFile.UpdateFromClientAsync(client);
-                Task timegridTask = TimegridFile.UpdateFromClientAsync(client);
-
-                await Task.WhenAll(teacherTask, roomTask, subjectTask, classesTask, statusDataTask, timegridTask);
-            });
+            Task.Run(async () => await ProfileCollection.SetActiveProfileAsync(ProfileCollection.GetActiveProfile()));
 
             new MainWindow().Show();
         }
