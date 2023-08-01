@@ -94,10 +94,7 @@ internal class MainWindowViewModel : ViewModelBase
         catch (HttpRequestException ex)
         {
             if (ex.Source == "System.Net.Http" && ex.StatusCode is null)
-            {
-                ErrorBoxContent = LangHelper.GetString("App.Err.NNC");
                 IsOffline = true;
-            }
             else
                 ErrorBoxContent = LangHelper.GetString("App.Err.NERR", ex.Message, ((int?)ex.StatusCode)?.ToString() ?? "0");
             Logger.LogWarning($"Today tab loading: {nameof(HttpRequestException)} Code: {ex.StatusCode}, Message: {ex.Message}");

@@ -142,37 +142,35 @@ public partial class MainWindow : Window
         Period[] periods = Array.Empty<Period>();
         try
         {
-            using WebUntisClient client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None).ConfigureAwait(true);
-
-            periods = await client.GetOwnTimetableAsync(SelectedWeek, SelectedWeek.AddDays(6)).ConfigureAwait(true);
+            if (!ViewModel.IsOffline)
+                periods = await PeriodFile.LoadWeekAsync(SelectedWeek);
+            else
+                periods = PeriodFile.s_DefaultInstance[SelectedWeek].ToArray();
         }
         catch (WebUntisException ex)
         {
-            if (ex.Code != -7004)
-            {
-                ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Message, ex.Code.ToString());
-                Logger.LogError($"WebUntis exception: {ex.Message}; Code {ex.Code}");
-            }
+            ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Message, ex.Code.ToString());
+            Logger.LogError($"WebUntis exception: {ex.Message}; Code {ex.Code}");
         }
         catch (HttpRequestException ex)
         {
-            if (ex.Source == "System.Net.Http")
-                ViewModel.ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.NIC");
+            if (ex.Source == "System.Net.Http" && ex.StatusCode is null)
+                ViewModel.IsOffline = true;
             else
             {
                 ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Message, ((int)(ex.StatusCode ?? 0)).ToString());
-                Logger.LogError($"Unexpected HttpRequestException was thrown: {ex.Message}; Code: {ex.StatusCode}");
+                Logger.LogError($"Timetable loading: Unexpected HttpRequestException was thrown: {ex.Message}; Code: {ex.StatusCode}");
             }
         }
         catch (TaskCanceledException)
         {
             ViewModel.ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.RTL");
-            Logger.LogWarning($"The answer from the WebUntis server took too long.");
+            Logger.LogWarning($"Timetable loading: The answer from the WebUntis server took too long.");
         }
         catch (Exception ex)
         {
             ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
-            Logger.LogError($"An occurred {ex.Source} was thrown; Message: {ex.Message}");
+            Logger.LogError($"Timetable loading: An occurred {ex.Source} was thrown; Message: {ex.Message}");
         }
 
         // Set holidays
@@ -213,7 +211,7 @@ public partial class MainWindow : Window
                 continue;
 
             // Same lessons that follow to this lesson
-            IEnumerable<Period> sameLessons = normalLessons.Where(p => p.Id != period.Id && periods.Any(ls => ls.StartTime >= p.StartTime || ls.EndTime <= p.EndTime) && p.IsSameLesson(period));
+            IEnumerable<Period> sameLessons = normalLessons.Where(p => p.Id != period.Id && p.Date == period.Date && periods.Any(ls => ls.StartTime >= p.StartTime || ls.EndTime <= p.EndTime) && p.IsSameLesson(period));
             int targetRow = Timegrid.RowDefinitions.IndexOf(Timegrid.RowDefinitions.FirstOrDefault(r => r.Name == period.Date.DayOfWeek.ToString()));
             int targetColumn = Timegrid.ColumnDefinitions.IndexOf(Timegrid.ColumnDefinitions.MinBy(c =>
             {

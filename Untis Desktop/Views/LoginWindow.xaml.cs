@@ -34,7 +34,6 @@ public partial class LoginWindow : Window
         {
             Logger.LogWarning("No internet connection available");
             MessageBox.Show(LangHelper.GetString("LoginWindow.Err.NIC"), LangHelper.GetString("LoginWindow.Title"), MessageBoxButton.OK, MessageBoxImage.Warning);
-            Close();
             Application.Current.Shutdown(0);
         }
 

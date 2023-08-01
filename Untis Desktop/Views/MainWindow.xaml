@@ -281,7 +281,7 @@
                             <Image Source="/Assets/arrow_forward_ios.png"/>
                         </Button>
                         
-                        <!-- Loading view -->
+                        <!-- Loading / reloading view -->
                         <Image x:Name="TimetableLoadingProgressImg" Source="/Assets/progress_activity.png" Margin="20,0,0,0">
                             <Image.RenderTransform>
                                 <RotateTransform x:Name="Rotation" Angle="0"

@@ -1,8 +1,5 @@
 ﻿using Data.Static;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Security.Claims;
 using System.Windows;
 using System.Windows.Controls;
 using UntisDesktop.Extensions;

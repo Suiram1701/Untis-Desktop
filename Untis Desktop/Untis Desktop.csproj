@@ -29,10 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Suiram1.WebUntisAPI.Client" Version="1.1.0" />
   </ItemGroup>
 

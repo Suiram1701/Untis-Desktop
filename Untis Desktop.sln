@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Untis Desktop", "Untis Desk
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Update", "Update\Update.csproj", "{4F47DEF5-732B-4A91-AE5A-D08E93071393}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8686C99F-2AF5-4F13-B682-C5DA6A6C3D5D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{0619766B-35F0-4257-91FB-D91ABB60F2E1}"
 EndProject
 Global

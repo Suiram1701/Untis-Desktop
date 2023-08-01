@@ -60,10 +60,13 @@ public class ProfileCollection : FileCollectionBase<ProfileCollection, ProfileFi
             TimegridFile.SetProfile(profile);
             Task timegridTask = TimegridFile.UpdateFromClientAsync(client);
 
+            PeriodFile.SetProfile(profile);
+            Task periodsTask = PeriodFile.UpdateFromClientAsync(client);
+
             HolidaysFile.SetProfile(profile);
             Task holidaysTask = HolidaysFile.UpdateFromClientAsync(client);
 
-            await Task.WhenAll(teacherTask, roomTask, subjectTask, classesTask, statusDataTask, timegridTask, holidaysTask);
+            await Task.WhenAll(teacherTask, roomTask, subjectTask, classesTask, statusDataTask, timegridTask, periodsTask, holidaysTask);
         }
     }
 }

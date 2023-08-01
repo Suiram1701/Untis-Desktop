@@ -76,10 +76,10 @@ public class SubjectFile : FileBase<SubjectFile>
                     Active = bool.Parse(xmlReader.GetAttribute("Active") ?? string.Empty)
                 };
 
-                xmlReader.ReadToFollowing("name");
+                xmlReader.GoToNextElement("name");
                 subject.Name = xmlReader.ReadElementContentAsString();
 
-                xmlReader.ReadToFollowing("longName");
+                xmlReader.GoToNextElement("longName");
                 subject.LongName = xmlReader.ReadElementContentAsString();
 
                 subject.BackColor = new Color().ReadFromXml("foreColor", xmlReader);

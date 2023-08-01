@@ -21,10 +21,13 @@ internal static class ColorExtensions
     {
         writer.WriteStartElement(elementName);
 
-        writer.WriteAttributeString("A", color.A.ToString());
-        writer.WriteAttributeString("R", color.R.ToString());
-        writer.WriteAttributeString("G", color.G.ToString());
-        writer.WriteAttributeString("B", color.B.ToString());
+        if (!color.IsEmpty)
+        {
+            writer.WriteAttributeString("A", color.A.ToString());
+            writer.WriteAttributeString("R", color.R.ToString());
+            writer.WriteAttributeString("G", color.G.ToString());
+            writer.WriteAttributeString("B", color.B.ToString());
+        }
 
         writer.WriteEndElement();
     }
@@ -38,7 +41,11 @@ internal static class ColorExtensions
     /// <returns>The color</returns>
     public static Color ReadFromXml(this Color _, string elementName, XmlReader xmlReader)
     {
-        xmlReader.ReadToFollowing(elementName);
+        xmlReader.GoToNextElement(elementName);
+
+        if (xmlReader.AttributeCount == 0)
+            return Color.Empty;
+
         return Color.FromArgb(
             int.Parse(xmlReader.GetAttribute("A") ?? "0"),
             int.Parse(xmlReader.GetAttribute("R") ?? "0"),

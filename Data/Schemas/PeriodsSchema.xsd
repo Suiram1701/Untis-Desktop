@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="PeriodsSchema"
+    elementFormDefault="qualified"
+	targetNamespace="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/PeriodsSchema.xsd"
+    xmlns="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/PeriodsSchema.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:simpleType name="EmptyString">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LessonTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Ls"/>
+			<xs:enumeration value="Oh"/>
+			<xs:enumeration value="Sb"/>
+			<xs:enumeration value="Bs"/>
+			<xs:enumeration value="Ex"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Codes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="None"/>
+			<xs:enumeration value="Irregular"/>
+			<xs:enumeration value="Cancelled"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ObjectId">
+		<xs:attribute name="id" type="xs:int"/>
+		<xs:attribute name="orgId">
+			<xs:simpleType>
+				<xs:union memberTypes="xs:int EmptyString"/>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="Period">
+		<xs:sequence>
+			<xs:element name="date" type="xs:dateTime"/>
+			<xs:element name="startTime" type="xs:dateTime"/>
+			<xs:element name="endTime" type="xs:dateTime"/>
+			<xs:element name="classId" type="ObjectId" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="teacherId" type="ObjectId" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="subjectId" type="ObjectId" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="roomId" type="ObjectId" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="lessonType" type="LessonTypes"/>
+			<xs:element name="code" type="Codes"/>
+			<xs:element name="lessonNumber" type="xs:int"/>
+			<xs:element name="lessonText" type="xs:string"/>
+			<xs:element name="statFlags" type="xs:string"/>
+			<xs:element name="studentGroup" type="xs:string"/>
+			<xs:element name="substitutionText" type="xs:string"/>
+			<xs:element name="info" type="xs:string"/>
+			<xs:element name="activityType" type="xs:string"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:int"/>
+	</xs:complexType>
+
+	<xs:element name="PeriodFile">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="period" type="Period" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
