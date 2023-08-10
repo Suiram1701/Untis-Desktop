@@ -211,4 +211,43 @@
   <data name="MainWindow.Inf.Saturday" xml:space="preserve">
     <value>Samstag</value>
   </data>
+  <data name="PeriodWindow.Cancelled" xml:space="preserve">
+    <value>Entfällt</value>
+  </data>
+  <data name="PeriodWindow.Irregular" xml:space="preserve">
+    <value>Zusätzliche Unterrichtsstunde</value>
+  </data>
+  <data name="PeriodWindow.Subject" xml:space="preserve">
+    <value>Fach</value>
+  </data>
+  <data name="PeriodWindow.Subjects" xml:space="preserve">
+    <value>Fächer</value>
+  </data>
+  <data name="PeriodWindow.Room" xml:space="preserve">
+    <value>Raum</value>
+  </data>
+  <data name="PeriodWindow.Rooms" xml:space="preserve">
+    <value>Räume</value>
+  </data>
+  <data name="PeriodWindow.Teacher" xml:space="preserve">
+    <value>Lehrer</value>
+  </data>
+  <data name="PeriodWindow.Class" xml:space="preserve">
+    <value>Klasse</value>
+  </data>
+  <data name="PeriodWindow.Classes" xml:space="preserve">
+    <value>Klassen</value>
+  </data>
+  <data name="PeriodWindow.Inf" xml:space="preserve">
+    <value>Zusätzliche Informationen</value>
+  </data>
+  <data name="PeriodWindow.SubsText" xml:space="preserve">
+    <value>Vertretungstext</value>
+  </data>
+  <data name="PeriodWindow.Type" xml:space="preserve">
+    <value>Aktivitätstyp</value>
+  </data>
+  <data name="PeriodWindow.LsText" xml:space="preserve">
+    <value>Informationen zur Stunde</value>
+  </data>
 </root>

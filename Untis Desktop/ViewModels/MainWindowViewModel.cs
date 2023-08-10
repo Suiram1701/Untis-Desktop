@@ -47,6 +47,7 @@ internal class MainWindowViewModel : ViewModelBase
             {
                 _isOffline = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged(nameof(ViewTimetableReloadBtn));
             }
         }
     }
@@ -155,6 +156,22 @@ internal class MainWindowViewModel : ViewModelBase
 
     }
     public DateTime NextWeek { get => SelectedWeek.AddDays(6); }
+
+    public bool ReloadTimetable { get; set; }
+
+    public bool IsTimetableLoading
+    {
+        get => _isTimetableLoading;
+        set
+        {
+            _isTimetableLoading = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(ViewTimetableReloadBtn));
+        }
+    }
+    private bool _isTimetableLoading = false;
+
+    public bool ViewTimetableReloadBtn { get => !IsOffline && !IsTimetableLoading; }
     #endregion
 
     public MainWindowViewModel()
@@ -197,6 +214,9 @@ internal class MainWindowViewModel : ViewModelBase
         {
             if (int.TryParse(parameter as string, out int result))
             {
+                if (result == 0)
+                    ReloadTimetable = true;
+                
                 SelectedWeek = SelectedWeek.AddDays(result);
             }
         });

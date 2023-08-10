@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Views="clr-namespace:UntisDesktop.Views"
         xmlns:ViewModels="clr-namespace:UntisDesktop.ViewModels"
         xmlns:Localization="clr-namespace:UntisDesktop.Localization"
         mc:Ignorable="d"
@@ -280,9 +279,9 @@
                         <Button Template="{StaticResource MenuBtn}" Command="{Binding OtherWeekBtnCommand, Mode=OneTime}" CommandParameter="7">
                             <Image Source="/Assets/arrow_forward_ios.png"/>
                         </Button>
-                        
-                        <!-- Loading / reloading view -->
-                        <Image x:Name="TimetableLoadingProgressImg" Source="/Assets/progress_activity.png" Margin="20,0,0,0">
+
+                        <!-- Loading view -->
+                        <Image x:Name="TimetableLoadingProgressImg" Source="/Assets/progress_activity.png" Visibility="Collapsed" Margin="20,0,0,0">
                             <Image.RenderTransform>
                                 <RotateTransform x:Name="Rotation" Angle="0"
                                                  CenterY="{Binding ElementName=TimetableLoadingProgressImg, Path=ActualHeight, Converter={StaticResource MathConverter}, ConverterParameter=/2}"
@@ -298,6 +297,12 @@
                                 </Storyboard>
                             </Image.Resources>
                         </Image>
+
+                        <!-- Reloading btn -->
+                        <Button Visibility="{Binding ViewTimetableReloadBtn, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" ToolTip="{Localization:Localize MainWindow.G.Reload}" Command="{Binding OtherWeekBtnCommand, Mode=OneTime}" CommandParameter="0"
+                                Margin="20,0,0,0" Template="{StaticResource MenuBtn}">
+                            <Image Source="/Assets/refresh.png" Margin="-2"/>
+                        </Button>
                     </StackPanel>
                     <TextBlock Text="Schuljahr 23/24" FontSize="20" Grid.Row="0" HorizontalAlignment="Center" Margin="10"/>
                     <Grid x:Name="Timegrid" Grid.Row="1">

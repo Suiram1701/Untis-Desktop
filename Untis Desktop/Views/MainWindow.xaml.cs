@@ -3,6 +3,7 @@ using Data.Timetable;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -131,6 +132,7 @@ public partial class MainWindow : Window
 
     public async Task UpdateTimetableAsync()
     {
+        ViewModel.IsTimetableLoading = true;
         ToggleTimetableLoadingAnimation(true);
 
         // Remove old elements
@@ -143,7 +145,7 @@ public partial class MainWindow : Window
         try
         {
             if (!ViewModel.IsOffline)
-                periods = await PeriodFile.LoadWeekAsync(SelectedWeek);
+                periods = await PeriodFile.LoadWeekAsync(SelectedWeek, ViewModel.ReloadTimetable).ConfigureAwait(true);
             else
                 periods = PeriodFile.s_DefaultInstance[SelectedWeek].ToArray();
         }
@@ -227,6 +229,9 @@ public partial class MainWindow : Window
             if (targetRow == -1 || targetColumn == -1)
                 continue;
 
+            period.StartTime = sameLessons.Append(period).Min(p => p.StartTime);
+            period.EndTime = sameLessons.Append(period).Max(p => p.EndTime);
+
             int id = Timegrid.Children.Add(new UserControls.SchoolHour(period));
             Grid.SetRow(Timegrid.Children[id], targetRow);
             Grid.SetColumn(Timegrid.Children[id], targetColumn);
@@ -238,13 +243,13 @@ public partial class MainWindow : Window
         }
 
         // Set multi lessons (hours that contains more than one lesson)
-        Period[] mutliLessons = periods.Where(p => !normalLessons.Contains(p)).ToArray();
-        foreach (Period period in mutliLessons)
+        Period[] multipleLessons = periods.Where(p => !normalLessons.Contains(p)).ToArray();
+        foreach (Period period in multipleLessons)
         {
             if (addedHours.Contains(period.Id))
                 continue;
 
-            Period[] sameHourLessons = mutliLessons.Where(p => p.Date == period.Date && p.StartTime <= period.EndTime && p.EndTime >= period.StartTime).ToArray();
+            Period[] sameHourLessons = multipleLessons.Where(p => p.Date == period.Date && p.StartTime <= period.EndTime && p.EndTime >= period.StartTime).ToArray();
             Period[] uniqueLessons = sameHourLessons.Distinct(new PeriodExtensions.PeriodEqualityComparer()).ToArray();
 
             // Calc the needed rows and columns
@@ -262,14 +267,16 @@ public partial class MainWindow : Window
             int currentColumn = 0;
             foreach (Period lesson in uniqueLessons.OrderByDescending(p => sameHourLessons.Count(ls => ls.IsSameLesson(p))))
             {
-                int columnSpan = sameHourLessons.Count(p => p.IsSameLesson(lesson));
-                
+                Period[] sameLessons = sameHourLessons.Where(p => p.IsSameLesson(lesson)).ToArray();
+                lesson.StartTime = sameLessons.Min(p => p.StartTime);
+                lesson.EndTime = sameLessons.Max(p => p.EndTime);
+
                 int id = grid.Children.Add(new UserControls.SchoolHour(lesson));
                 Grid.SetRow(grid.Children[id], currentRow);
                 Grid.SetColumn(grid.Children[id], currentColumn);
-                Grid.SetColumnSpan(grid.Children[id], columnSpan);
+                Grid.SetColumnSpan(grid.Children[id], sameLessons.Length);
 
-                currentColumn += columnSpan;
+                currentColumn += sameLessons.Length;
                 if (currentColumn >= columnCount)
                 {
                     currentColumn = 0;
@@ -312,6 +319,7 @@ public partial class MainWindow : Window
             addedHours.Add(period.Id);
         }
 
+        ViewModel.ReloadTimetable = false;
         ToggleTimetableLoadingAnimation(false);
     }
 
@@ -368,13 +376,21 @@ public partial class MainWindow : Window
 
         if (turnOn)
         {
+            ViewModel.IsTimetableLoading = true;
             TimetableLoadingProgressImg.Visibility = Visibility.Visible;
             animation.Begin();
         }
         else
         {
+            ViewModel.IsTimetableLoading = false;
             TimetableLoadingProgressImg.Visibility = Visibility.Collapsed;
             animation.Stop();
         }
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        base.OnClosing(e);
+        Application.Current.Shutdown(0);
     }
 }

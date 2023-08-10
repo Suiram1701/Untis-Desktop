@@ -1,0 +1,163 @@
+﻿<Window x:Class="UntisDesktop.Views.PeriodWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Views="clr-namespace:UntisDesktop.Views"
+        xmlns:Localization="clr-namespace:UntisDesktop.Localization"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="{Binding WindowTitle, Mode=OneTime}"
+        MinHeight="350" MinWidth="465">
+    <Window.Resources>
+        <Style x:Key="InformationStyle" TargetType="{x:Type Border}">
+            <Setter Property="CornerRadius" Value="7"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="20,1,20,1"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- >Irregular lessons -->
+        <Border Background="{Binding Source={x:Static Views:PeriodWindow.IrregularColor}, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}"
+                Visibility="{Binding IsIrregular, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
+                CornerRadius="10" Grid.Row="0" Grid.ColumnSpan="2" Margin="5" Padding="20,5,20,5" Height="auto" Width="auto">
+            <TextBlock Text="{Localization:Localize PeriodWindow.Irregular}" FontSize="14" HorizontalAlignment="Center"/>
+        </Border>
+
+        <!-- Cancelled lessons -->
+        <Border Background="{Binding Source={x:Static Views:PeriodWindow.CancelledColor}, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}"
+                Visibility="{Binding IsCancelled, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
+                CornerRadius="10" Grid.Row="0" Grid.ColumnSpan="2" Margin="5" Padding="20,5,20,5" Height="auto" Width="auto">
+            <TextBlock Text="{Localization:Localize PeriodWindow.Cancelled}" FontSize="14" HorizontalAlignment="Center"/>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Subjects -->
+                <Border Visibility="{Binding HasSubjects, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
+                Grid.Row="0" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding SubjectsLabel, Mode=OneTime}" FontSize="16" FontWeight="Medium" Grid.Row="0"/>
+                        <TextBlock Text="{Binding SubjectsString, Mode=OneTime}" FontSize="20" Grid.Row="1"/>
+                    </Grid>
+                </Border>
+
+                <!-- Teachers -->
+                <Border Visibility="{Binding HasTeachers, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
+                Grid.Row="1" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Localization:Localize PeriodWindow.Teacher}" FontSize="16" FontWeight="Medium" Grid.Row="0"/>
+                        <TextBlock Text="{Binding TeachersString, Mode=OneTime}" FontSize="20" Grid.Row="1"/>
+                    </Grid>
+                </Border>
+
+                <!-- Rooms -->
+                <Border Visibility="{Binding HasRooms, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
+                Grid.Row="2" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding RoomsLabel, Mode=OneTime}" FontSize="16" FontWeight="Medium" Grid.Row="0"/>
+                        <TextBlock Text="{Binding RoomsString, Mode=OneTime}" FontSize="20" Grid.Row="1"/>
+                    </Grid>
+                </Border>
+
+                <!-- Classes -->
+                <Border Visibility="{Binding HasClasses, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
+                Grid.Row="3" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding ClassesLabel, Mode=OneTime}" FontSize="16" FontWeight="Medium" Grid.Row="0"/>
+                        <TextBlock Text="{Binding ClassesString, Mode=OneTime}" FontSize="20" Grid.Row="1"/>
+                    </Grid>
+                </Border>
+
+                <!-- Lesson informations -->
+                <Border Visibility="{Binding HasLessonText, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
+                Grid.Row="5" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Localization:Localize PeriodWindow.LsText}" FontSize="16" FontWeight="Medium" Grid.Row="0"/>
+                        <TextBlock Text="{Binding Period.LessonText, Mode=OneTime}" FontSize="20" Grid.Row="1"/>
+                    </Grid>
+                </Border>
+
+                <!-- Additional informations -->
+                <Border Visibility="{Binding HasInfo, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
+                Grid.Row="4" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Localization:Localize PeriodWindow.Inf}" FontSize="16" FontWeight="Medium" Grid.Row="0"/>
+                        <TextBlock Text="{Binding Period.Info, Mode=OneTime}" FontSize="20" Grid.Row="1"/>
+                    </Grid>
+                </Border>
+
+                <!-- Substitution text -->
+                <Border Visibility="{Binding HasSubstitutionInfo, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
+                Grid.Row="6" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Localization:Localize PeriodWindow.SubsText}" FontSize="16" FontWeight="Medium" Grid.Row="0"/>
+                        <TextBlock Text="{Binding Period.SubstitutionText, Mode=OneTime}" FontSize="20" Grid.Row="1"/>
+                    </Grid>
+                </Border>
+
+                <!-- Activity type -->
+                <Border Visibility="{Binding HasActivityType, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
+                Grid.Row="7" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Localization:Localize PeriodWindow.Type}" FontSize="16" FontWeight="Medium" Grid.Row="0"/>
+                        <TextBlock Text="{Binding Period.ActivityType, Mode=OneTime}" FontSize="20" Grid.Row="1"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Window>

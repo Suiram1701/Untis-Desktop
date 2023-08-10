@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" DataContext="{Binding RelativeSource={RelativeSource Self}}" Margin="2">
+             mc:Ignorable="d"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             Margin="2">
     <Border Name="Border" BorderBrush="{Binding BorderColor, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}" BorderThickness="4" Background="{Binding BackgroundColor, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}"
             CornerRadius="10">
         <Grid>

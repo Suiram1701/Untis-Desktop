@@ -211,4 +211,43 @@
   <data name="MainWindow.Inf.Wednesday" xml:space="preserve">
     <value>Onsdag</value>
   </data>
+  <data name="PeriodWindow.Cancelled" xml:space="preserve">
+    <value>Inställt</value>
+  </data>
+  <data name="PeriodWindow.Irregular" xml:space="preserve">
+    <value>Ytterligare lektion</value>
+  </data>
+  <data name="PeriodWindow.Class" xml:space="preserve">
+    <value>Klass</value>
+  </data>
+  <data name="PeriodWindow.Classes" xml:space="preserve">
+    <value>klasser</value>
+  </data>
+  <data name="PeriodWindow.Room" xml:space="preserve">
+    <value>Rum</value>
+  </data>
+  <data name="PeriodWindow.Rooms" xml:space="preserve">
+    <value>Utrymmen</value>
+  </data>
+  <data name="PeriodWindow.Subject" xml:space="preserve">
+    <value>Ämne</value>
+  </data>
+  <data name="PeriodWindow.Subjects" xml:space="preserve">
+    <value>Ämnen</value>
+  </data>
+  <data name="PeriodWindow.Teacher" xml:space="preserve">
+    <value>Lärare</value>
+  </data>
+  <data name="PeriodWindow.SubsText" xml:space="preserve">
+    <value>Ersättningstext</value>
+  </data>
+  <data name="PeriodWindow.Type" xml:space="preserve">
+    <value>Aktivitetstyp</value>
+  </data>
+  <data name="PeriodWindow.LsText" xml:space="preserve">
+    <value>Information om lektionen</value>
+  </data>
+  <data name="PeriodWindow.Inf" xml:space="preserve">
+    <value>Ytterligare information</value>
+  </data>
 </root>

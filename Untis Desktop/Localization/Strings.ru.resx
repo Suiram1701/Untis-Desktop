@@ -211,4 +211,43 @@
   <data name="MainWindow.Inf.Wednesday" xml:space="preserve">
     <value>Среда</value>
   </data>
+  <data name="PeriodWindow.Cancelled" xml:space="preserve">
+    <value>Отменено</value>
+  </data>
+  <data name="PeriodWindow.Irregular" xml:space="preserve">
+    <value>Дополнительный урок</value>
+  </data>
+  <data name="PeriodWindow.Class" xml:space="preserve">
+    <value>Сорт</value>
+  </data>
+  <data name="PeriodWindow.Classes" xml:space="preserve">
+    <value>классы</value>
+  </data>
+  <data name="PeriodWindow.Room" xml:space="preserve">
+    <value>Пространство</value>
+  </data>
+  <data name="PeriodWindow.Rooms" xml:space="preserve">
+    <value>Помещения</value>
+  </data>
+  <data name="PeriodWindow.Subject" xml:space="preserve">
+    <value>Предмет</value>
+  </data>
+  <data name="PeriodWindow.Subjects" xml:space="preserve">
+    <value>Предметы</value>
+  </data>
+  <data name="PeriodWindow.Teacher" xml:space="preserve">
+    <value>Учитель</value>
+  </data>
+  <data name="PeriodWindow.SubsText" xml:space="preserve">
+    <value>Текст замены</value>
+  </data>
+  <data name="PeriodWindow.Type" xml:space="preserve">
+    <value>Тип активности</value>
+  </data>
+  <data name="PeriodWindow.LsText" xml:space="preserve">
+    <value>Информация о занятии</value>
+  </data>
+  <data name="PeriodWindow.Inf" xml:space="preserve">
+    <value>Дополнительная информация</value>
+  </data>
 </root>

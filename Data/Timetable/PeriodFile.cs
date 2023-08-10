@@ -217,9 +217,9 @@ public class PeriodFile : FileBase<PeriodFile>
         if (!reload && s_DefaultInstance[updateWeek].Any())
             return s_DefaultInstance[updateWeek].ToArray();
 
-        using WebUntisClient client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None).ConfigureAwait(true);
+        using WebUntisClient client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None);
 
-        IEnumerable<Period> periods = (await client.GetOwnTimetableAsync(updateWeek, updateWeek.AddDays(6)).ConfigureAwait(true)).DistinctBy(p => p.Id);
+        IEnumerable<Period> periods = (await client.GetOwnTimetableAsync(updateWeek, updateWeek.AddDays(6))).DistinctBy(p => p.Id);
         foreach (Period period in periods)
         {
             if (s_DefaultInstance[period.Id] is not null)
