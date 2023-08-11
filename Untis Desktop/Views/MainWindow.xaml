@@ -304,7 +304,7 @@
                             <Image Source="/Assets/refresh.png" Margin="-2"/>
                         </Button>
                     </StackPanel>
-                    <TextBlock Text="Schuljahr 23/24" FontSize="20" Grid.Row="0" HorizontalAlignment="Center" Margin="10"/>
+                    <TextBlock Text="{Binding CurrentSchoolYearString, Mode=OneWay}" FontSize="20" Grid.Row="0" HorizontalAlignment="Center" Margin="10"/>
                     <Grid x:Name="Timegrid" Grid.Row="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>

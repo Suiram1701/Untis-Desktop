@@ -51,7 +51,7 @@ public class HolidaysFile : FileBase<HolidaysFile>
              * In order to be able to continue my work on this project, I use some holidays from Germany.
              */
 
-            //s_DefaultInstance.Classes = (await client.GetHolidaysAsync("reloadHolidays", CancellationToken.None)).ToList();
+            //s_DefaultInstance.Holidays = (await client.GetHolidaysAsync("reloadHolidays", CancellationToken.None)).ToList();
 
             s_DefaultInstance.Holidays = new()
             {

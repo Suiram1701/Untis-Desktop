@@ -253,4 +253,7 @@
   <data name="LoginWindow.Btn.Back" xml:space="preserve">
     <value>Atrás</value>
   </data>
+  <data name="MainWindow.Timetable.NASY" xml:space="preserve">
+    <value>Sin año escolar activo</value>
+  </data>
 </root>

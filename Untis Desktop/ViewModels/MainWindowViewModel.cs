@@ -1,4 +1,5 @@
 ﻿using Data.Profiles;
+using Data.Timetable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -144,6 +145,17 @@ internal class MainWindowViewModel : ViewModelBase
     #endregion
 
     #region Timetable
+    public string CurrentSchoolYearString
+    {
+        get
+        {
+            string? schoolYearStr = SchoolYearFile.s_DefaultInstance[SelectedWeek]?.Name;
+            schoolYearStr ??= SchoolYearFile.s_DefaultInstance[NextWeek]?.Name;
+
+            return schoolYearStr ?? LangHelper.GetString("MainWindow.Timetable.NASY");
+        }
+    }
+
     public DateTime SelectedWeek
     {
         get => MainWindow.SelectedWeek;
@@ -152,6 +164,7 @@ internal class MainWindowViewModel : ViewModelBase
             MainWindow.SelectedWeek = value;
             RaisePropertyChanged();
             RaisePropertyChanged(nameof(NextWeek));
+            RaisePropertyChanged(nameof(CurrentSchoolYearString));
         }
 
     }

@@ -253,4 +253,7 @@
   <data name="LoginWindow.Btn.Back" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="MainWindow.Timetable.NASY" xml:space="preserve">
+    <value>No active school year</value>
+  </data>
 </root>

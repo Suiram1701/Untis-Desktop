@@ -253,4 +253,7 @@
   <data name="LoginWindow.Btn.Back" xml:space="preserve">
     <value>Tillbaka</value>
   </data>
+  <data name="MainWindow.Timetable.NASY" xml:space="preserve">
+    <value>Inget aktivt läsår</value>
+  </data>
 </root>
