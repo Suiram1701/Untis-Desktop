@@ -282,6 +282,7 @@ internal class LoginWindowViewModel : ViewModelBase
             IsExtendedOptions = true;
             IsLoginPage = true;
         });
+        ExtendedOptionsCommand.RaiseCanExecuteChanged();
 
         PasswordVisibilityCommand = new DelegateCommand(_ => IsPasswordVisible = !IsPasswordVisible);
 
@@ -352,5 +353,6 @@ internal class LoginWindowViewModel : ViewModelBase
                 client.Dispose();
             }
         });
+        LoginCommand.RaiseCanExecuteChanged();
     }
 }

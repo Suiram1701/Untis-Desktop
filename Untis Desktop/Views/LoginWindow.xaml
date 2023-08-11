@@ -79,8 +79,8 @@
                 <TextBlock Text="{Localization:Localize LoginWindow.Search.NR}" FontSize="16" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Margin="10,0,10,0"/>
             </Grid>
 
-            <Button Command="{Binding ExtendedOptionsCommand, Mode=OneTime}" Content="{Localization:Localize LoginWindow.Btn.MA}"
-                    Grid.Row="2" Grid.Column="1" Margin="0,10,0,25" HorizontalAlignment="Center" Style="{StaticResource Btn}"/>
+            <Button Command="{Binding ExtendedOptionsCommand, Mode=OneTime}" Content="{Localization:Localize LoginWindow.Btn.MA}" FontSize="15"
+                    Grid.Row="2" Grid.Column="1" Margin="0,10,0,25" HorizontalAlignment="Center" Template="{StaticResource Btn}"/>
         </Grid>
         
         <!-- Page for login data -->
@@ -97,10 +97,10 @@
             <Button Command="{Binding BackCommand, Mode=OneTime}" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,20">
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Name="Border" CornerRadius="50">
+                        <Border Name="Border" CornerRadius="15">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/Assets/arrow_back_ios.png" Stretch="UniformToFill" VerticalAlignment="Center" Height="30" Width="30" Margin="10"/>
-                                <Label Content="Zurück" FontSize="15" VerticalAlignment="Center" Margin="-15,-5,0,0"/>
+                                <Label Content="{Localization:Localize LoginWindow.Btn.Back}" FontSize="15" VerticalAlignment="Center" Margin="-15,-5,0,0"/>
                             </StackPanel>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -122,30 +122,31 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" HorizontalAlignment="Center" Margin="0,10,0,10">
                     <Label Content="example.webuntis.com" FontSize="16" Visibility="{Binding IsServerUrlEmpty, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Hidden, Mode=OneWay}" Foreground="Gray"/>
-                    <TextBox Text="{Binding ServerUrl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="16" Background="Transparent"
-                             VerticalContentAlignment="Center" Width="250"/>
+                    <TextBox x:Name="UrlBox" Text="{Binding ServerUrl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="16" Background="Transparent"
+                             VerticalContentAlignment="Center" Width="250" KeyUp="Element_KeyUp"/>
                     <Label Content="{Binding Error[ServerUrl]}" FontSize="10" Foreground="Red" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-5,0,0,-18"/>
                 </Grid>
 
                 <Grid Grid.Row="1" HorizontalAlignment="Center" Margin="0,10,0,10">
                     <Label Content="{Localization:Localize LoginWindow.D.SN}" FontSize="16" Visibility="{Binding IsSchoolNameEmpty, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Hidden, Mode=OneWay}" Foreground="Gray"/>
-                    <TextBox Text="{Binding SchoolName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="16" Background="Transparent"
-                             VerticalContentAlignment="Center" Width="250"/>
+                    <TextBox x:Name="SchoolNameBox" Text="{Binding SchoolName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="16" Background="Transparent"
+                             VerticalContentAlignment="Center" Width="250" KeyUp="Element_KeyUp"/>
                 </Grid>
             </Grid>
 
             <Grid Grid.Row="3" HorizontalAlignment="Center" Margin="0,10,0,10">
                 <Label Content="{Localization:Localize LoginWindow.D.USR}" FontSize="16" Visibility="{Binding IsUserNameEmpty, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Hidden, Mode=OneWay}" Foreground="Gray"/>
-                <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="16" Background="Transparent"
-                         VerticalContentAlignment="Center" Width="250"/>
+                <TextBox x:Name="UserNameBox" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="16" Background="Transparent"
+                         VerticalContentAlignment="Center" Width="250" KeyUp="Element_KeyUp"/>
             </Grid>
 
             <Grid Grid.Row="4" HorizontalAlignment="Center" Margin="0,10,0,10" Width="250">
                 <Label Content="{Localization:Localize LoginWindow.D.PWD}" FontSize="16" Visibility="{Binding IsPasswordEmpty, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Hidden, Mode=OneWay}" Foreground="Gray"/>
-                <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Visibility="{Binding IsPasswordVisible, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}"
-                         FontSize="16"  Background="Transparent" VerticalContentAlignment="Center"/>
-                <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" PasswordChar="●" Visibility="{Binding IsPasswordVisible, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Inv, Mode=OneWay}" IsVisibleChanged="PasswordBox_IsVisibleChanged"
-                             FontSize="16" Background="Transparent" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="PasswdVisibleBox" Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Visibility="{Binding IsPasswordVisible, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}"
+                         FontSize="16"  Background="Transparent" VerticalContentAlignment="Center" KeyUp="Element_KeyUp"/>
+                <PasswordBox x:Name="PasswdBox" PasswordChanged="PasswordBox_PasswordChanged" PasswordChar="●"
+                             Visibility="{Binding IsPasswordVisible, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Inv, Mode=OneWay}" IsVisibleChanged="PasswordBox_IsVisibleChanged"
+                             FontSize="16" Background="Transparent" VerticalContentAlignment="Center" KeyUp="Element_KeyUp"/>
                 <Button Command="{Binding PasswordVisibilityCommand, Mode=OneTime}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="20" Width="20" Margin="5">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
@@ -165,7 +166,8 @@
                 </Button>
             </Grid>
 
-            <Button Command="{Binding LoginCommand, Mode=OneTime}" Content="{Localization:Localize LoginWindow.Title}" Grid.Row="6" Margin="25" HorizontalAlignment="Center" Style="{StaticResource Btn}"/>
+            <Button x:Name="LoginBtn" IsEnabled="True" Command="{Binding LoginCommand, Mode=OneTime}" Content="{Localization:Localize LoginWindow.Title}" FontSize="15"
+                    Grid.Row="6" Margin="25" HorizontalAlignment="Center" Template="{StaticResource Btn}"/>
         </Grid>
     </Grid>
 </Window>

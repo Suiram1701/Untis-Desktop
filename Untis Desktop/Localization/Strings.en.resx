@@ -250,4 +250,7 @@
   <data name="PeriodWindow.Inf" xml:space="preserve">
     <value>Additional information</value>
   </data>
+  <data name="LoginWindow.Btn.Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
 </root>

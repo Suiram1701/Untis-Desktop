@@ -1,30 +1,22 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style x:Key="Btn" TargetType="{x:Type Button}">
-        <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Padding" Value="45,10,45,10"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Background" Value="#FF3A97FF"/>
-
-        <Style.Resources>
-            <Style TargetType="{x:Type Border}">
-                <Setter Property="CornerRadius" Value="8"/>
-            </Style>
-        </Style.Resources>
-
-        <Style.Triggers>
+    <ControlTemplate x:Key="Btn" TargetType="{x:Type Button}">
+        <Border Name="Border" CornerRadius="8" Background="{DynamicResource PressedBtnColor}" Padding="45,10">
+            <ContentPresenter/>
+        </Border>
+        
+        <ControlTemplate.Triggers>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="#FFA0A0A0"/>
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource DisabledBtnColor}"/>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#FF71B2FB"/>
-                <Setter Property="Foreground" Value="Gray"/>
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource HoverBtnColor}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="#FF3A97FF"/>
+                <Setter Property="Background" Value="{DynamicResource PressedBtnColor}"/>
             </Trigger>
-        </Style.Triggers>
-    </Style>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
     <ControlTemplate x:Key="MenuBtn" TargetType="{x:Type Button}">
         <Border Name="Border" Background="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" CornerRadius="5" Padding="5">
@@ -32,10 +24,10 @@
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="LightGray"/>
+                <Setter Property="Background" Value="{DynamicResource HoverDarkBtnColor}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="DarkGray"/>
+                <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

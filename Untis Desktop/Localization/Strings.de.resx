@@ -250,4 +250,7 @@
   <data name="PeriodWindow.LsText" xml:space="preserve">
     <value>Informationen zur Stunde</value>
   </data>
+  <data name="LoginWindow.Btn.Back" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
 </root>

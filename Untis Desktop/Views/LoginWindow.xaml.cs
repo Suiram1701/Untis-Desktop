@@ -6,7 +6,9 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -40,6 +42,35 @@ public partial class LoginWindow : Window
         InitializeComponent();
 
         ViewModel.PropertyChanged += ErrorBoxContent_PropertyChanged;
+    }
+
+    private void Element_KeyUp(object sender, KeyEventArgs e)
+    {
+        if (e.Key != Key.Enter)
+            return;
+
+        FrameworkElement element = (FrameworkElement)sender;
+        switch (element.Name)
+        {
+            case nameof(UrlBox):
+                SchoolNameBox.Focus();
+                break;
+            case nameof(SchoolNameBox):
+                UserNameBox.Focus();
+                break;
+            case nameof(UserNameBox):
+                if (ViewModel.IsPasswordVisible)
+                    PasswdVisibleBox.Focus();
+                else
+                    PasswdBox.Focus();
+                break;
+            case nameof(PasswdVisibleBox):
+            case nameof(PasswdBox):
+                LoginBtn.Command.Execute(null);
+                break;
+        }
+
+        e.Handled = true;
     }
 
     private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

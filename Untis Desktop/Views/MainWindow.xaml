@@ -116,7 +116,7 @@
                             <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ElementName=TodayItem, Path=IsSelected}" Value="True">
-                                    <Setter Property="Background" Value="DarkGray"/>
+                                    <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -132,7 +132,7 @@
                             <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ElementName=TimetableItem, Path=IsSelected}" Value="True">
-                                    <Setter Property="Background" Value="DarkGray"/>
+                                    <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -148,7 +148,7 @@
                             <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ElementName=MailItem, Path=IsSelected}" Value="True">
-                                    <Setter Property="Background" Value="DarkGray"/>
+                                    <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -166,7 +166,7 @@
                             <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ElementName=SettingsItem, Path=IsSelected}" Value="True">
-                                    <Setter Property="Background" Value="DarkGray"/>
+                                    <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -182,7 +182,7 @@
                             <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ElementName=ProfileItem, Path=IsSelected}" Value="True">
-                                    <Setter Property="Background" Value="DarkGray"/>
+                                    <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
