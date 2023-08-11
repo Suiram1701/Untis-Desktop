@@ -1,13 +1,12 @@
-﻿using Data.Static;
-using System.Drawing;
+﻿using System.Drawing;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using UntisDesktop.Extensions;
+using UntisDesktop.Views;
 using WebUntisAPI.Client;
 using WebUntisAPI.Client.Models;
-using System.Windows.Input;
-using UntisDesktop.Views;
-using System.Linq;
 
 namespace UntisDesktop.UserControls
 {
@@ -34,16 +33,16 @@ namespace UntisDesktop.UserControls
             int counter = 0;
 
             // Subjects
-            foreach ((string subjectString, Code code) in period.GetSubjects())
+            foreach ((string subjectString, Code code, Color? color) in period.GetSubjects())
             {
                 Subjects.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
-                int objId = Subjects.Children.Add(new PeriodInformation(code, subjectString));
+                int objId = Subjects.Children.Add(new PeriodInformation(code, subjectString, color));
                 Grid.SetColumn(Subjects.Children[objId], Subjects.ColumnDefinitions.Count - 1);
 
-                if (counter< period.SubjectsIds.Length - 1)
+                if (counter < period.SubjectsIds.Length - 1)
                 {
                     Subjects.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
-                    int placeHolderId = Subjects.Children.Add(new PeriodInformation(Code.None, ", "));
+                    int placeHolderId = Subjects.Children.Add(new PeriodInformation(Code.None, ", ", color));
                     Grid.SetColumn(Subjects.Children[placeHolderId], Subjects.ColumnDefinitions.Count - 1);
                 }
 
@@ -58,7 +57,7 @@ namespace UntisDesktop.UserControls
                 int objId = Teachers.Children.Add(new PeriodInformation(code, teacherString));
                 Grid.SetColumn(Teachers.Children[objId], Teachers.ColumnDefinitions.Count - 1);
 
-                if (counter< period.TeacherIds.Length - 1)
+                if (counter < period.TeacherIds.Length - 1)
                 {
                     Teachers.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
                     int placeHolderId = Teachers.Children.Add(new PeriodInformation(Code.None, ", "));
@@ -76,7 +75,7 @@ namespace UntisDesktop.UserControls
                 int objId = Rooms.Children.Add(new PeriodInformation(code, roomString));
                 Grid.SetColumn(Rooms.Children[objId], Rooms.ColumnDefinitions.Count - 1);
 
-                if (counter< period.RoomIds.Length - 1)
+                if (counter < period.RoomIds.Length - 1)
                 {
                     Rooms.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
                     int placeHolderId = Rooms.Children.Add(new PeriodInformation(Code.None, ", "));
@@ -94,7 +93,7 @@ namespace UntisDesktop.UserControls
                 int objId = Classes.Children.Add(new PeriodInformation(code, classString));
                 Grid.SetColumn(Classes.Children[objId], Classes.ColumnDefinitions.Count - 1);
 
-                if (counter< period.ClassIds.Length - 1)
+                if (counter < period.ClassIds.Length - 1)
                 {
                     Classes.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
                     int placeHolderId = Classes.Children.Add(new PeriodInformation(Code.None, ", "));

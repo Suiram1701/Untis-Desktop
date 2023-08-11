@@ -36,12 +36,19 @@ internal static class PeriodExtensions
         return color.Value;
     }
 
-    public static IEnumerable<(string subjectString, Code code)> GetSubjects(this Period period)
+    public static IEnumerable<(string subjectString, Code code, Color? color)> GetSubjects(this Period period)
     {
         return period.SubjectsIds.Select(subject =>
         {
-            string? subjectStr = SubjectFile.s_DefaultInstance[subject.Id]?.LongName;
-            string? orgSubjectStr = SubjectFile.s_DefaultInstance[subject.OriginalId ?? -1]?.LongName;
+            Subject? nSubject = SubjectFile.s_DefaultInstance[subject.Id];
+            Subject? orgSubject = SubjectFile.s_DefaultInstance[subject.OriginalId ?? -1];
+
+            string? subjectStr = nSubject?.LongName;
+            string? orgSubjectStr = orgSubject?.LongName;
+
+            Color? subjectColor = nSubject?.BackColor.IsEmpty ?? true
+            ? null
+            : nSubject.BackColor;
 
             if ((subjectStr is null && subject.Id != 0) || (subject.OriginalId is not null && orgSubjectStr is null))     // One of the subjects was not found
                 Logger.LogWarning($"Period load: period = {period.Id}{(subjectStr is null ? $", subject not found = {subject.Id}" : string.Empty)}{((orgSubjectStr is null && subject.OriginalId is not null) ? $", original subject not found = {subject.OriginalId}" : string.Empty)}");
@@ -62,6 +69,9 @@ internal static class PeriodExtensions
             else if (subject.Id == 0 && subject.OriginalId is not null)      // Cancelled
             {
                 code = Code.Cancelled;
+                subjectColor = orgSubject?.BackColor.IsEmpty ?? true
+                ? null
+                : orgSubject.BackColor;
                 subjectString = orgSubjectStr ?? "Err";
             }
             else
@@ -70,7 +80,7 @@ internal static class PeriodExtensions
                 subjectString = "Err";
             }
 
-            return (subjectString, code);
+            return (subjectString, code, subjectColor);
         });
     }
 

@@ -26,14 +26,15 @@ public partial class PeriodInformation : UserControl
 
     public string InformationString { get; }
 
-    public PeriodInformation(Code code, string infString)
+    public PeriodInformation(Code code, string infString, Color? normalColor = default)
     {
 
         TargetColor = code switch
         {
+            Code.None => normalColor ?? Color.Transparent,
             Code.Irregular => StatusDataFile.s_DefaultInstance.StatusData.IrregularLessonColors.BackColor,
             Code.Cancelled => StatusDataFile.s_DefaultInstance.StatusData.CancelledLessonColors.BackColor,
-            _ => Color.Transparent
+            _ => Color.Transparent,
         };
         IsCancelled = code == Code.Cancelled;
         InformationString = infString;
