@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:UntisDesktop.ViewModels"
         xmlns:Localization="clr-namespace:UntisDesktop.Localization"
-        xmlns:Messages="clr-namespace:WebUntisAPI.Client.Models.Messages;assembly=WebUntisAPI.Client"
         mc:Ignorable="d"
         Title="Untis Desktop"
         MinHeight="0" MinWidth="0" Height="600" Width="1000">

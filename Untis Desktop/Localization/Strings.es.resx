@@ -142,9 +142,6 @@
   <data name="LoginWindow.D.InvSN" xml:space="preserve">
     <value>No se encontró la escuela especificada.</value>
   </data>
-  <data name="LoginWindow.Err.RTL" xml:space="preserve">
-    <value>La respuesta del servidor de WebUntis tardó demasiado.</value>
-  </data>
   <data name="MainWindow.Menu.Mail" xml:space="preserve">
     <value>Mensajes</value>
   </data>
@@ -182,7 +179,7 @@
     <value>No se pudo establecer una conexión con el servidor WebUntis.\nCompruebe su conexión a Internet.</value>
   </data>
   <data name="MainWindow.Inf.NNC" xml:space="preserve">
-    <value>Sin conexión a Internet</value>
+    <value>No es posible establecer conexión con el servidor WebUntis</value>
   </data>
   <data name="MainWindow.G.Reload" xml:space="preserve">
     <value>Recargar</value>
@@ -279,5 +276,17 @@
   </data>
   <data name="MainWindow.Mail.Inbox.RRC" xml:space="preserve">
     <value>Se requiere leer el recibo</value>
+  </data>
+  <data name="MainWindow.Mail.Del.D.Text" xml:space="preserve">
+    <value>¿Realmente deseas eliminar el borrador?</value>
+  </data>
+  <data name="MainWindow.Mail.Del.Text" xml:space="preserve">
+    <value>¿Realmente quieres borrar el mensaje?</value>
+  </data>
+  <data name="MainWindow.Mail.Del.D.Title" xml:space="preserve">
+    <value>Eliminar borrador</value>
+  </data>
+  <data name="MainWindow.Mail.Del.Title" xml:space="preserve">
+    <value>borrar mensaje</value>
   </data>
 </root>

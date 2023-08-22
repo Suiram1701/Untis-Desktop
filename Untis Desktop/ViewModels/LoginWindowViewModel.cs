@@ -347,10 +347,9 @@ internal class LoginWindowViewModel : ViewModelBase, IWindowViewModel
                     Logger.LogError($"Unexpected HttpRequestException was thrown: {ex.Message}; Code: {ex.StatusCode}");
                 }
             }
-            catch (TaskCanceledException)
+            catch (Exception ex) when (ex.Source == "System.Net.Http")
             {
-                ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.RTL");
-                Logger.LogWarning($"The answer from the WebUntis server took too long. Server: {ServerUrl}");
+                IsOffline = true;
             }
             catch (Exception ex)
             {

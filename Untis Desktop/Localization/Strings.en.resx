@@ -142,9 +142,6 @@
   <data name="LoginWindow.D.InvSN" xml:space="preserve">
     <value>The specified school was not found.</value>
   </data>
-  <data name="LoginWindow.Err.RTL" xml:space="preserve">
-    <value>The response from the WebUntis server took too long.</value>
-  </data>
   <data name="MainWindow.Menu.Mail" xml:space="preserve">
     <value>Messages</value>
   </data>
@@ -182,7 +179,7 @@
     <value>A connection to the WebUntis server could not be established.\nPlease check your Internet connection.</value>
   </data>
   <data name="MainWindow.Inf.NNC" xml:space="preserve">
-    <value>No Internet connection</value>
+    <value>No connection to the WebUntis server possible</value>
   </data>
   <data name="MainWindow.G.Reload" xml:space="preserve">
     <value>Reload</value>
@@ -279,5 +276,17 @@
   </data>
   <data name="MainWindow.Mail.Inbox.RRC" xml:space="preserve">
     <value>Read confirmation required</value>
+  </data>
+  <data name="MainWindow.Mail.Del.D.Text" xml:space="preserve">
+    <value>Do you really want to delete the draft?</value>
+  </data>
+  <data name="MainWindow.Mail.Del.Text" xml:space="preserve">
+    <value>Do you really want to delete the message?</value>
+  </data>
+  <data name="MainWindow.Mail.Del.D.Title" xml:space="preserve">
+    <value>Delete Draft</value>
+  </data>
+  <data name="MainWindow.Mail.Del.Title" xml:space="preserve">
+    <value>delete message</value>
   </data>
 </root>

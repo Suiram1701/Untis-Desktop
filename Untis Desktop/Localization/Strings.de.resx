@@ -142,9 +142,6 @@
   <data name="LoginWindow.D.InvSN" xml:space="preserve">
     <value>Die angegebene Schule wurde nicht gefunden.</value>
   </data>
-  <data name="LoginWindow.Err.RTL" xml:space="preserve">
-    <value>Die Antwort des WebUntis Servers hat zu lange gedauert.</value>
-  </data>
   <data name="MainWindow.Menu.Today" xml:space="preserve">
     <value>Heute</value>
   </data>
@@ -185,7 +182,7 @@
     <value>Bei der Anfrage ist ein Fehler aufgetreten: {0}, Code : {1}</value>
   </data>
   <data name="MainWindow.Inf.NNC" xml:space="preserve">
-    <value>Keine Internetverbindung</value>
+    <value>Keine Verbindung zum WebUntis Server möglich</value>
   </data>
   <data name="MainWindow.G.Reload" xml:space="preserve">
     <value>Neu laden</value>
@@ -279,5 +276,17 @@
   </data>
   <data name="MainWindow.Mail.Inbox.RRC" xml:space="preserve">
     <value>Lesebestätigung erforderlich</value>
+  </data>
+  <data name="MainWindow.Mail.Del.Text" xml:space="preserve">
+    <value>Möchten sie die Nachricht wirklich löschen?</value>
+  </data>
+  <data name="MainWindow.Mail.Del.D.Text" xml:space="preserve">
+    <value>Möchten sie den Entwurf wirklich löschen?</value>
+  </data>
+  <data name="MainWindow.Mail.Del.D.Title" xml:space="preserve">
+    <value>Entwurf löschen</value>
+  </data>
+  <data name="MainWindow.Mail.Del.Title" xml:space="preserve">
+    <value>Nachricht löschen</value>
   </data>
 </root>

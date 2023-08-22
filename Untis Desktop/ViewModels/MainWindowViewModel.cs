@@ -57,6 +57,7 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
                 _isOffline = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(ViewTimetableReloadBtn));
+                RaisePropertyChanged(nameof(ViewMailsReloadBtn));
             }
         }
     }
@@ -73,11 +74,46 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
         if (IsOffline)
             return;
 
-        await (App.Client!.RunWithDefaultExceptionHandler(async client =>
+        try
         {
-            IsUnreadNewsAvailable = (await client.GetUnreadNewsCountAsync()) > 0;
-            TodayNews = await client.GetNewsFeedAsync(DateTime.Now);
-        }, this, "Today tab loading") ?? Task.CompletedTask);
+            IsUnreadNewsAvailable = (await App.Client!.GetUnreadNewsCountAsync()) > 0;
+            TodayNews = await App.Client!.GetNewsFeedAsync(DateTime.Now);
+        }
+        catch (WebUntisException ex)
+        {
+            switch (ex.Code)
+            {
+                case (int)WebUntisException.Codes.NoRightForMethod:
+                    ErrorBoxContent = LangHelper.GetString("App.Err.WU.NRFM");
+                    Logger.LogWarning($"Today tab loading: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NoRightForMethod)}");
+                    break;
+                case (int)WebUntisException.Codes.NotAuthticated:
+                    ErrorBoxContent = LangHelper.GetString("App.Err.WU.NA");
+                    Logger.LogWarning($"Today tab loading: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NotAuthticated)}");
+                    break;
+                default:
+                    ErrorBoxContent = LangHelper.GetString("App.Err.WU", ex.Message);
+                    Logger.LogError($"Today tab loading: Unexpected {nameof(WebUntisException)} Message: {ex.Message}, Code: {ex.Code}");
+                    break;
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.Source == "System.Net.Http" && ex.StatusCode is null)
+                IsOffline = true;
+            else
+                ErrorBoxContent = LangHelper.GetString("App.Err.NERR", ex.Message, ((int?)ex.StatusCode)?.ToString() ?? "0");
+            Logger.LogWarning($"Today tab loading: {nameof(HttpRequestException)} Code: {ex.StatusCode}, Message: {ex.Message}");
+        }
+        catch (Exception ex) when (ex.Source == "System.Net.Http")
+        {
+            IsOffline = true;
+        }
+        catch (Exception ex)
+        {
+            ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
+            Logger.LogError($"Today tab loading: {ex.Source ?? "System.Exception"}; {ex.Message}");
+        }
     }
 
     public bool IsUnreadNewsAvailable
@@ -176,33 +212,71 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
         DraftMessages.Clear();
         RaisePropertyChanged(nameof(DraftMessages));
 
-        Task<(MessagePreview[] inbox, MessagePreview[] confirmationMessages)> inboxTask = App.Client!.GetMessageInboxAsync();
+        try
+        {
+            Task<(MessagePreview[] inbox, MessagePreview[] confirmationMessages)> inboxTask = App.Client!.GetMessageInboxAsync();
 
-        Task<MessagePreview[]> sentTask = Task.FromResult(Array.Empty<MessagePreview>());
-        if (ShowSentTab)
-            sentTask = App.Client.GetSentMessagesAsync();
+            Task<MessagePreview[]> sentTask = Task.FromResult(Array.Empty<MessagePreview>());
+            if (ShowSentTab)
+                sentTask = App.Client!.GetSentMessagesAsync();
 
-        Task<DraftPreview[]> draftsTask = Task.FromResult(Array.Empty<DraftPreview>());
-        if (ShowDraftsTab)
-            draftsTask = App.Client.GetSavedDraftsAsync();
+            Task<DraftPreview[]> draftsTask = Task.FromResult(Array.Empty<DraftPreview>());
+            if (ShowDraftsTab)
+                draftsTask = App.Client!.GetSavedDraftsAsync();
 
-        await Task.WhenAll(inboxTask, sentTask, draftsTask).ConfigureAwait(true);
+            await Task.WhenAll(inboxTask, sentTask, draftsTask).ConfigureAwait(true);
 
-        foreach (MessagePreview preview in inboxTask.Result.inbox)
-            MsgInbox.Add(preview);
-        RaisePropertyChanged(nameof(MsgInbox));
+            foreach (MessagePreview preview in inboxTask.Result.inbox)
+                MsgInbox.Add(preview);
+            RaisePropertyChanged(nameof(MsgInbox));
 
-        foreach (MessagePreview preview in inboxTask.Result.confirmationMessages)
-            ConfirmationMsgInbox.Add(preview);
-        RaisePropertyChanged(nameof(ConfirmationMsgInbox));
+            foreach (MessagePreview preview in inboxTask.Result.confirmationMessages)
+                ConfirmationMsgInbox.Add(preview);
+            RaisePropertyChanged(nameof(ConfirmationMsgInbox));
 
-        foreach (MessagePreview preview in sentTask.Result)
-            SentMsg.Add(preview);
-        RaisePropertyChanged(nameof(SentMsg));
+            foreach (MessagePreview preview in sentTask.Result)
+                SentMsg.Add(preview);
+            RaisePropertyChanged(nameof(SentMsg));
 
-        foreach (DraftPreview preview in draftsTask.Result)
-            DraftMessages.Add(preview);
-        RaisePropertyChanged(nameof(DraftMessages));
+            foreach (DraftPreview preview in draftsTask.Result)
+                DraftMessages.Add(preview);
+            RaisePropertyChanged(nameof(DraftMessages));
+        }
+        catch (WebUntisException ex)
+        {
+            switch (ex.Code)
+            {
+                case (int)WebUntisException.Codes.NoRightForMethod:
+                    ErrorBoxContent = LangHelper.GetString("App.Err.WU.NRFM");
+                    Logger.LogWarning($"Load Mails tab: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NoRightForMethod)}");
+                    break;
+                case (int)WebUntisException.Codes.NotAuthticated:
+                    ErrorBoxContent = LangHelper.GetString("App.Err.WU.NA");
+                    Logger.LogWarning($"Load Mails tab: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NotAuthticated)}");
+                    break;
+                default:
+                    ErrorBoxContent = LangHelper.GetString("App.Err.WU", ex.Message);
+                    Logger.LogError($"Load Mails tab: Unexpected {nameof(WebUntisException)} Message: {ex.Message}, Code: {ex.Code}");
+                    break;
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.Source == "System.Net.Http" && ex.StatusCode is null)
+                IsOffline = true;
+            else
+                ErrorBoxContent = LangHelper.GetString("App.Err.NERR", ex.Message, ((int?)ex.StatusCode)?.ToString() ?? "0");
+            Logger.LogWarning($"Load Mails tab: {nameof(HttpRequestException)} Code: {ex.StatusCode}, Message: {ex.Message}");
+        }
+        catch (Exception ex) when (ex.Source == "System.Net.Http")
+        {
+            IsOffline = true;
+        }
+        catch (Exception ex)
+        {
+            ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
+            Logger.LogError($"Load Mails tab: {ex.Source ?? "System.Exception"}; {ex.Message}");
+        }
 
         IsMailsLoading = false;
     }
@@ -245,16 +319,14 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
     {
         ReloadOfflineCommand = new(async _ =>
         {
-            using Ping ping = new();
             try
             {
-                await ping.SendPingAsync("google.de");
+                App.Client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None);
                 IsOffline = false;
             }
             catch
             {
                 IsOffline = true;
-                return;
             }
         });
 
@@ -314,30 +386,69 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
                     return;
             }
 
-            switch (parameter)
+            try
             {
-                case 0:     // Inbox tab
-                    (MessagePreview[] inbox, MessagePreview[] confirmationPreview) = await App.Client!.GetMessageInboxAsync(CancellationToken.None);
-                    foreach (MessagePreview inboxMsg in inbox)
-                        MsgInbox.Add(inboxMsg);
-                    RaisePropertyChanged(nameof(MsgInbox));
+                switch (parameter)
+                {
+                    case 0:     // Inbox tab
+                        (MessagePreview[] inbox, MessagePreview[] confirmationPreview) = await App.Client!.GetMessageInboxAsync();
+                        foreach (MessagePreview inboxMsg in inbox)
+                            MsgInbox.Add(inboxMsg);
+                        RaisePropertyChanged(nameof(MsgInbox));
 
-                    foreach (MessagePreview confirmMsg in confirmationPreview)
-                        ConfirmationMsgInbox.Add(confirmMsg);
-                    RaisePropertyChanged(nameof(ConfirmationMsgInbox));
-                    break;
-                case 1:     // Sent tab
-                    MessagePreview[] sentMessages = await App.Client!.GetSentMessagesAsync(CancellationToken.None);
-                    foreach (MessagePreview sentMsg in sentMessages)
-                        SentMsg.Add(sentMsg);
-                    RaisePropertyChanged(nameof(SentMsg));
-                    break;
-                case 2:     // Drafts tab
-                    DraftPreview[] draftMessages = await App.Client!.GetSavedDraftsAsync(CancellationToken.None);
-                    foreach (DraftPreview draftMsg in draftMessages)
-                        DraftMessages.Add(draftMsg);
-                     RaisePropertyChanged(nameof(DraftMessages));
-                    break;
+                        foreach (MessagePreview confirmMsg in confirmationPreview)
+                            ConfirmationMsgInbox.Add(confirmMsg);
+                        RaisePropertyChanged(nameof(ConfirmationMsgInbox));
+                        break;
+                    case 1:     // Sent tab
+                        MessagePreview[] sentMessages = await App.Client!.GetSentMessagesAsync();
+                        foreach (MessagePreview sentMsg in sentMessages)
+                            SentMsg.Add(sentMsg);
+                        RaisePropertyChanged(nameof(SentMsg));
+                        break;
+                    case 2:     // Drafts tab
+                        DraftPreview[] draftMessages = await App.Client!.GetSavedDraftsAsync();
+                        foreach (DraftPreview draftMsg in draftMessages)
+                            DraftMessages.Add(draftMsg);
+                        RaisePropertyChanged(nameof(DraftMessages));
+                        break;
+                }
+            }
+            catch (WebUntisException ex)
+            {
+                switch (ex.Code)
+                {
+                    case (int)WebUntisException.Codes.NoRightForMethod:
+                        ErrorBoxContent = LangHelper.GetString("App.Err.WU.NRFM");
+                        Logger.LogWarning($"Reload Mails tab {parameter}: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NoRightForMethod)}");
+                        break;
+                    case (int)WebUntisException.Codes.NotAuthticated:
+                        ErrorBoxContent = LangHelper.GetString("App.Err.WU.NA");
+                        Logger.LogWarning($"Reload Mails tab {parameter}: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NotAuthticated)}");
+                        break;
+                    default:
+                        ErrorBoxContent = LangHelper.GetString("App.Err.WU", ex.Message);
+                        Logger.LogError($"Reload Mails tab {parameter}: Unexpected {nameof(WebUntisException)} Message: {ex.Message}, Code: {ex.Code}");
+                        break;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.Source == "System.Net.Http" && ex.StatusCode is null)
+                    IsOffline = true;
+                else
+                    ErrorBoxContent = LangHelper.GetString("App.Err.NERR", ex.Message, ((int?)ex.StatusCode)?.ToString() ?? "0");
+                Logger.LogWarning($"Timetable loading: {nameof(HttpRequestException)} Code: {ex.StatusCode}, Message: {ex.Message}");
+            }
+            catch (Exception ex) when (ex.Source == "System.Net.Http")
+            {
+                IsOffline = true;
+            }
+            catch (Exception ex)
+            {
+                ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
+                Type i = ex.GetType();
+                Logger.LogError($"Reload Mails tab {parameter}: {ex.Source ?? "System.Exception"}; {ex.Message}");
             }
 
             IsMailsLoading = false;

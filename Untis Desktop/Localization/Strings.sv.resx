@@ -142,9 +142,6 @@
   <data name="LoginWindow.D.InvSN" xml:space="preserve">
     <value>Den angivna skolan hittades inte.</value>
   </data>
-  <data name="LoginWindow.Err.RTL" xml:space="preserve">
-    <value>Svaret från WebUntis-servern tog för lång tid.</value>
-  </data>
   <data name="MainWindow.Menu.Mail" xml:space="preserve">
     <value>Meddelanden</value>
   </data>
@@ -182,7 +179,7 @@
     <value>En anslutning till WebUntis-servern kunde inte upprättas.\nKontrollera din internetanslutning.</value>
   </data>
   <data name="MainWindow.Inf.NNC" xml:space="preserve">
-    <value>Ingen internetanslutning</value>
+    <value>Ingen anslutning till WebUntis-servern möjlig</value>
   </data>
   <data name="MainWindow.G.Reload" xml:space="preserve">
     <value>Ladda om</value>
@@ -279,5 +276,17 @@
   </data>
   <data name="MainWindow.Mail.Inbox.RRC" xml:space="preserve">
     <value>Läskvitto krävs</value>
+  </data>
+  <data name="MainWindow.Mail.Del.D.Text" xml:space="preserve">
+    <value>Vill du verkligen ta bort utkastet?</value>
+  </data>
+  <data name="MainWindow.Mail.Del.Text" xml:space="preserve">
+    <value>Vill du verkligen ta bort meddelandet?</value>
+  </data>
+  <data name="MainWindow.Mail.Del.D.Title" xml:space="preserve">
+    <value>Ta bort utkast</value>
+  </data>
+  <data name="MainWindow.Mail.Del.Title" xml:space="preserve">
+    <value>radera meddelande</value>
   </data>
 </root>

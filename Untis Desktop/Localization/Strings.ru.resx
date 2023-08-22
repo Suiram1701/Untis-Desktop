@@ -142,9 +142,6 @@
   <data name="LoginWindow.D.InvSN" xml:space="preserve">
     <value>Указанная школа не найдена.</value>
   </data>
-  <data name="LoginWindow.Err.RTL" xml:space="preserve">
-    <value>Ответ от сервера WebUntis занял слишком много времени.</value>
-  </data>
   <data name="MainWindow.Menu.Mail" xml:space="preserve">
     <value>Сообщения</value>
   </data>
@@ -182,7 +179,7 @@
     <value>Не удалось установить соединение с сервером WebUntis.\nПроверьте подключение к Интернету.</value>
   </data>
   <data name="MainWindow.Inf.NNC" xml:space="preserve">
-    <value>Нет соединения с интернетом</value>
+    <value>Соединение с сервером WebUntis невозможно.</value>
   </data>
   <data name="MainWindow.G.Reload" xml:space="preserve">
     <value>Перезагрузить</value>
@@ -279,5 +276,17 @@
   </data>
   <data name="MainWindow.Mail.Inbox.RRC" xml:space="preserve">
     <value>Требуется квитанция о прочтении</value>
+  </data>
+  <data name="MainWindow.Mail.Del.D.Text" xml:space="preserve">
+    <value>Вы действительно хотите удалить черновик?</value>
+  </data>
+  <data name="MainWindow.Mail.Del.Text" xml:space="preserve">
+    <value>Vill du verkligen ta bort meddelandet?</value>
+  </data>
+  <data name="MainWindow.Mail.Del.D.Title" xml:space="preserve">
+    <value>Удалить черновик</value>
+  </data>
+  <data name="MainWindow.Mail.Del.Title" xml:space="preserve">
+    <value>удаленное сообщение</value>
   </data>
 </root>

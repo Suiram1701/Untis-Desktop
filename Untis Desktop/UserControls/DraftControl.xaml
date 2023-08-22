@@ -18,7 +18,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Subject & content -->
-            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Left" Margin="50,0,25,0">
+            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,25,0">
                 <TextBlock Text="{Binding Draft.Subject, Mode=OneTime}" FontSize="16" FontWeight="Bold"  VerticalAlignment="Center"/>
                 <Label Content="|" FontSize="16" VerticalAlignment="Center"/>
                 <TextBlock Text="{Binding Draft.ContentPreview, Mode=OneTime}" FontSize="16"  VerticalAlignment="Center"/>
@@ -30,7 +30,7 @@
                        Height="20" Margin="10"/>
 
                 <!-- Deletion -->
-                <Button Click="Delete_Click" Visibility="{Binding Draft.AllowMessageDeletion, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}" ToolTip="{Localization:Localize MainWindow.Mail.Del}"
+                <Button Click="Delete_ClickAsync" Visibility="{Binding Draft.AllowMessageDeletion, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}" ToolTip="{Localization:Localize MainWindow.Mail.Del}"
                         Height="30" Margin="5" Template="{StaticResource MenuBtn}">
                     <Image Source="/Assets/delete.png"/>
                 </Button>
