@@ -289,4 +289,13 @@
   <data name="MainWindow.Mail.Del.Title" xml:space="preserve">
     <value>radera meddelande</value>
   </data>
+  <data name="MainWindow.Mail.Revoke" xml:space="preserve">
+    <value>Dra tillbaka</value>
+  </data>
+  <data name="MainWindow.Mail.Revoke.Text" xml:space="preserve">
+    <value>Vill du verkligen dra tillbaka meddelandet?</value>
+  </data>
+  <data name="MainWindow.Mail.Revoke.Title" xml:space="preserve">
+    <value>återkalla meddelande</value>
+  </data>
 </root>

@@ -289,4 +289,13 @@
   <data name="MainWindow.Mail.Del.Title" xml:space="preserve">
     <value>удаленное сообщение</value>
   </data>
+  <data name="MainWindow.Mail.Revoke" xml:space="preserve">
+    <value>Отзывать</value>
+  </data>
+  <data name="MainWindow.Mail.Revoke.Text" xml:space="preserve">
+    <value>Вы действительно хотите отозвать сообщение?</value>
+  </data>
+  <data name="MainWindow.Mail.Revoke.Title" xml:space="preserve">
+    <value>отозвать сообщение</value>
+  </data>
 </root>

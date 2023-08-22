@@ -37,7 +37,7 @@ namespace UntisDesktop.UserControls
 
         private async void Delete_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show(LangHelper.GetString("MainWindow.Mail.Del.D.Text"), LangHelper.GetString("MainWindow.Mail.Del.Title"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show(LangHelper.GetString("MainWindow.Mail.Del.D.Text"), LangHelper.GetString("MainWindow.Mail.Del.D.Title"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 MainWindowViewModel viewModel = (MainWindowViewModel)Application.Current.Windows.Cast<Window>().OfType<MainWindow>().First().DataContext;
                 if (viewModel.IsOffline)
@@ -64,6 +64,7 @@ namespace UntisDesktop.UserControls
                             Logger.LogError($"Draft deletion: Unexpected {nameof(WebUntisException)} Message: {ex.Message}, Code: {ex.Code}");
                             break;
                     }
+                    return;
                 }
                 catch (HttpRequestException ex)
                 {
@@ -72,16 +73,21 @@ namespace UntisDesktop.UserControls
                     else
                         viewModel.ErrorBoxContent = LangHelper.GetString("App.Err.NERR", ex.Message, ((int?)ex.StatusCode)?.ToString() ?? "0");
                     Logger.LogWarning($"Draft deletion: {nameof(HttpRequestException)} Code: {ex.StatusCode}, Message: {ex.Message}");
+                    return;
                 }
                 catch (Exception ex) when (ex.Source == "System.Net.Http")
                 {
                     viewModel.IsOffline = true;
+                    return;
                 }
                 catch (Exception ex)
                 {
                     viewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
                     Logger.LogError($"Draft deletion: {ex.Source ?? "System.Exception"}; {ex.Message}");
+                    return;
                 }
+
+                await viewModel.LoadMailTabAsync();
             }
         }
     }

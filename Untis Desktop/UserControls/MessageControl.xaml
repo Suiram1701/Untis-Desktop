@@ -38,14 +38,29 @@
                 <Image Source="/Assets/attach_file.png" Visibility="{Binding Message.HasAttachments, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}" ToolTip="{Localization:Localize MainWindow.Mail.Att}"
                        Height="20" Margin="10"/>
 
+                <!-- Revoke -->
+                <Button Click="Revoke_ClickAsync" Visibility="{Binding IsSentMessage, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}" ToolTip="{Localization:Localize MainWindow.Mail.Revoke}"
+                        Height="30" Margin="5" Template="{StaticResource MenuBtn}">
+                    <Image Source="/Assets/undo.png"/>
+                </Button>
+
                 <!-- Reply -->
                 <Button Click="Reply_Click" Visibility="{Binding Message.IsReplyAllowed, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}" ToolTip="{Localization:Localize MainWindow.Mail.Reply}"
                         Height="30" Margin="5" Template="{StaticResource MenuBtn}">
                     <Image Source="/Assets/reply.png"/>
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSentMessage, Mode=OneWay}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                 </Button>
 
                 <!-- Deletion -->
-                <Button Click="Delete_Click" Visibility="{Binding Message.AllowMessageDeletion, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}" ToolTip="{Localization:Localize MainWindow.Mail.Del}"
+                <Button Click="Delete_ClickAsync" Visibility="{Binding Message.AllowMessageDeletion, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}" ToolTip="{Localization:Localize MainWindow.Mail.Del}"
                         Height="30" Margin="5" Template="{StaticResource MenuBtn}">
                     <Image Source="/Assets/delete.png"/>
                 </Button>

@@ -29,6 +29,7 @@
     <None Remove="Assets\send.png" />
     <None Remove="Assets\settings.png" />
     <None Remove="Assets\today.png" />
+    <None Remove="Assets\undo.png" />
     <None Remove="Assets\visibility.png" />
     <None Remove="Assets\visibility_off.png" />
     <None Remove="Assets\wifi_off.png" />
@@ -67,6 +68,7 @@
     <Resource Include="Assets\send.png" />
     <Resource Include="Assets\settings.png" />
     <Resource Include="Assets\today.png" />
+    <Resource Include="Assets\undo.png" />
     <Resource Include="Assets\visibility.png" />
     <Resource Include="Assets\visibility_off.png" />
     <Resource Include="Assets\wifi_off.png" />

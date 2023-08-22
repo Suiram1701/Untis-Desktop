@@ -289,4 +289,13 @@
   <data name="MainWindow.Mail.Del.Title" xml:space="preserve">
     <value>supprimer le message</value>
   </data>
+  <data name="MainWindow.Mail.Revoke" xml:space="preserve">
+    <value>Retirer</value>
+  </data>
+  <data name="MainWindow.Mail.Revoke.Text" xml:space="preserve">
+    <value>Voulez-vous vraiment retirer le message ?</value>
+  </data>
+  <data name="MainWindow.Mail.Revoke.Title" xml:space="preserve">
+    <value>révoquer le message</value>
+  </data>
 </root>

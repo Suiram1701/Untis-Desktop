@@ -494,7 +494,7 @@ public partial class MainWindow : Window
         {
             preview.IsMessageRead = true;
             SentMails.RowDefinitions.Add(new() { Height = GridLength.Auto });
-            int id = SentMails.Children.Add(new MessageControl(preview));
+            int id = SentMails.Children.Add(new MessageControl(preview, isSentMessage: true));
             Grid.SetRow(SentMails.Children[id], SentMails.RowDefinitions.Count - 1);
         }
     }
