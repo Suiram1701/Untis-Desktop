@@ -256,4 +256,28 @@
   <data name="MainWindow.Timetable.NASY" xml:space="preserve">
     <value>Inget aktivt läsår</value>
   </data>
+  <data name="MainWindow.Mail.Drafts" xml:space="preserve">
+    <value>utkast</value>
+  </data>
+  <data name="MainWindow.Mail.Inbox" xml:space="preserve">
+    <value>inkorg</value>
+  </data>
+  <data name="MainWindow.Mail.NMail" xml:space="preserve">
+    <value>Nytt meddelande</value>
+  </data>
+  <data name="MainWindow.Mail.Sent" xml:space="preserve">
+    <value>Postad</value>
+  </data>
+  <data name="MainWindow.Mail.Del" xml:space="preserve">
+    <value>Radera</value>
+  </data>
+  <data name="MainWindow.Mail.Att" xml:space="preserve">
+    <value>Anknytning</value>
+  </data>
+  <data name="MainWindow.Mail.Reply" xml:space="preserve">
+    <value>Svar</value>
+  </data>
+  <data name="MainWindow.Mail.Inbox.RRC" xml:space="preserve">
+    <value>Läskvitto krävs</value>
+  </data>
 </root>

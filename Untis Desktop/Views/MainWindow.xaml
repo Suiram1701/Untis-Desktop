@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:UntisDesktop.ViewModels"
         xmlns:Localization="clr-namespace:UntisDesktop.Localization"
+        xmlns:Messages="clr-namespace:WebUntisAPI.Client.Models.Messages;assembly=WebUntisAPI.Client"
         mc:Ignorable="d"
         Title="Untis Desktop"
         MinHeight="0" MinWidth="0" Height="600" Width="1000">
@@ -191,12 +192,7 @@
             </StackPanel>
         </Grid>
 
-        <TabControl Grid.Row="1" Grid.Column="1" BorderThickness="0">
-            <TabControl.ItemContainerStyle>
-                <Style TargetType="{x:Type TabItem}">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                </Style>
-            </TabControl.ItemContainerStyle>
+        <TabControl Grid.Row="1" Grid.Column="1" BorderThickness="0" Style="{StaticResource HeaderLessTabControl}">
             <TabItem x:Name="TodayItem" IsSelected="True">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -259,7 +255,7 @@
                     </ScrollViewer>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="TimetableItem" IsSelected="True">
+            <TabItem x:Name="TimetableItem" IsSelected="False">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -281,14 +277,14 @@
                         </Button>
 
                         <!-- Loading view -->
-                        <Image x:Name="TimetableLoadingProgressImg" Source="/Assets/progress_activity.png" Visibility="Collapsed" Margin="20,0,0,0">
+                        <Image x:Name="TimetableLoadingProgressImg" Source="/Assets/progress_activity.png" Visibility="{Binding IsTimetableLoading, Converter={StaticResource BoolVisibilityConverter}}" Margin="20,0,0,0">
                             <Image.RenderTransform>
                                 <RotateTransform x:Name="Rotation" Angle="0"
                                                  CenterY="{Binding ElementName=TimetableLoadingProgressImg, Path=ActualHeight, Converter={StaticResource MathConverter}, ConverterParameter=/2}"
                                                  CenterX="{Binding ElementName=TimetableLoadingProgressImg, Path=ActualWidth, Converter={StaticResource MathConverter}, ConverterParameter=/2}"/>
                             </Image.RenderTransform>
                             <Image.Resources>
-                                <Storyboard x:Key="LoadingAnimation">
+                                <Storyboard x:Key="TimetableLoadingAnimation">
                                     <DoubleAnimation Storyboard.TargetName="Rotation" Storyboard.TargetProperty="Angle" From="0" To="360" Duration="0:0:0.5" RepeatBehavior="Forever">
                                         <DoubleAnimation.EasingFunction>
                                             <QuadraticEase EasingMode="EaseInOut"/>
@@ -299,7 +295,8 @@
                         </Image>
 
                         <!-- Reloading btn -->
-                        <Button Visibility="{Binding ViewTimetableReloadBtn, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" ToolTip="{Localization:Localize MainWindow.G.Reload}" Command="{Binding OtherWeekBtnCommand, Mode=OneTime}" CommandParameter="0"
+                        <Button Visibility="{Binding ViewTimetableReloadBtn, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}"
+                                ToolTip="{Localization:Localize MainWindow.G.Reload}" Command="{Binding OtherWeekBtnCommand, Mode=OneTime}" CommandParameter="0"
                                 Margin="20,0,0,0" Template="{StaticResource MenuBtn}">
                             <Image Source="/Assets/refresh.png" Margin="-2"/>
                         </Button>
@@ -315,8 +312,138 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="MailItem" IsSelected="False">
-                <TextBlock Text="Mail"/>
+            <TabItem x:Name="MailItem" IsSelected="True">
+                <Grid Margin="0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Mail menu bar -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        
+                        <!-- Inbox -->
+                        <Button x:Name="InboxBtn" HorizontalAlignment="Left" Margin="10,0" Template="{StaticResource MenuBtn}"
+                                Click="MailMenuBtn_Click">
+                            <StackPanel Orientation="Horizontal" Margin="10,0">
+                                <Image Source="/Assets/mail.png" Height="18"/>
+                                <TextBlock Text="{Localization:Localize MainWindow.Mail.Inbox}" FontSize="13" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=InboxItem, Path=IsSelected, Mode=OneWay}" Value="true">
+                                            <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                        <!-- Sent mails -->
+                        <Button x:Name="SentBtn" Visibility="{Binding ShowSentTab, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}" HorizontalAlignment="Left"
+                                Margin="10,0" Template="{StaticResource MenuBtn}" Click="MailMenuBtn_Click">
+                            <StackPanel Orientation="Horizontal" Margin="10,0">
+                                <Image Source="/Assets/outgoing_mail.png" Height="18"/>
+                                <TextBlock Text="{Localization:Localize MainWindow.Mail.Sent}" FontSize="13" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=SentItem, Path=IsSelected, Mode=OneWay}" Value="true">
+                                            <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                        <!-- Drafts -->
+                        <Button x:Name="DraftsBtn" Visibility="{Binding ShowDraftsTab, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}" HorizontalAlignment="Left"
+                                Margin="10,0" Template="{StaticResource MenuBtn}" Click="MailMenuBtn_Click">
+                            <StackPanel Orientation="Horizontal" Margin="10,0">
+                                <Image Source="/Assets/drafts.png" Height="18"/>
+                                <TextBlock Text="{Localization:Localize MainWindow.Mail.Drafts}" FontSize="13" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=DraftsItem, Path=IsSelected, Mode=OneWay}" Value="true">
+                                            <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                        <!-- Reloading animation -->
+                        <Image x:Name="MailLoadingProgressImg" Source="/Assets/progress_activity.png" 
+                               Visibility="{Binding IsMailsLoading, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" Height="30" Margin="15,0">
+                            <Image.RenderTransform>
+                                <RotateTransform x:Name="RotationAnimation" Angle="0"
+                                                 CenterY="{Binding ElementName=MailLoadingProgressImg, Path=ActualHeight, Converter={StaticResource MathConverter}, ConverterParameter=/2}"
+                                                 CenterX="{Binding ElementName=MailLoadingProgressImg, Path=ActualWidth, Converter={StaticResource MathConverter}, ConverterParameter=/2}"/>
+                            </Image.RenderTransform>
+                            <Image.Resources>
+                                <Storyboard x:Key="MailsLoadingAnimation">
+                                    <DoubleAnimation Storyboard.TargetName="RotationAnimation" Storyboard.TargetProperty="Angle" From="0" To="360" Duration="0:0:0.5" RepeatBehavior="Forever">
+                                        <DoubleAnimation.EasingFunction>
+                                            <QuadraticEase EasingMode="EaseInOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </Image.Resources>
+                        </Image>
+
+                        <!-- Reloading btn -->
+                        <Button Visibility="{Binding ViewMailsReloadBtn, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" ToolTip="{Localization:Localize MainWindow.G.Reload}"
+                                Command="{Binding ReloadMailsCommand, Mode=OneTime}" CommandParameter="{Binding ElementName=MailView, Path=SelectedIndex}"
+                                Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}" Margin="10,0" Template="{StaticResource MenuBtn}">
+                            <Image Source="/Assets/refresh.png" Height="24" Margin="-2"/>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- New mail -->
+                    <Button x:Name="NewMailBtn" Grid.Row="0" HorizontalAlignment="Right" Margin="10,0" Template="{StaticResource Btn}" Click="MailMenuBtn_Click">
+                        <StackPanel Orientation="Horizontal" Margin="10,0">
+                            <TextBlock Text="{Localization:Localize MainWindow.Mail.NMail}" FontSize="13" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <Image Source="/Assets/send.png" Height="18"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <!-- View -->
+                    <TabControl Name="MailView" BorderThickness="0" Grid.Row="1" Style="{StaticResource HeaderLessTabControl}">
+                        <TabItem x:Name="InboxItem" IsSelected="True">
+                            <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                                <StackPanel Orientation="Vertical">
+                                    <Grid Margin="0,0,0,30" Visibility="{Binding IsConfirmationMessagesAvailable, Mode=OneWay, Converter={StaticResource BoolVisibilityConverter}}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Text="{Localization:Localize MainWindow.Mail.Inbox.RRC}" FontSize="24" Grid.Row="0"/>
+                                        <Grid x:Name="ConfirmationMailInbox" Grid.Row="1"/>
+                                    </Grid>
+                                    <Grid x:Name="MailInbox"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+                        <TabItem x:Name="SentItem" IsSelected="False">
+                            <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                                <Grid x:Name="SentMails"/>
+                            </ScrollViewer>
+                        </TabItem>
+                        <TabItem x:Name="DraftsItem" IsSelected="False">
+                            <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+                                <Grid x:Name="DraftMails"/>
+                            </ScrollViewer>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
             </TabItem>
             <TabItem x:Name="SettingsItem" IsSelected="False">
                 <TextBlock Text="Settings"/>

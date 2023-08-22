@@ -21,7 +21,7 @@ using WebUntisAPI.Client.Models;
 
 namespace UntisDesktop.ViewModels;
 
-internal class LoginWindowViewModel : ViewModelBase
+internal class LoginWindowViewModel : ViewModelBase, IWindowViewModel
 {
     // Commands
     public DelegateCommand BackCommand { get; }
@@ -43,6 +43,12 @@ internal class LoginWindowViewModel : ViewModelBase
         }
     }
     private string _errorBoxContent = string.Empty;
+
+    public bool IsOffline
+    {
+        get => false;
+        set => ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.NIC");
+    }
 
     public bool IsLoginPage
     {
@@ -262,6 +268,9 @@ internal class LoginWindowViewModel : ViewModelBase
             }
         }
     }
+
+    bool IWindowViewModel.IsOffline { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
     private bool _isPasswordVisible = false;
 
     public LoginWindowViewModel()

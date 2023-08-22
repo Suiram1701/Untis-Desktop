@@ -11,14 +11,22 @@
   <ItemGroup>
     <None Remove="Assets\arrow_back_ios.png" />
     <None Remove="Assets\arrow_forward_ios.png" />
+    <None Remove="Assets\attach_file.png" />
+    <None Remove="Assets\attach_file_add.png" />
     <None Remove="Assets\calendar_month.png" />
+    <None Remove="Assets\delete.png" />
+    <None Remove="Assets\drafts.png" />
     <None Remove="Assets\mail.png" />
+    <None Remove="Assets\mark_email_read.png" />
     <None Remove="Assets\menu.png" />
     <None Remove="Assets\notifications_off.png" />
+    <None Remove="Assets\outgoing_mail.png" />
     <None Remove="Assets\person.png" />
     <None Remove="Assets\progress_activity.png" />
     <None Remove="Assets\refresh.png" />
+    <None Remove="Assets\reply.png" />
     <None Remove="Assets\search_off.png" />
+    <None Remove="Assets\send.png" />
     <None Remove="Assets\settings.png" />
     <None Remove="Assets\today.png" />
     <None Remove="Assets\visibility.png" />
@@ -27,7 +35,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Suiram1.WebUntisAPI.Client" Version="1.1.0" />
+    <Resource Include="Assets\mark_email_read.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Suiram1.WebUntisAPI.Client" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,14 +50,21 @@
   <ItemGroup>
     <Resource Include="Assets\arrow_back_ios.png" />
     <Resource Include="Assets\arrow_forward_ios.png" />
+    <Resource Include="Assets\attach_file.png" />
+    <Resource Include="Assets\attach_file_add.png" />
     <Resource Include="Assets\calendar_month.png" />
+    <Resource Include="Assets\delete.png" />
+    <Resource Include="Assets\drafts.png" />
     <Resource Include="Assets\mail.png" />
     <Resource Include="Assets\menu.png" />
     <Resource Include="Assets\notifications_off.png" />
+    <Resource Include="Assets\outgoing_mail.png" />
     <Resource Include="Assets\person.png" />
     <Resource Include="Assets\progress_activity.png" />
     <Resource Include="Assets\refresh.png" />
+    <Resource Include="Assets\reply.png" />
     <Resource Include="Assets\search_off.png" />
+    <Resource Include="Assets\send.png" />
     <Resource Include="Assets\settings.png" />
     <Resource Include="Assets\today.png" />
     <Resource Include="Assets\visibility.png" />

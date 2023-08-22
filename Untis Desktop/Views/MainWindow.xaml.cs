@@ -20,6 +20,7 @@ using UntisDesktop.ViewModels;
 using WebUntisAPI.Client;
 using WebUntisAPI.Client.Exceptions;
 using WebUntisAPI.Client.Models;
+using WebUntisAPI.Client.Models.Messages;
 using WebUntis = WebUntisAPI.Client.Models;
 
 namespace UntisDesktop.Views;
@@ -62,13 +63,35 @@ public partial class MainWindow : Window
                 }
             }
 
-            // Timetable update
-            if (e.PropertyName == nameof(MainWindowViewModel.SelectedWeek))
+            // Timetable reload
+            else if (e.PropertyName == nameof(MainWindowViewModel.SelectedWeek))
             {
                 foreach (TimegridDay day in Timegrid.Children.OfType<TimegridDay>())
                     day.ViewModel.Update();
                 await UpdateTimetableAsync();
+
+                return;
             }
+
+            // Mails reload animation
+            else if (e.PropertyName == nameof(MainWindowViewModel.IsMailsLoading))
+                ToggleMailsLoadingAnimation(ViewModel.IsMailsLoading);
+
+            // Message inbox
+            else if (e.PropertyName == nameof(MainWindowViewModel.MsgInbox))
+                UpdateMailInbox();
+
+            // Confirmation message inbox
+            else if (e.PropertyName == nameof(MainWindowViewModel.ConfirmationMsgInbox))
+                UpdateConfirmationMailInbox();
+
+            // Sent messages
+            else if (e.PropertyName == nameof(MainWindowViewModel.SentMsg))
+                UpdateMailsSent();
+
+            // Draft messages
+            else if (e.PropertyName == nameof(MainWindowViewModel.DraftMessages))
+                UpdateMailDrafts();
         };
 
         SetupTimegrid();
@@ -142,38 +165,19 @@ public partial class MainWindow : Window
 
         WebUntis.Holidays[] holidays = HolidaysFile.s_DefaultInstance.Holidays.ToArray();
         Period[] periods = Array.Empty<Period>();
-        try
+
+        Task? task = App.Client!.RunWithDefaultExceptionHandler(async client =>
         {
             if (!ViewModel.IsOffline)
                 periods = await PeriodFile.LoadWeekAsync(SelectedWeek, ViewModel.ReloadTimetable).ConfigureAwait(true);
             else
                 periods = PeriodFile.s_DefaultInstance[SelectedWeek].ToArray();
-        }
-        catch (WebUntisException ex)
-        {
-            ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Message, ex.Code.ToString());
-            Logger.LogError($"WebUntis exception: {ex.Message}; Code {ex.Code}");
-        }
-        catch (HttpRequestException ex)
-        {
-            if (ex.Source == "System.Net.Http" && ex.StatusCode is null)
-                ViewModel.IsOffline = true;
-            else
-            {
-                ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Message, ((int)(ex.StatusCode ?? 0)).ToString());
-                Logger.LogError($"Timetable loading: Unexpected HttpRequestException was thrown: {ex.Message}; Code: {ex.StatusCode}");
-            }
-        }
-        catch (TaskCanceledException)
-        {
-            ViewModel.ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.RTL");
-            Logger.LogWarning($"Timetable loading: The answer from the WebUntis server took too long.");
-        }
-        catch (Exception ex)
-        {
-            ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
-            Logger.LogError($"Timetable loading: An occurred {ex.Source} was thrown; Message: {ex.Message}");
-        }
+        }, ViewModel, "Timetable loading");
+
+        if (task is null)
+            goto endTimetableUpdate;
+
+        await task.ConfigureAwait(true);
 
         // Set holidays
         foreach (WebUntis.Holidays holiday in holidays.Where(h => h.StartDate <= SelectedWeek && SelectedWeek.AddDays(6) <= h.EndDate))
@@ -319,6 +323,7 @@ public partial class MainWindow : Window
             addedHours.Add(period.Id);
         }
 
+        endTimetableUpdate:
         ViewModel.ReloadTimetable = false;
         ToggleTimetableLoadingAnimation(false);
     }
@@ -345,22 +350,49 @@ public partial class MainWindow : Window
         string targetName = ((FrameworkElement)sender).Name;
         switch (targetName)
         {
-            case "TodayBtn":
+            case nameof(TodayBtn):
                 TodayItem.IsSelected = true;
                 break;
-            case "TimetableBtn":
+            case nameof(TimetableBtn):
                 TimetableItem.IsSelected = true;
                 break;
-            case "MailBtn":
+            case nameof(MailBtn):
                 MailItem.IsSelected = true;
                 break;
-            case "SettingsBtn":
+            case nameof(SettingsBtn):
                 SettingsItem.IsSelected = true;
                 break;
-            case "ProfileBtn":
+            case nameof(ProfileBtn):
                 ProfileItem.IsSelected = true;
                 break;
+            default:
+                return;
         }
+
+        e.Handled = true;
+    }
+
+    private void MailMenuBtn_Click(object sender, RoutedEventArgs e)
+    {
+        string targetName = ((FrameworkElement)sender).Name;
+        switch (targetName)
+        {
+            case nameof(InboxBtn):
+                InboxItem.IsSelected = true;
+                break;
+            case nameof(SentBtn):
+                SentItem.IsSelected = true;
+                break;
+            case nameof(DraftsBtn):
+                DraftsItem.IsSelected = true;
+                break;
+            case nameof(NewMailBtn):
+                break;
+            default:
+                return;
+        }
+
+        e.Handled = true;
     }
 
     private void ListViewScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -372,19 +404,76 @@ public partial class MainWindow : Window
 
     private void ToggleTimetableLoadingAnimation(bool turnOn)
     {
-        Storyboard animation = (Storyboard)TimetableLoadingProgressImg.FindResource("LoadingAnimation");
+        Storyboard animation = (Storyboard)TimetableLoadingProgressImg.FindResource("TimetableLoadingAnimation");
 
         if (turnOn)
         {
             ViewModel.IsTimetableLoading = true;
-            TimetableLoadingProgressImg.Visibility = Visibility.Visible;
             animation.Begin();
         }
         else
         {
             ViewModel.IsTimetableLoading = false;
-            TimetableLoadingProgressImg.Visibility = Visibility.Collapsed;
             animation.Stop();
+        }
+    }
+
+    private void ToggleMailsLoadingAnimation(bool turnOn)
+    {
+        Storyboard animation = (Storyboard)MailLoadingProgressImg.FindResource("MailsLoadingAnimation");
+
+        if (turnOn)
+            animation.Begin();
+        else
+            animation.Stop();
+    }
+
+    private void UpdateMailInbox()
+    {
+        MailInbox.Children.Clear();
+        MailInbox.RowDefinitions.Clear();
+        foreach (MessagePreview preview in ViewModel.MsgInbox)
+        {
+            MailInbox.RowDefinitions.Add(new() { Height = GridLength.Auto });
+            int id = MailInbox.Children.Add(new MessageControl(preview));
+            Grid.SetRow(MailInbox.Children[id], MailInbox.RowDefinitions.Count - 1);
+        }
+    }
+
+    private void UpdateConfirmationMailInbox()
+    {
+        ConfirmationMailInbox.Children.Clear();
+        ConfirmationMailInbox.RowDefinitions.Clear();
+        foreach (MessagePreview preview in ViewModel.ConfirmationMsgInbox)
+        {
+            ConfirmationMailInbox.RowDefinitions.Add(new() { Height = GridLength.Auto });
+            int id = ConfirmationMailInbox.Children.Add(new MessageControl(preview));
+            Grid.SetRow(ConfirmationMailInbox.Children[id], ConfirmationMailInbox.RowDefinitions.Count - 1);
+        }
+    }
+
+    private void UpdateMailsSent()
+    {
+        SentMails.Children.Clear();
+        SentMails.RowDefinitions.Clear();
+        foreach (MessagePreview preview in ViewModel.SentMsg)
+        {
+            preview.IsMessageRead = true;
+            SentMails.RowDefinitions.Add(new() { Height = GridLength.Auto });
+            int id = SentMails.Children.Add(new MessageControl(preview));
+            Grid.SetRow(SentMails.Children[id], SentMails.RowDefinitions.Count - 1);
+        }
+    }
+
+    private void UpdateMailDrafts()
+    {
+        DraftMails.Children.Clear();
+        DraftMails.RowDefinitions.Clear();
+        foreach (DraftPreview preview in ViewModel.DraftMessages)
+        {
+            DraftMails.RowDefinitions.Add(new() { Height = GridLength.Auto });
+            int id = DraftMails.Children.Add(new DraftControl(preview));
+            Grid.SetRow(DraftMails.Children[id], DraftMails.RowDefinitions.Count - 1);
         }
     }
 

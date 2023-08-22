@@ -17,6 +17,8 @@ namespace UntisDesktop;
 
 public partial class App : Application
 {
+    public static WebUntisClient? Client { get; set; }
+
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);

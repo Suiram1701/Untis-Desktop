@@ -1,4 +1,5 @@
-﻿using Data.Static;
+﻿using Data.Messages;
+using Data.Static;
 using Data.Timetable;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,7 @@ public class ProfileCollection : FileCollectionBase<ProfileCollection, ProfileFi
             // Update all data
             using WebUntisClient client = await profile.LoginAsync(CancellationToken.None);
 
+            // Statics
             TeacherFile.SetProfile(profile);
             Task teacherTask = TeacherFile.UpdateFromClientAsync(client);
 
@@ -58,6 +60,7 @@ public class ProfileCollection : FileCollectionBase<ProfileCollection, ProfileFi
             StatusDataFile.SetProfile(profile);
             Task statusDataTask = StatusDataFile.UpdateFromClientAsync(client);
 
+            // Timetable
             SchoolYearFile.SetProfile(profile);
             Task schoolYearsTask = SchoolYearFile.UpdateFromClientAsync(client);
 
@@ -70,7 +73,11 @@ public class ProfileCollection : FileCollectionBase<ProfileCollection, ProfileFi
             HolidaysFile.SetProfile(profile);
             Task holidaysTask = HolidaysFile.UpdateFromClientAsync(client);
 
-            await Task.WhenAll(teacherTask, roomTask, subjectTask, classesTask, statusDataTask, schoolYearsTask, timegridTask, periodsTask, holidaysTask);
+            // Messages
+            MessagePermissionsFile.SetProfile(profile);
+            Task messagePermissionTask = MessagePermissionsFile.UpdateFromClientAsync(client);
+
+            await Task.WhenAll(teacherTask, roomTask, subjectTask, classesTask, statusDataTask, schoolYearsTask, timegridTask, periodsTask, holidaysTask, messagePermissionTask);
         }
     }
 }

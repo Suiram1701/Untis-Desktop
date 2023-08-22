@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="MessagePermissionsSchema"
+    elementFormDefault="qualified"
+    targetNamespace="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/MessagePermissionsSchema.xsd"
+    xmlns="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/MessagePermissionsSchema.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="MessagePermissionsFile">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="permissions">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RecipientOptions">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="string" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="AllowRequestReadConfirmation" type="xs:boolean"/>
+							<xs:element name="RecipientSearchMaxResult" type="xs:unsignedInt"/>
+							<xs:element name="ShowDraftsTab" type="xs:boolean"/>
+							<xs:element name="ShowSentTab" type="xs:boolean"/>
+							<xs:element name="CanForbidReplies" type="xs:boolean"/>
+							<xs:element name="MaxFileSize" type="xs:unsignedLong"/>
+							<xs:element name="MaxFileCount" type="xs:unsignedInt"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

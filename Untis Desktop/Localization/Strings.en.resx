@@ -256,4 +256,28 @@
   <data name="MainWindow.Timetable.NASY" xml:space="preserve">
     <value>No active school year</value>
   </data>
+  <data name="MainWindow.Mail.Drafts" xml:space="preserve">
+    <value>drafts</value>
+  </data>
+  <data name="MainWindow.Mail.Inbox" xml:space="preserve">
+    <value>inbox</value>
+  </data>
+  <data name="MainWindow.Mail.NMail" xml:space="preserve">
+    <value>New message</value>
+  </data>
+  <data name="MainWindow.Mail.Sent" xml:space="preserve">
+    <value>Sent</value>
+  </data>
+  <data name="MainWindow.Mail.Del" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="MainWindow.Mail.Att" xml:space="preserve">
+    <value>Attachment</value>
+  </data>
+  <data name="MainWindow.Mail.Reply" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="MainWindow.Mail.Inbox.RRC" xml:space="preserve">
+    <value>Read confirmation required</value>
+  </data>
 </root>

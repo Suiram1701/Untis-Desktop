@@ -256,4 +256,28 @@
   <data name="MainWindow.Timetable.NASY" xml:space="preserve">
     <value>Нет активного учебного года</value>
   </data>
+  <data name="MainWindow.Mail.Drafts" xml:space="preserve">
+    <value>Черновики</value>
+  </data>
+  <data name="MainWindow.Mail.Inbox" xml:space="preserve">
+    <value>входящие</value>
+  </data>
+  <data name="MainWindow.Mail.NMail" xml:space="preserve">
+    <value>Новое сообщение</value>
+  </data>
+  <data name="MainWindow.Mail.Sent" xml:space="preserve">
+    <value>Опубликовано</value>
+  </data>
+  <data name="MainWindow.Mail.Del" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="MainWindow.Mail.Att" xml:space="preserve">
+    <value>Вложение</value>
+  </data>
+  <data name="MainWindow.Mail.Reply" xml:space="preserve">
+    <value>Отвечать</value>
+  </data>
+  <data name="MainWindow.Mail.Inbox.RRC" xml:space="preserve">
+    <value>Требуется квитанция о прочтении</value>
+  </data>
 </root>

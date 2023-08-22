@@ -1,24 +1,30 @@
-﻿using Data.Profiles;
+﻿using Data.Messages;
+using Data.Profiles;
 using Data.Timetable;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using UntisDesktop.Extensions;
 using UntisDesktop.Localization;
+using UntisDesktop.UserControls;
 using UntisDesktop.Views;
 using WebUntisAPI.Client;
 using WebUntisAPI.Client.Exceptions;
 using WebUntisAPI.Client.Models;
+using WebUntisAPI.Client.Models.Messages;
 
 namespace UntisDesktop.ViewModels;
 
-internal class MainWindowViewModel : ViewModelBase
+internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
 {
     // Commands
     public DelegateCommand ReloadOfflineCommand { get; }
@@ -26,6 +32,8 @@ internal class MainWindowViewModel : ViewModelBase
     public DelegateCommand ReloadTabCommand { get; }
 
     public DelegateCommand OtherWeekBtnCommand { get; }
+
+    public DelegateCommand ReloadMailsCommand { get; }
 
     // views
     public string ErrorBoxContent
@@ -65,47 +73,11 @@ internal class MainWindowViewModel : ViewModelBase
         if (IsOffline)
             return;
 
-        try
+        await (App.Client!.RunWithDefaultExceptionHandler(async client =>
         {
-            using WebUntisClient client = await CurrentProfile.LoginAsync(CancellationToken.None);
-
-            Task<int> unreadCountTask = client.GetUnreadNewsCountAsync();
-            Task<News> newsTask = client.GetNewsFeedAsync(DateTime.Now);
-
-            IsUnreadNewsAvailable = await unreadCountTask.ConfigureAwait(true) > 0;
-            TodayNews = await newsTask.ConfigureAwait(true);
-        }
-        catch (WebUntisException ex)
-        {
-            switch (ex.Code)
-            {
-                case (int)WebUntisException.Codes.NoRightForMethod:
-                    ErrorBoxContent = LangHelper.GetString("App.Err.WU.NRFM");
-                    Logger.LogWarning($"Today tab loading: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NoRightForMethod)}");
-                    break;
-                case (int)WebUntisException.Codes.NotAuthticated:
-                    ErrorBoxContent = LangHelper.GetString("App.Err.WU.NA");
-                    Logger.LogWarning($"Today tab loading: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NotAuthticated)}");
-                    break;
-                default:
-                    ErrorBoxContent = LangHelper.GetString("App.Err.WU", ex.Message);
-                    Logger.LogError($"Today tab loading: Unexpected {nameof(WebUntisException)} Message: {ex.Message}, Code: {ex.Code}");
-                    break;
-            }
-        }
-        catch (HttpRequestException ex)
-        {
-            if (ex.Source == "System.Net.Http" && ex.StatusCode is null)
-                IsOffline = true;
-            else
-                ErrorBoxContent = LangHelper.GetString("App.Err.NERR", ex.Message, ((int?)ex.StatusCode)?.ToString() ?? "0");
-            Logger.LogWarning($"Today tab loading: {nameof(HttpRequestException)} Code: {ex.StatusCode}, Message: {ex.Message}");
-        }
-        catch (Exception ex)
-        {
-            ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
-            Logger.LogError($"Today tab loading: {ex.Source ?? "System.Exception"}; {ex.Message}");
-        }
+            IsUnreadNewsAvailable = (await client.GetUnreadNewsCountAsync()) > 0;
+            TodayNews = await client.GetNewsFeedAsync(DateTime.Now);
+        }, this, "Today tab loading") ?? Task.CompletedTask);
     }
 
     public bool IsUnreadNewsAvailable
@@ -187,6 +159,88 @@ internal class MainWindowViewModel : ViewModelBase
     public bool ViewTimetableReloadBtn { get => !IsOffline && !IsTimetableLoading; }
     #endregion
 
+    #region Messages
+    public async Task LoadMailTabAsync()
+    {
+        if (IsOffline)
+            return;
+
+        IsMailsLoading = true;
+
+        MsgInbox.Clear();
+        RaisePropertyChanged(nameof(MsgInbox));
+        ConfirmationMsgInbox.Clear();
+        RaisePropertyChanged(nameof(ConfirmationMsgInbox));
+        SentMsg.Clear();
+        RaisePropertyChanged(nameof(SentMsg));
+        DraftMessages.Clear();
+        RaisePropertyChanged(nameof(DraftMessages));
+
+        Task<(MessagePreview[] inbox, MessagePreview[] confirmationMessages)> inboxTask = App.Client!.GetMessageInboxAsync();
+
+        Task<MessagePreview[]> sentTask = Task.FromResult(Array.Empty<MessagePreview>());
+        if (ShowSentTab)
+            sentTask = App.Client.GetSentMessagesAsync();
+
+        Task<DraftPreview[]> draftsTask = Task.FromResult(Array.Empty<DraftPreview>());
+        if (ShowDraftsTab)
+            draftsTask = App.Client.GetSavedDraftsAsync();
+
+        await Task.WhenAll(inboxTask, sentTask, draftsTask).ConfigureAwait(true);
+
+        foreach (MessagePreview preview in inboxTask.Result.inbox)
+            MsgInbox.Add(preview);
+        RaisePropertyChanged(nameof(MsgInbox));
+
+        foreach (MessagePreview preview in inboxTask.Result.confirmationMessages)
+            ConfirmationMsgInbox.Add(preview);
+        RaisePropertyChanged(nameof(ConfirmationMsgInbox));
+
+        foreach (MessagePreview preview in sentTask.Result)
+            SentMsg.Add(preview);
+        RaisePropertyChanged(nameof(SentMsg));
+
+        foreach (DraftPreview preview in draftsTask.Result)
+            DraftMessages.Add(preview);
+        RaisePropertyChanged(nameof(DraftMessages));
+
+        IsMailsLoading = false;
+    }
+
+    // Visibility
+    public bool ShowSentTab { get => MessagePermissionsFile.s_DefaultInstance.Permissions.ShowSentTab; }
+
+    public bool ShowDraftsTab { get => MessagePermissionsFile.s_DefaultInstance.Permissions.ShowDraftsTab; }
+
+    // Messages
+    public List<MessagePreview> MsgInbox { get; set; } = new();
+
+    public List<MessagePreview> ConfirmationMsgInbox { get; set; } = new();
+
+    public bool IsConfirmationMessagesAvailable { get => ConfirmationMsgInbox.Any(); }
+
+    public List<MessagePreview> SentMsg { get; set; } = new();
+
+    public List<DraftPreview> DraftMessages { get; set; } = new();
+
+    // Loading
+    public bool ReloadMail { get; set; }
+
+    public bool IsMailsLoading
+    {
+        get => _isMailsLoading;
+        set
+        {
+            _isMailsLoading = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(ViewMailsReloadBtn));
+        }
+    }
+    private bool _isMailsLoading = false;
+
+    public bool ViewMailsReloadBtn { get => !IsOffline && !IsMailsLoading; }
+    #endregion
+
     public MainWindowViewModel()
     {
         ReloadOfflineCommand = new(async _ =>
@@ -212,9 +266,8 @@ internal class MainWindowViewModel : ViewModelBase
                 case "TodayBtn":
                     await LoadTodayTabAsync().ConfigureAwait(true);
                     break;
-                case "TimetableBtn":
-                    break;
                 case "MailBtn":
+                    await LoadMailTabAsync().ConfigureAwait(true);
                     break;
                 case "SettingsBtn":
                     break;
@@ -234,19 +287,73 @@ internal class MainWindowViewModel : ViewModelBase
             }
         });
 
+        ReloadMailsCommand = new(async parameter =>
+        {
+            if (IsOffline)
+                return;
+
+            IsMailsLoading = true;
+
+            switch (parameter)
+            {
+                case 0:     // Inbox tab
+                    MsgInbox.Clear();
+                    RaisePropertyChanged(nameof(MsgInbox));
+                    ConfirmationMsgInbox.Clear();
+                    RaisePropertyChanged(nameof(ConfirmationMsgInbox));
+                    break;
+                case 1:     // Sent tab
+                    SentMsg.Clear();
+                    RaisePropertyChanged(nameof(SentMsg));
+                    break;
+                case 2:     // Drafts tab
+                    DraftMessages.Clear();
+                    RaisePropertyChanged(nameof(DraftMessages));
+                    break;
+                default:
+                    return;
+            }
+
+            switch (parameter)
+            {
+                case 0:     // Inbox tab
+                    (MessagePreview[] inbox, MessagePreview[] confirmationPreview) = await App.Client!.GetMessageInboxAsync(CancellationToken.None);
+                    foreach (MessagePreview inboxMsg in inbox)
+                        MsgInbox.Add(inboxMsg);
+                    RaisePropertyChanged(nameof(MsgInbox));
+
+                    foreach (MessagePreview confirmMsg in confirmationPreview)
+                        ConfirmationMsgInbox.Add(confirmMsg);
+                    RaisePropertyChanged(nameof(ConfirmationMsgInbox));
+                    break;
+                case 1:     // Sent tab
+                    MessagePreview[] sentMessages = await App.Client!.GetSentMessagesAsync(CancellationToken.None);
+                    foreach (MessagePreview sentMsg in sentMessages)
+                        SentMsg.Add(sentMsg);
+                    RaisePropertyChanged(nameof(SentMsg));
+                    break;
+                case 2:     // Drafts tab
+                    DraftPreview[] draftMessages = await App.Client!.GetSavedDraftsAsync(CancellationToken.None);
+                    foreach (DraftPreview draftMsg in draftMessages)
+                        DraftMessages.Add(draftMsg);
+                     RaisePropertyChanged(nameof(DraftMessages));
+                    break;
+            }
+
+            IsMailsLoading = false;
+        });
+
         _ = Task.Run(async () =>
         {
             using Ping ping = new();
             try
             {
-                await ping.SendPingAsync("google.de");
+                App.Client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None);
             }
             catch
             {
                 IsOffline = true;
             }
-
-            Task loadTodayTask = LoadTodayTabAsync();
         });
     }
 }
