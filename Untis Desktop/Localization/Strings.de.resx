@@ -298,4 +298,43 @@
   <data name="MainWindow.Mail.Revoke.Title" xml:space="preserve">
     <value>Nachricht widerrufen</value>
   </data>
+  <data name="MessageWindow.DTitle" xml:space="preserve">
+    <value>Neue Nachricht</value>
+  </data>
+  <data name="MessageWindow.R.New" xml:space="preserve">
+    <value>Empfänger Hinzufügen</value>
+  </data>
+  <data name="MessageWindow.R" xml:space="preserve">
+    <value>Empfänger:</value>
+  </data>
+  <data name="RecipientDialog.Title" xml:space="preserve">
+    <value>Empfänger*innen</value>
+  </data>
+  <data name="RecipientDialog.S.TEACHER" xml:space="preserve">
+    <value>Lehrkräfte suchen</value>
+  </data>
+  <data name="RecipientDialog.S.STAFF" xml:space="preserve">
+    <value>Kolleg*innen suchen</value>
+  </data>
+  <data name="RecipientDialog.Apply" xml:space="preserve">
+    <value>Übernehmen</value>
+  </data>
+  <data name="RecipientDialog.Abort" xml:space="preserve">
+    <value>Abrechen</value>
+  </data>
+  <data name="RecipientDialog.RT.CLASS_TEACHER" xml:space="preserve">
+    <value>Klassenlehrkräfte</value>
+  </data>
+  <data name="RecipientDialog.RT.TEACHERS" xml:space="preserve">
+    <value>Meine Lehrkräfte</value>
+  </data>
+  <data name="RecipientDialog.RT.OTHERS" xml:space="preserve">
+    <value>Andere</value>
+  </data>
+  <data name="RecipientDialog.RO.TEACHER" xml:space="preserve">
+    <value>Lehrkraft</value>
+  </data>
+  <data name="RecipientDialog.RO.STAFF" xml:space="preserve">
+    <value>Kolleg*innen</value>
+  </data>
 </root>

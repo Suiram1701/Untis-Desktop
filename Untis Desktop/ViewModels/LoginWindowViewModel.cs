@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using UntisDesktop.Extensions;
 using UntisDesktop.Localization;
 using UntisDesktop.Views;
 using WebUntisAPI.Client;
@@ -327,38 +328,15 @@ internal class LoginWindowViewModel : ViewModelBase, IWindowViewModel
                 else
                     ErrorBoxContent = LangHelper.GetString("LoginWindow.Login.InvC");
             }
-            catch (WebUntisException ex)
-            {
-                if (ex.Code == -8500)
-                    ErrorBoxContent = LangHelper.GetString("LoginWindow.D.InvSN");
-                else
-                {
-                    ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Message, ex.Code.ToString());
-                    Logger.LogError($"WebUntis exception: {ex.Message}; Code {ex.Code}");
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                if (ex.Source == "System.Net.Http")
-                    ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.NIC");
-                else
-                {
-                    ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Message, ((int)(ex.StatusCode ?? 0)).ToString());
-                    Logger.LogError($"Unexpected HttpRequestException was thrown: {ex.Message}; Code: {ex.StatusCode}");
-                }
-            }
-            catch (Exception ex) when (ex.Source == "System.Net.Http")
-            {
-                IsOffline = true;
-            }
             catch (Exception ex)
             {
-                ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
-                Logger.LogError($"An occurred {ex.Source} was thrown; Message: {ex.Message}");
-            }
-            finally
-            {
-                client.Dispose();
+                if (ex is WebUntisException wuEx)
+                {
+                    if (wuEx.Code == -8500)
+                        ErrorBoxContent = LangHelper.GetString("LoginWindow.D.InvSN");
+                }
+                else
+                    ex.HandleWithDefaultHandler(this, "LoginWindow login try");
             }
         });
         LoginCommand.RaiseCanExecuteChanged();

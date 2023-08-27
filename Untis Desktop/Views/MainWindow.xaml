@@ -406,7 +406,7 @@
                     </StackPanel>
 
                     <!-- New mail -->
-                    <Button x:Name="NewMailBtn" Grid.Row="0" HorizontalAlignment="Right" Margin="10,0" Template="{StaticResource Btn}" Click="MailMenuBtn_Click">
+                    <Button x:Name="NewMailBtn" Grid.Row="0" HorizontalAlignment="Right" Margin="10,0" Template="{StaticResource Btn}" Command="{Binding NewMailCommand, Mode=OneTime}">
                         <StackPanel Orientation="Horizontal" Margin="10,0">
                             <TextBlock Text="{Localization:Localize MainWindow.Mail.NMail}" FontSize="13" VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <Image Source="/Assets/send.png" Height="18"/>

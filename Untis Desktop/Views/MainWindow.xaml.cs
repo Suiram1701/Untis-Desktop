@@ -174,40 +174,9 @@ public partial class MainWindow : Window
             else
                 periods = PeriodFile.s_DefaultInstance[SelectedWeek].ToArray();
         }
-        catch (WebUntisException ex)
-        {
-            switch (ex.Code)
-            {
-                case (int)WebUntisException.Codes.NoRightForMethod:
-                    ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.WU.NRFM");
-                    Logger.LogWarning($"Timetable loading: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NoRightForMethod)}");
-                    break;
-                case (int)WebUntisException.Codes.NotAuthticated:
-                    ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.WU.NA");
-                    Logger.LogWarning($"Timetable loading: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NotAuthticated)}");
-                    break;
-                default:
-                    ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.WU", ex.Message);
-                    Logger.LogError($"Timetable loading: Unexpected {nameof(WebUntisException)} Message: {ex.Message}, Code: {ex.Code}");
-                    break;
-            }
-        }
-        catch (HttpRequestException ex)
-        {
-            if (ex.Source == "System.Net.Http" && ex.StatusCode is null)
-                ViewModel.IsOffline = true;
-            else
-                ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.NERR", ex.Message, ((int?)ex.StatusCode)?.ToString() ?? "0");
-            Logger.LogWarning($"Timetable loading: {nameof(HttpRequestException)} Code: {ex.StatusCode}, Message: {ex.Message}");
-        }
-        catch (Exception ex) when (ex.Source == "System.Net.Http")
-        {
-            ViewModel.IsOffline = true;
-        }
         catch (Exception ex)
         {
-            ViewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
-            Logger.LogError($"Timetable loading: {ex.Source ?? "System.Exception"}; {ex.Message}");
+            ex.HandleWithDefaultHandler(ViewModel, "Timetable loading");
         }
 
         // Set holidays
@@ -419,8 +388,6 @@ public partial class MainWindow : Window
                 break;
             case nameof(DraftsBtn):
                 DraftsItem.IsSelected = true;
-                break;
-            case nameof(NewMailBtn):
                 break;
             default:
                 return;

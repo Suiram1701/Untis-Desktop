@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\add_circle.png" />
     <None Remove="Assets\arrow_back_ios.png" />
     <None Remove="Assets\arrow_forward_ios.png" />
     <None Remove="Assets\attach_file.png" />
@@ -25,6 +26,7 @@
     <None Remove="Assets\progress_activity.png" />
     <None Remove="Assets\refresh.png" />
     <None Remove="Assets\reply.png" />
+    <None Remove="Assets\search.png" />
     <None Remove="Assets\search_off.png" />
     <None Remove="Assets\send.png" />
     <None Remove="Assets\settings.png" />
@@ -36,11 +38,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\add_circle.png" />
     <Resource Include="Assets\mark_email_read.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Suiram1.WebUntisAPI.Client" Version="1.1.1" />
+    <PackageReference Include="Suiram1.WebUntisAPI.Client" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,6 +67,7 @@
     <Resource Include="Assets\progress_activity.png" />
     <Resource Include="Assets\refresh.png" />
     <Resource Include="Assets\reply.png" />
+    <Resource Include="Assets\search.png" />
     <Resource Include="Assets\search_off.png" />
     <Resource Include="Assets\send.png" />
     <Resource Include="Assets\settings.png" />

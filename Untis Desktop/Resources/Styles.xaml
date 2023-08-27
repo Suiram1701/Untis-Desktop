@@ -9,4 +9,10 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <ControlTemplate x:Key="TagTemplate" TargetType="{x:Type Label}">
+        <Border CornerRadius="10" Background="{DynamicResource PressedDarkBtnColor}" Margin="0,0,5,0" Padding="10,5">
+            <ContentPresenter/>
+        </Border>
+    </ControlTemplate>
 </ResourceDictionary>

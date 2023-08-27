@@ -165,4 +165,13 @@ public partial class MessageControl : UserControl
     {
 
     }
+
+    protected override void OnMouseDown(MouseButtonEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed)
+        {
+            new MessageWindow(Message).Show();
+            e.Handled = true;
+        }
+    }
 }

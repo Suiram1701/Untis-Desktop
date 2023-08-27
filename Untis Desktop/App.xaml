@@ -15,7 +15,7 @@
                 <ResourceDictionary Source="/Resources/Buttons.xaml"/>
                 <ResourceDictionary Source="/Resources/Colors.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/SchoolDataTemplate.xaml"/>
-                <ResourceDictionary Source="/resources/Templates/NewsMessageDataTemplate.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/NewsMessageDataTemplate.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

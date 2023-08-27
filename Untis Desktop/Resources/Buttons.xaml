@@ -18,6 +18,24 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
+    <ControlTemplate x:Key="DarkBtn" TargetType="{x:Type Button}">
+        <Border Name="Border" CornerRadius="8" Background="{DynamicResource PressedDarkBtnColor}" Padding="45,10">
+            <ContentPresenter/>
+        </Border>
+
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource DisabledBtnColor}"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource HoverDarkBtnColor}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
     <ControlTemplate x:Key="MenuBtn" TargetType="{x:Type Button}">
         <Border Name="Border" Background="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" CornerRadius="5" Padding="5">
             <ContentPresenter/>
@@ -40,6 +58,20 @@
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter TargetName="Btn" Property="Foreground" Value="DarkGray"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="AddRecipientBtn" TargetType="{x:Type Button}">
+        <Border Name="Border" CornerRadius="50" Padding="5">
+            <ContentPresenter/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource HoverDarkBtnColor}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

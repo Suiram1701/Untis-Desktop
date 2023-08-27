@@ -35,6 +35,8 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
 
     public DelegateCommand ReloadMailsCommand { get; }
 
+    public DelegateCommand NewMailCommand { get; }
+
     // views
     public string ErrorBoxContent
     {
@@ -58,6 +60,7 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(ViewTimetableReloadBtn));
                 RaisePropertyChanged(nameof(ViewMailsReloadBtn));
+                NewMailCommand.RaiseCanExecuteChanged();
             }
         }
     }
@@ -79,40 +82,9 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
             IsUnreadNewsAvailable = (await App.Client!.GetUnreadNewsCountAsync()) > 0;
             TodayNews = await App.Client!.GetNewsFeedAsync(DateTime.Now);
         }
-        catch (WebUntisException ex)
-        {
-            switch (ex.Code)
-            {
-                case (int)WebUntisException.Codes.NoRightForMethod:
-                    ErrorBoxContent = LangHelper.GetString("App.Err.WU.NRFM");
-                    Logger.LogWarning($"Today tab loading: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NoRightForMethod)}");
-                    break;
-                case (int)WebUntisException.Codes.NotAuthticated:
-                    ErrorBoxContent = LangHelper.GetString("App.Err.WU.NA");
-                    Logger.LogWarning($"Today tab loading: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NotAuthticated)}");
-                    break;
-                default:
-                    ErrorBoxContent = LangHelper.GetString("App.Err.WU", ex.Message);
-                    Logger.LogError($"Today tab loading: Unexpected {nameof(WebUntisException)} Message: {ex.Message}, Code: {ex.Code}");
-                    break;
-            }
-        }
-        catch (HttpRequestException ex)
-        {
-            if (ex.Source == "System.Net.Http" && ex.StatusCode is null)
-                IsOffline = true;
-            else
-                ErrorBoxContent = LangHelper.GetString("App.Err.NERR", ex.Message, ((int?)ex.StatusCode)?.ToString() ?? "0");
-            Logger.LogWarning($"Today tab loading: {nameof(HttpRequestException)} Code: {ex.StatusCode}, Message: {ex.Message}");
-        }
-        catch (Exception ex) when (ex.Source == "System.Net.Http")
-        {
-            IsOffline = true;
-        }
         catch (Exception ex)
         {
-            ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
-            Logger.LogError($"Today tab loading: {ex.Source ?? "System.Exception"}; {ex.Message}");
+            ex.HandleWithDefaultHandler(this, "Today tab loading");
         }
     }
 
@@ -242,40 +214,9 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
                 DraftMessages.Add(preview);
             RaisePropertyChanged(nameof(DraftMessages));
         }
-        catch (WebUntisException ex)
-        {
-            switch (ex.Code)
-            {
-                case (int)WebUntisException.Codes.NoRightForMethod:
-                    ErrorBoxContent = LangHelper.GetString("App.Err.WU.NRFM");
-                    Logger.LogWarning($"Load Mails tab: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NoRightForMethod)}");
-                    break;
-                case (int)WebUntisException.Codes.NotAuthticated:
-                    ErrorBoxContent = LangHelper.GetString("App.Err.WU.NA");
-                    Logger.LogWarning($"Load Mails tab: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NotAuthticated)}");
-                    break;
-                default:
-                    ErrorBoxContent = LangHelper.GetString("App.Err.WU", ex.Message);
-                    Logger.LogError($"Load Mails tab: Unexpected {nameof(WebUntisException)} Message: {ex.Message}, Code: {ex.Code}");
-                    break;
-            }
-        }
-        catch (HttpRequestException ex)
-        {
-            if (ex.Source == "System.Net.Http" && ex.StatusCode is null)
-                IsOffline = true;
-            else
-                ErrorBoxContent = LangHelper.GetString("App.Err.NERR", ex.Message, ((int?)ex.StatusCode)?.ToString() ?? "0");
-            Logger.LogWarning($"Load Mails tab: {nameof(HttpRequestException)} Code: {ex.StatusCode}, Message: {ex.Message}");
-        }
-        catch (Exception ex) when (ex.Source == "System.Net.Http")
-        {
-            IsOffline = true;
-        }
         catch (Exception ex)
         {
-            ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
-            Logger.LogError($"Load Mails tab: {ex.Source ?? "System.Exception"}; {ex.Message}");
+            ex.HandleWithDefaultHandler(this, "{logName}");
         }
 
         IsMailsLoading = false;
@@ -414,45 +355,15 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
                         break;
                 }
             }
-            catch (WebUntisException ex)
-            {
-                switch (ex.Code)
-                {
-                    case (int)WebUntisException.Codes.NoRightForMethod:
-                        ErrorBoxContent = LangHelper.GetString("App.Err.WU.NRFM");
-                        Logger.LogWarning($"Reload Mails tab {parameter}: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NoRightForMethod)}");
-                        break;
-                    case (int)WebUntisException.Codes.NotAuthticated:
-                        ErrorBoxContent = LangHelper.GetString("App.Err.WU.NA");
-                        Logger.LogWarning($"Reload Mails tab {parameter}: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NotAuthticated)}");
-                        break;
-                    default:
-                        ErrorBoxContent = LangHelper.GetString("App.Err.WU", ex.Message);
-                        Logger.LogError($"Reload Mails tab {parameter}: Unexpected {nameof(WebUntisException)} Message: {ex.Message}, Code: {ex.Code}");
-                        break;
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                if (ex.Source == "System.Net.Http" && ex.StatusCode is null)
-                    IsOffline = true;
-                else
-                    ErrorBoxContent = LangHelper.GetString("App.Err.NERR", ex.Message, ((int?)ex.StatusCode)?.ToString() ?? "0");
-                Logger.LogWarning($"Timetable loading: {nameof(HttpRequestException)} Code: {ex.StatusCode}, Message: {ex.Message}");
-            }
-            catch (Exception ex) when (ex.Source == "System.Net.Http")
-            {
-                IsOffline = true;
-            }
             catch (Exception ex)
             {
-                ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
-                Type i = ex.GetType();
-                Logger.LogError($"Reload Mails tab {parameter}: {ex.Source ?? "System.Exception"}; {ex.Message}");
+                ex.HandleWithDefaultHandler(this, "Reload Mails tab");
             }
 
             IsMailsLoading = false;
         });
+
+        NewMailCommand = new(_ => !IsOffline, _ => new MessageWindow().Show());
 
         _ = Task.Run(async () =>
         {

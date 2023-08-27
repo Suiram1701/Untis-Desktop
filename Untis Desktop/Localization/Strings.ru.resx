@@ -179,7 +179,7 @@
     <value>Не удалось установить соединение с сервером WebUntis.\nПроверьте подключение к Интернету.</value>
   </data>
   <data name="MainWindow.Inf.NNC" xml:space="preserve">
-    <value>Соединение с сервером WebUntis невозможно.</value>
+    <value>Соединение с сервером WebUntis невозможно</value>
   </data>
   <data name="MainWindow.G.Reload" xml:space="preserve">
     <value>Перезагрузить</value>
