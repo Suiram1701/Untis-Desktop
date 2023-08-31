@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace UntisDesktop.ViewModels;
 
-public interface IWindowViewModel
+internal interface IWindowViewModel
 {
+    public DelegateCommand ReloadOfflineCommand { get; }
+
     public string ErrorBoxContent { get ; set; }
 
     public bool IsOffline { get; set; }

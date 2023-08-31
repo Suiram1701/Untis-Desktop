@@ -75,8 +75,10 @@ public partial class App : Application
         }
     }
 
-    protected override void OnExit(ExitEventArgs e)
+    protected async override void OnExit(ExitEventArgs e)
     {
+        await Client!.LogoutAsync();
+
         Logger.EndLogging(e.ApplicationExitCode);
         base.OnExit(e);
     }

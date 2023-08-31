@@ -117,10 +117,10 @@
 
             <TextBlock Text="{Localization:Localize MessageWindow.R}" FontSize="16" Grid.Column="0" VerticalAlignment="Center"/>
 
-            <WrapPanel x:Name="Recipients" Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="1"/>
+            <WrapPanel x:Name="Recipients" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="1"/>
 
             <Button Click="AddRecipient_Click" Visibility="{Binding IsReadOnly, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Inv, Mode=OneWay}" ToolTip="{Localization:Localize MessageWindow.R.New}"
-                    Grid.Column="2" HorizontalAlignment="Right" Template="{StaticResource AddRecipientBtn}">
+                    Grid.Column="2" HorizontalAlignment="Right" Template="{StaticResource RoundMenuBtn}">
                 <Image Source="/Assets/add_circle.png" Stretch="Uniform" Height="30"/>
             </Button>
         </Grid>

@@ -20,6 +20,8 @@ using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp;
 using System.Windows.Threading;
 using System.Windows.Controls.Primitives;
+using UntisDesktop.Localization;
+using SixLabors.Fonts.Tables.AdvancedTypographic;
 
 namespace UntisDesktop.UserControls;
 
@@ -36,13 +38,13 @@ public partial class Recipient : UserControl
             if (IsSelected != value)
             {
                 SetValue(IsSelectedProperty, value);
-                RaiseEvent(new(ToggleSelectEvent));
+                RaiseEvent(new UpdateEventArgs(MessagePerson.Id, ToggleSelectEvent));
             }
         }
     }
 
-    public static readonly RoutedEvent ToggleSelectEvent = EventManager.RegisterRoutedEvent("OnToggleSelect", RoutingStrategy.Bubble, typeof(EventHandler<RoutedEventArgs>), typeof(Recipient));
-    public event EventHandler<RoutedEventArgs> ToggleSelectEventHandler
+    public static readonly RoutedEvent ToggleSelectEvent = EventManager.RegisterRoutedEvent("OnToggleSelect", RoutingStrategy.Bubble, typeof(EventHandler<UpdateEventArgs>), typeof(Recipient));
+    public event EventHandler<UpdateEventArgs> ToggleSelectEventHandler
     {
         add => AddHandler(ToggleSelectEvent, value);
         remove => RemoveHandler(ToggleSelectEvent, value);
@@ -53,7 +55,7 @@ public partial class Recipient : UserControl
         MessagePerson = recipient;
 
         InitializeComponent();
-        IsSelected = isSelected;
+        SetValue(IsSelectedProperty, isSelected);
 
         // Display profile image
         Dispatcher.Invoke(async () =>
@@ -71,12 +73,23 @@ public partial class Recipient : UserControl
         });
 
         // Display tags
+        if (recipient.Role is not null)
+            AddTag(LangHelper.GetString("RecipientDialog.RT." + recipient.Role));
+
+        if (recipient.ClassName is not null)
+            AddTag(recipient.ClassName);
+        
         foreach (string tag in recipient.Tags)
-            Tags.Children.Add(new Label
-            {
-                Content = tag,
-                Template = (ControlTemplate)Application.Current.FindResource("TagTemplate")
-            });
+            AddTag(tag);
+    }
+
+    private void AddTag(string tag)
+    {
+        Tags.Children.Add(new Label
+        {
+            Content = tag,
+            Template = (ControlTemplate)Application.Current.FindResource("TagTemplate")
+        });
     }
 
     private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)

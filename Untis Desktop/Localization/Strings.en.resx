@@ -298,4 +298,76 @@
   <data name="MainWindow.Mail.Revoke.Title" xml:space="preserve">
     <value>revoke message</value>
   </data>
+  <data name="FilterBox.DSA" xml:space="preserve">
+    <value>deselect all</value>
+  </data>
+  <data name="FilterBox.FN" xml:space="preserve">
+    <value>{0} + {1} more</value>
+  </data>
+  <data name="FilterBox.S" xml:space="preserve">
+    <value>Choose</value>
+  </data>
+  <data name="MessageWindow.DTitle" xml:space="preserve">
+    <value>New message</value>
+  </data>
+  <data name="MessageWindow.R" xml:space="preserve">
+    <value>Recipients:</value>
+  </data>
+  <data name="MessageWindow.R.New" xml:space="preserve">
+    <value>Add recipient</value>
+  </data>
+  <data name="RecipientDialog.Abort" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="RecipientDialog.Apply" xml:space="preserve">
+    <value>Take over</value>
+  </data>
+  <data name="RecipientDialog.F.Select" xml:space="preserve">
+    <value>Selected</value>
+  </data>
+  <data name="RecipientDialog.FT.CLASS" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="RecipientDialog.FT.DEPARTMENT" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="RecipientDialog.FT.QUICK" xml:space="preserve">
+    <value>list</value>
+  </data>
+  <data name="RecipientDialog.FT.ROLE" xml:space="preserve">
+    <value>role</value>
+  </data>
+  <data name="RecipientDialog.FT.USER_GROUP" xml:space="preserve">
+    <value>group</value>
+  </data>
+  <data name="RecipientDialog.RO.STAFF" xml:space="preserve">
+    <value>Colleagues</value>
+  </data>
+  <data name="RecipientDialog.RO.TEACHER" xml:space="preserve">
+    <value>teacher</value>
+  </data>
+  <data name="RecipientDialog.RT.ADMIN" xml:space="preserve">
+    <value>Administration</value>
+  </data>
+  <data name="RecipientDialog.RT.CLASS_TEACHERS" xml:space="preserve">
+    <value>class teachers</value>
+  </data>
+  <data name="RecipientDialog.RT.OTHERS" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="RecipientDialog.RT.TEACHER" xml:space="preserve">
+    <value>teacher</value>
+  </data>
+  <data name="RecipientDialog.RT.TEACHERS" xml:space="preserve">
+    <value>my teachers</value>
+  </data>
+  <data name="RecipientDialog.S.STAFF" xml:space="preserve">
+    <value>search for colleagues</value>
+  </data>
+  <data name="RecipientDialog.S.TEACHER" xml:space="preserve">
+    <value>search for teachers</value>
+  </data>
+  <data name="RecipientDialog.Title" xml:space="preserve">
+    <value>Recipients</value>
+  </data>
 </root>

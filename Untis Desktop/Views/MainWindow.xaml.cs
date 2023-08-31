@@ -47,7 +47,7 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
-        SelectedWeek = ProfileCollection.GetActiveProfile().Options.SelectedWeek;
+        s_SelectedWeek = ProfileCollection.GetActiveProfile().Options.SelectedWeek;
 
         InitializeComponent();
 

@@ -25,6 +25,20 @@ public partial class MessageWindow : Window
     public MessageWindow()
     {
         InitializeComponent();
+
+        ViewModel.PropertyChanged += (_, e) =>
+        {
+            // Error box update
+            if (e.PropertyName == nameof(MainWindowViewModel.ErrorBoxContent))
+            {
+                if (ViewModel.ErrorBoxContent != string.Empty)
+                {
+                    Storyboard popupAnimation = (Storyboard)ErrorBox.FindResource("PopUpAnimation");
+                    popupAnimation.AutoReverse = false;
+                    popupAnimation.Begin();
+                }
+            }
+        };
     }
 
     public MessageWindow(MessagePreview preview) : this()

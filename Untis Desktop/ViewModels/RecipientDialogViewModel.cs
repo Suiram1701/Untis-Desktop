@@ -1,10 +1,13 @@
 ﻿using Data.Messages;
+using Data.Profiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using UntisDesktop.Extensions;
 using UntisDesktop.Localization;
 using WebUntisAPI.Client.Models.Messages;
 
@@ -12,6 +15,9 @@ namespace UntisDesktop.ViewModels;
 
 internal class RecipientDialogViewModel : ViewModelBase, IWindowViewModel
 {
+    // Commands
+    public DelegateCommand ReloadOfflineCommand { get; }
+
     public string ErrorBoxContent
     {
         get => _errorBoxContent;
@@ -53,11 +59,29 @@ internal class RecipientDialogViewModel : ViewModelBase, IWindowViewModel
     }
     private string _searchText = string.Empty;
 
+    public bool ViewSelectedRecipients
+    {
+        get => _viewSelectedRecipients;
+        set
+        {
+            if (_viewSelectedRecipients != value)
+            {
+                _viewSelectedRecipients = value;
+                RaisePropertyChanged();
+            }
+        }
+    }
+    private bool _viewSelectedRecipients = false;
+
     public Dictionary<string, MessagePerson[]> AvailablePeople = new();
+
+    public Dictionary<string, List<FilterItem>> Filters = new();
 
     public string SearchTextPlaceHolder { get => LangHelper.GetString("RecipientDialog.S." + CurrentRecipientOption); }
 
     public bool ViewSearchTextPlaceHolder { get => string.IsNullOrEmpty(SearchText); }
+
+    public bool ViewExtendedFilterOptions { get => CurrentRecipientOption == "STAFF"; }
 
     public string CurrentRecipientOption
     {
@@ -69,10 +93,27 @@ internal class RecipientDialogViewModel : ViewModelBase, IWindowViewModel
                 _currentRecipientOption = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(SearchTextPlaceHolder));
+                RaisePropertyChanged(nameof(ViewExtendedFilterOptions));
             }
         }
     }
     private string _currentRecipientOption = MessagePermissionsFile.s_DefaultInstance.Permissions.RecipientOptions.First();
+
+    public RecipientDialogViewModel()
+    {
+        ReloadOfflineCommand = new(async _ =>
+        {
+            try
+            {
+                App.Client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None);
+                IsOffline = false;
+            }
+            catch
+            {
+                IsOffline = true;
+            }
+        });
+    }
 
     public async Task ApplyFiltersAsync()
     {
@@ -82,9 +123,16 @@ internal class RecipientDialogViewModel : ViewModelBase, IWindowViewModel
         switch (CurrentRecipientOption)
         {
             case "TEACHER":
-                AvailablePeople = (await App.Client!.GetMessagePeopleAsync());
+                try
+                {
+                    AvailablePeople = await App.Client!.GetMessagePeopleAsync();
+                }
+                catch (Exception ex)
+                {
+                    ex.HandleWithDefaultHandler(this, "Apply Recipient filter (TEACHER)");
+                }
 
-                // Filter
+                // search filter
                 if (!string.IsNullOrEmpty(SearchText))
                 {
                     Dictionary<string, MessagePerson[]> sorted = new();
@@ -98,6 +146,24 @@ internal class RecipientDialogViewModel : ViewModelBase, IWindowViewModel
                 }
                 break;
             case "STAFF":
+                try
+                {
+                    Dictionary<string, FilterItem[]> sorted = new();
+                    foreach ((string type, List<FilterItem> items) in Filters)
+                        sorted.Add(type, items.ToArray());
+
+                    AvailablePeople = new()
+                    {
+                        {
+                            string.Empty,
+                            await App.Client!.GetStaffFilterSearchResultAsync(SearchText, sorted)
+                        }
+                    };
+                }
+                catch (Exception ex)
+                {
+                    ex.HandleWithDefaultHandler(this, "Apply Recipient filter (STAFF)");
+                }
                 break;
             default:
                 break;
@@ -111,6 +177,7 @@ internal class RecipientDialogViewModel : ViewModelBase, IWindowViewModel
         string normalizedSearchText = SearchText.ToLower();
         return person.DisplayName.ToLower().Contains(normalizedSearchText)
             || (person.ClassName?.ToLower().Contains(normalizedSearchText) ?? false)
+            || (person.Role?.ToLower().Contains(normalizedSearchText) ?? false)
             || person.Tags.Any(t => t.ToLower().Contains(normalizedSearchText));
     }
 }

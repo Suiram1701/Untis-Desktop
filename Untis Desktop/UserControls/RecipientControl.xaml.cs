@@ -20,8 +20,8 @@ public partial class RecipientControl : UserControl
 {
     public MessagePerson MessagePerson { get; set; }
 
-    public static readonly RoutedEvent DeleteEvent = EventManager.RegisterRoutedEvent("OnDeletion", RoutingStrategy.Bubble, typeof(EventHandler<DeletionEventArgs>), typeof(Recipient));
-    public event EventHandler<DeletionEventArgs> DeleteEventHandler
+    public static readonly RoutedEvent DeleteEvent = EventManager.RegisterRoutedEvent("OnDeletion", RoutingStrategy.Bubble, typeof(EventHandler<UpdateEventArgs>), typeof(Recipient));
+    public event EventHandler<UpdateEventArgs> DeleteEventHandler
     {
         add => AddHandler(DeleteEvent, value);
         remove => RemoveHandler(DeleteEvent, value);
@@ -35,6 +35,6 @@ public partial class RecipientControl : UserControl
 
     private void Delete_Click(object sender, RoutedEventArgs e)
     {
-        RaiseEvent(new DeletionEventArgs(MessagePerson.Id, DeleteEvent));
+        RaiseEvent(new UpdateEventArgs(MessagePerson.Id, DeleteEvent));
     }
 }

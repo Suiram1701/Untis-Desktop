@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,6 +26,8 @@ namespace UntisDesktop.ViewModels;
 internal class LoginWindowViewModel : ViewModelBase, IWindowViewModel
 {
     // Commands
+    public DelegateCommand ReloadOfflineCommand { get; }
+
     public DelegateCommand BackCommand { get; }
 
     public DelegateCommand ExtendedOptionsCommand { get; }
@@ -276,6 +279,19 @@ internal class LoginWindowViewModel : ViewModelBase, IWindowViewModel
 
     public LoginWindowViewModel()
     {
+        ReloadOfflineCommand = new(async _ =>
+        {
+            try
+            {
+                App.Client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None);
+                IsOffline = false;
+            }
+            catch
+            {
+                IsOffline = true;
+            }
+        });
+
         BackCommand = new DelegateCommand(_ =>
         {
             ServerUrl = string.Empty;

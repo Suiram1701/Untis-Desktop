@@ -15,6 +15,9 @@
     <None Remove="Assets\attach_file.png" />
     <None Remove="Assets\attach_file_add.png" />
     <None Remove="Assets\calendar_month.png" />
+    <None Remove="Assets\cancel.png" />
+    <None Remove="Assets\check.png" />
+    <None Remove="Assets\check_circle.png" />
     <None Remove="Assets\delete.png" />
     <None Remove="Assets\drafts.png" />
     <None Remove="Assets\mail.png" />
@@ -39,11 +42,13 @@
 
   <ItemGroup>
     <Resource Include="Assets\add_circle.png" />
+    <Resource Include="Assets\cancel.png" />
+    <Resource Include="Assets\check_circle.png" />
     <Resource Include="Assets\mark_email_read.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Suiram1.WebUntisAPI.Client" Version="1.2.0" />
+    <PackageReference Include="Suiram1.WebUntisAPI.Client" Version="1.2.2" />
   </ItemGroup>
 
   <ItemGroup>

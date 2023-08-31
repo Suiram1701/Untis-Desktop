@@ -89,11 +89,11 @@ internal static class PeriodExtensions
         return period.TeacherIds.Select(teachers =>
         {
             Teacher? teacher = TeacherFile.s_DefaultInstance[teachers.Id];
-            Teacher? orgTeacher = TeacherFile.s_DefaultInstance[teachers.OriginalId ?? -1];
-            string? teacherStr = teacher?.Title + teacher?.LongName;
-            string? orgTeacherStr = orgTeacher?.Title + orgTeacher?.LongName;
+            Teacher? orgTeacher = TeacherFile.s_DefaultInstance[teachers.OriginalId ?? - 1];
+            string? teacherStr = teacher?.LongName;
+            string? orgTeacherStr = orgTeacher?.LongName;
 
-            if ((teacherStr is null && teachers.Id != 0) || (teachers.OriginalId is not null && orgTeacherStr is null))     // One of the subjects was not found
+            if ((teacherStr is null && teachers.Id != 0) || (teachers.OriginalId is not null && orgTeacherStr is null))
                 Logger.LogWarning($"Period load: period = {period.Id}{(teacherStr is null ? $", teacher not found = {teachers.Id}" : string.Empty)}{((orgTeacherStr is null && teachers.OriginalId is not null) ? $", original teacher not found = {teachers.OriginalId}" : string.Empty)}");
 
             Code code;

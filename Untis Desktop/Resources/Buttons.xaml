@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Converter="clr-namespace:UntisDesktop.Converter">
     <ControlTemplate x:Key="Btn" TargetType="{x:Type Button}">
         <Border Name="Border" CornerRadius="8" Background="{DynamicResource PressedBtnColor}" Padding="45,10">
             <ContentPresenter/>
@@ -62,8 +63,8 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="AddRecipientBtn" TargetType="{x:Type Button}">
-        <Border Name="Border" CornerRadius="50" Padding="5">
+    <ControlTemplate x:Key="RoundMenuBtn" TargetType="{x:Type Button}">
+        <Border Name="Border" CornerRadius="50" Padding="2">
             <ContentPresenter/>
         </Border>
         <ControlTemplate.Triggers>
@@ -72,6 +73,44 @@
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter TargetName="Border" Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ToggleBtn" TargetType="{x:Type ToggleButton}">
+        <Border Name="Border" CornerRadius="15" BorderBrush="{DynamicResource PressedDarkBtnColor}" BorderThickness="1" Padding="15,5">
+            <ContentPresenter/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="CheckBtn" TargetType="{x:Type ToggleButton}">
+        <ControlTemplate.Resources>
+            <Converter:BoolVisibilityConverter x:Key="BoolVisibility"/>
+        </ControlTemplate.Resources>
+        
+        <Border CornerRadius="5" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ContentPresenter Grid.Column="0"/>
+                <Image Source="/Assets/check_circle.png" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Converter={StaticResource BoolVisibility}, Mode=OneWay}"
+                       Height="15" Grid.Column="1" HorizontalAlignment="Right" Margin="5,0,0,0"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource HoverDarkBtnColor}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

@@ -19,6 +19,10 @@ using UntisDesktop.UserControls;
 using Newtonsoft.Json.Linq;
 using UntisDesktop.Localization;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media.Animation;
+using WebUntisAPI.Client.Models;
+using UntisDesktop.Extensions;
+using System.Windows.Threading;
 
 namespace UntisDesktop.Views;
 
@@ -41,7 +45,26 @@ public partial class RecipientDialog : Window
 
         InitializeComponent();
 
-        // Display the different recipient option when more than one
+        ViewModel.PropertyChanged += (_, e) =>
+        {
+            Dispatcher.Invoke(() =>
+            {
+                // Error box update
+                if (e.PropertyName == nameof(MainWindowViewModel.ErrorBoxContent))
+                {
+                    if (ViewModel.ErrorBoxContent != string.Empty)
+                    {
+                        Storyboard popupAnimation = (Storyboard)ErrorBox.FindResource("PopUpAnimation");
+                        popupAnimation.AutoReverse = false;
+                        popupAnimation.Begin();
+                    }
+                }
+                else if (e.PropertyName == nameof(RecipientDialogViewModel.AvailablePeople))
+                    RenderRecipients();
+            }, DispatcherPriority.Render);
+        };
+
+        // Display the different recipient options when more than one option
         if (s_DefaultInstance.Permissions.RecipientOptions.Length > 1)
         {
             foreach (string optionName in s_DefaultInstance.Permissions.RecipientOptions)
@@ -79,13 +102,53 @@ public partial class RecipientDialog : Window
             }
         }
 
-        ViewModel.PropertyChanged += (_, e) =>
+        // Display the available filters
+        Task.Run(async () =>
         {
-            if (e.PropertyName == nameof(RecipientDialogViewModel.AvailablePeople))
-                RenderRecipients();
-        };
+            try
+            {
+                Dictionary<string, FilterItem[]> filters = await App.Client!.GetStaffSearchFiltersAsync();
 
-        _ = ViewModel.ApplyFiltersAsync();
+                Dispatcher.Invoke(() =>
+                {
+                    foreach ((string type, FilterItem[] items) in filters)
+                    {
+                        FilterBox filterBox = new(LangHelper.GetString("RecipientDialog.FT." + type), items) { VerticalAlignment = VerticalAlignment.Top };
+
+                        // The handler when a filter is selected
+                        filterBox.SelectionChangedEvent += (_, e) =>
+                        {
+                            if (ViewModel.Filters.ContainsKey(type))
+                            {
+                                if (ViewModel.Filters[type].Any(i => i.ReferenceId == e.UpdateId))
+                                {
+                                    ViewModel.Filters[type].Remove(ViewModel.Filters[type].FirstOrDefault(i => i.ReferenceId == e.UpdateId));
+
+                                    // Remove full type when nothing is in there
+                                    if (!ViewModel.Filters[type].Any())
+                                        ViewModel.Filters.Remove(type);
+                                }
+                                else
+                                    ViewModel.Filters[type].Add(items.First(i => i.ReferenceId == e.UpdateId));
+                            }
+                            else
+                                ViewModel.Filters.Add(type, new() { items.FirstOrDefault(i => i.ReferenceId == e.UpdateId) });
+
+                            Task.Run(ViewModel.ApplyFiltersAsync);
+                            e.Handled = true;
+                        };
+
+                        Filters.Children.Add(filterBox);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                ex.HandleWithDefaultHandler(ViewModel, "Get Staff filters");
+            }
+        });
+
+        Task.Run(ViewModel.ApplyFiltersAsync);
     }
 
     private void RenderRecipients()
@@ -95,32 +158,43 @@ public partial class RecipientDialog : Window
 
         foreach ((string type, MessagePerson[] people) in ViewModel.AvailablePeople)
         {
-            if (!people.Any())
+            if (!people.Any())     // When empty skip
                 continue;
 
-            int labelId = VisibleRecipients.Children.Add(new TextBlock
+            if (ViewModel.ViewSelectedRecipients)     // When selection required skip the non selected people
+                if (!SelectedRecipients.Any(r => people.Any(p => p.Id == r.Id)))
+                    continue;
+
+            if (!string.IsNullOrEmpty(type))
             {
-                Text = LangHelper.GetString("RecipientDialog.RT." + type),
-                FontSize = 16,
-                VerticalAlignment = VerticalAlignment.Top,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Margin = new(20, ViewModel.AvailablePeople.First().Key == type
-                ? 0 
-                : 25, 0, 0)
-            });
-            VisibleRecipients.RowDefinitions.Add(new() { Height = new(1, GridUnitType.Star) });
-            Grid.SetRow(VisibleRecipients.Children[labelId], VisibleRecipients.RowDefinitions.Count - 1);
+                int labelId = VisibleRecipients.Children.Add(new TextBlock
+                {
+                    Text = LangHelper.GetString("RecipientDialog.RT." + type),
+                    FontSize = 16,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Margin = new(20, ViewModel.AvailablePeople.First().Key == type
+                    ? 0
+                    : 25, 0, 0)
+                });
+                VisibleRecipients.RowDefinitions.Add(new() { Height = new(1, GridUnitType.Star) });
+                Grid.SetRow(VisibleRecipients.Children[labelId], VisibleRecipients.RowDefinitions.Count - 1);
+            }
 
             foreach (MessagePerson person in people)
             {
-                Recipient recipient = new(person, SelectedRecipients.Any(r => r.Id == person.Id)) { VerticalAlignment = VerticalAlignment.Top };
+                if (ViewModel.ViewSelectedRecipients)     // When selection required skip the non selected people
+                    if (!SelectedRecipients.Any(r => r.DisplayName == person.DisplayName))
+                        continue;
+
+                Recipient recipient = new(person, SelectedRecipients.Any(r => r.DisplayName == person.DisplayName)) { VerticalAlignment = VerticalAlignment.Top };
                 recipient.ToggleSelectEventHandler += (_, _) =>
                 {
                     // Handler for add / remove of the person
-                    if (recipient.IsSelected && SelectedRecipients.All(r => r.Id != person.Id))
+                    if (recipient.IsSelected)
                         SelectedRecipients.Add(person);
                     else
-                        SelectedRecipients.Remove(SelectedRecipients.FirstOrDefault(r => r.Id == person.Id) ?? new());
+                        SelectedRecipients.Remove(SelectedRecipients.FirstOrDefault(r => r.DisplayName == person.DisplayName) ?? new());
                 };
 
                 // Only one person can selected
@@ -160,6 +234,9 @@ public partial class RecipientDialog : Window
         {
             ViewModel.CurrentRecipientOption = name;
             ViewModel.SearchText = string.Empty;
+            ViewModel.ViewSelectedRecipients = false;
+            ViewModel.Filters.Clear();
+
             await ViewModel.ApplyFiltersAsync();
         }
 
@@ -176,5 +253,27 @@ public partial class RecipientDialog : Window
     {
         DialogResult = true;
         e.Handled = true;
+    }
+
+    private void ErrorBoxClose_Click(object sender, RoutedEventArgs e)
+    {
+        Storyboard popupAnimation = (Storyboard)ErrorBox.FindResource("PopUpAnimation");
+        void OnCompletion(object? sender, EventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(() => ViewModel.ErrorBoxContent = string.Empty);
+            popupAnimation.Completed -= OnCompletion;
+        }
+
+        popupAnimation.Completed += OnCompletion;
+        popupAnimation.AutoReverse = true;
+        popupAnimation.Begin();
+        popupAnimation.Pause();
+        popupAnimation.Seek(TimeSpan.FromSeconds(1));
+        popupAnimation.Resume();
+    }
+
+    private void ViewSelectedPeople_Click(object sender, RoutedEventArgs e)
+    {
+        RenderRecipients();
     }
 }

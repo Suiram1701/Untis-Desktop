@@ -7,12 +7,12 @@ using System.Windows;
 
 namespace UntisDesktop;
 
-public sealed class DeletionEventArgs : RoutedEventArgs
+public sealed class UpdateEventArgs : RoutedEventArgs
 {
-    public int DeletedId { get; set; }
+    public int UpdateId { get; set; }
 
-    public DeletionEventArgs(int deletedId, RoutedEvent routedEvent) : base(routedEvent)
+    public UpdateEventArgs(int updateId, RoutedEvent routedEvent) : base(routedEvent)
     {
-        DeletedId = deletedId;
+        UpdateId = updateId;
     }
 }
