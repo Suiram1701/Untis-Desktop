@@ -21,6 +21,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
+        
         <!-- Error box -->
         <Border x:Name="ErrorBox" Panel.ZIndex="1" Background="#FFFB4D4D" BorderBrush="Red" BorderThickness="1" CornerRadius="10"
                 Grid.RowSpan="5" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="20,10,20,10" Margin="0,-90,0,0">
@@ -95,16 +96,18 @@
         </Border>
 
         <!-- Subject -->
-        <Grid Grid.Row="0" HorizontalAlignment="Left">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Betreff" FontSize="16" Grid.Column="0" Margin="0,0,15,0"/>
-            <TextBlock Text="Aw:" FontSize="16" FontWeight="Bold" Grid.Column="1" Margin="0,0,5,0"/>
-            <TextBox Text="{Binding Subject, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="16" IsReadOnly="{Binding IsReadOnly, Mode=OneWay}" Grid.Column="2"/>
+            <TextBlock Text="{Localization:Localize MessageWindow.Subject}" FontSize="16" Grid.Column="0" Margin="0,0,15,0"/>
+            <TextBlock Text="{Localization:Localize MessageWindow.Reply}" FontSize="16" FontWeight="Bold" Grid.Column="1" Margin="0,0,5,0"/>
+            <TextBox Name="Subject" Text="{Binding Subject, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="16" IsReadOnly="{Binding IsReadOnly, Mode=OneWay}"
+                     BorderThickness="0" Grid.Column="2"/>
+            <Line Stroke="Black" X1="0" X2="{Binding ElementName=Subject, Path=ActualWidth}" Y1="22" Y2="22" Grid.Column="1" Grid.ColumnSpan="2"/>
         </Grid>
         
         <!-- Recipients -->
@@ -120,12 +123,32 @@
             <WrapPanel x:Name="Recipients" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="1"/>
 
             <Button Click="AddRecipient_Click" Visibility="{Binding IsReadOnly, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Inv, Mode=OneWay}" ToolTip="{Localization:Localize MessageWindow.R.New}"
-                    Grid.Column="2" HorizontalAlignment="Right" Template="{StaticResource RoundMenuBtn}">
-                <Image Source="/Assets/add_circle.png" Stretch="Uniform" Height="30"/>
+                    Grid.Column="2" HorizontalAlignment="Right" Margin="5" Template="{StaticResource RoundMenuBtn}">
+                <Image Source="/Assets/add_circle.png" Stretch="Uniform" Height="20"/>
             </Button>
         </Grid>
             
+        <!-- Attachments -->
+        <Grid Visibility="{Binding HasAttachments, Converter={StaticResource BoolVisibilityConverter}}" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{Localization:Localize MessageWindow.A}" FontSize="16" Grid.Column="0" VerticalAlignment="Center"/>
+
+            <WrapPanel x:Name="Attachments" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="1"/>
+
+            <Button Click="AddAttachment_Click" Visibility="{Binding IsReadOnly, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Inv, Mode=OneWay}" ToolTip="{Localization:Localize MessageWindow.A.New}"
+                    Grid.Column="2" HorizontalAlignment="Right" Margin="5" Template="{StaticResource RoundMenuBtn}">
+                <Image Source="/Assets/add_circle.png" Stretch="Uniform" Height="20"/>
+            </Button>
+        </Grid>
+        
         <!-- Content -->
-        <TextBox Text="{Binding Content, Mode=TwoWay}" IsReadOnly="{Binding IsReadOnly, Mode=OneWay}" Grid.Row="3"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="3" Padding="10,0,0,10">
+            <TextBox Text="{Binding Content, Mode=TwoWay}" FontSize="14" IsReadOnly="{Binding IsReadOnly, Mode=OneWay}" KeyDown="TextContent_KeyDown"/>
+        </ScrollViewer>
     </Grid>
 </Window>

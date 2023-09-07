@@ -370,4 +370,13 @@
   <data name="RecipientDialog.Title" xml:space="preserve">
     <value>Получатель</value>
   </data>
+  <data name="RecipientDialog.NPA" xml:space="preserve">
+    <value>Люди не найдены</value>
+  </data>
+  <data name="MessageWindow.Reply" xml:space="preserve">
+    <value>Re:</value>
+  </data>
+  <data name="MessageWindow.Subject" xml:space="preserve">
+    <value>Ссылка:</value>
+  </data>
 </root>

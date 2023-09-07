@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Data.Messages;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using UntisDesktop.Localization;
 using UntisDesktop.UserControls;
 using UntisDesktop.ViewModels;
 using WebUntisAPI.Client.Models.Messages;
@@ -82,6 +86,64 @@ public partial class MessageWindow : Window
 
                 Recipients.Children.Add(recipient);
             }
+        }
+
+        e.Handled = true;
+    }
+
+    private void AddAttachment_Click(object sender, RoutedEventArgs e)
+    {
+        OpenFileDialog dialog = new()
+        {
+            Title = LangHelper.GetString("MessageWindow.A.T"),
+            Filter = LangHelper.GetString("MessageWindow.A.F", "(*.*)|*.*"),
+            CheckFileExists = true,
+            Multiselect = true,
+        };
+        if (dialog.ShowDialog() ?? false)
+        {
+            int maxFileCount = MessagePermissionsFile.s_DefaultInstance.Permissions.MaxFileCount;
+            int currentFileCount = Attachments.Children
+                .OfType<AttachmentControl>()
+                .Count();
+
+            if (dialog.FileNames.Length + currentFileCount > maxFileCount)
+                MessageBox.Show(LangHelper.GetString("MessageWindow.A.TMF", maxFileCount.ToString()), LangHelper.GetString("MessageWindow.A.TMF.T"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
+
+            foreach (string file in dialog.FileNames.Take(maxFileCount - currentFileCount))
+            {
+                using FileStream stream = new(file, FileMode.Open, FileAccess.Read);
+                string fileName = System.IO.Path.GetFileName(file);
+
+                AttachmentControl attachment = new(fileName, stream);
+                attachment.DeleteEventHandler += (sender, _) =>
+                {
+                    ((AttachmentControl)sender!).Stream.Dispose();
+                    Attachments.Children.Remove(attachment);
+                };
+                Attachments.Children.Add(attachment);
+            }
+        }
+
+        e.Handled = true;
+    }
+
+    private void TextContent_KeyDown(object sender, KeyEventArgs e)
+    {
+        TextBox textBox = (TextBox)sender;
+        int currentIndex = textBox.CaretIndex;
+
+        switch (e.Key)
+        {
+            case Key.Enter:
+                textBox.Text = textBox.Text.Insert(currentIndex, Environment.NewLine);
+                textBox.SelectionStart = ++currentIndex;
+                break;
+            case Key.Tab:
+                textBox.Text = textBox.Text.Insert(currentIndex, "\t");
+                textBox.SelectionStart = ++currentIndex;
+                break;
+
         }
     }
 }

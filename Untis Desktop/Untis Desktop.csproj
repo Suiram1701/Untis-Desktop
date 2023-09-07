@@ -26,6 +26,7 @@
     <None Remove="Assets\notifications_off.png" />
     <None Remove="Assets\outgoing_mail.png" />
     <None Remove="Assets\person.png" />
+    <None Remove="Assets\person_off.png" />
     <None Remove="Assets\progress_activity.png" />
     <None Remove="Assets\refresh.png" />
     <None Remove="Assets\reply.png" />
@@ -69,6 +70,7 @@
     <Resource Include="Assets\notifications_off.png" />
     <Resource Include="Assets\outgoing_mail.png" />
     <Resource Include="Assets\person.png" />
+    <Resource Include="Assets\person_off.png" />
     <Resource Include="Assets\progress_activity.png" />
     <Resource Include="Assets\refresh.png" />
     <Resource Include="Assets\reply.png" />

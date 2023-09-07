@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,29 +13,35 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WebUntisAPI.Client.Models.Messages;
 
 namespace UntisDesktop.UserControls;
 
-public partial class RecipientControl : UserControl
+/// <summary>
+/// A user added attachment
+/// </summary>
+public partial class AttachmentControl : UserControl
 {
-    public MessagePerson MessagePerson { get; set; }
+    public MemoryStream Stream = new();
 
-    public static readonly RoutedEvent DeleteEvent = EventManager.RegisterRoutedEvent("OnDeletion", RoutingStrategy.Bubble, typeof(EventHandler<UpdateEventArgs>), typeof(RecipientControl));
-    public event EventHandler<UpdateEventArgs> DeleteEventHandler
+    public string FileName { get; set; }
+
+    public static readonly RoutedEvent DeleteEvent = EventManager.RegisterRoutedEvent("OnDeletion", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AttachmentControl));
+    public event RoutedEventHandler DeleteEventHandler
     {
         add => AddHandler(DeleteEvent, value);
         remove => RemoveHandler(DeleteEvent, value);
     }
 
-    public RecipientControl(MessagePerson messagePerson)
+    public AttachmentControl(string fileName, Stream content)
     {
-        MessagePerson = messagePerson;
+        content.CopyTo(Stream);
+        FileName = fileName;
+
         InitializeComponent();
     }
 
     private void Delete_Click(object sender, RoutedEventArgs e)
     {
-        RaiseEvent(new UpdateEventArgs(MessagePerson.Id, DeleteEvent));
+        RaiseEvent(new(DeleteEvent));
     }
 }

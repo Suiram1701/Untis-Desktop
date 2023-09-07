@@ -118,7 +118,6 @@
 
                 <!-- Filters -->
                 <WrapPanel x:Name="Filters" Orientation="Horizontal" Visibility="{Binding ViewExtendedFilterOptions, Converter={StaticResource BoolVisibilityConverter}}" Grid.Row="3" HorizontalAlignment="Center">
-
                     <!-- Display only selected persons -->
                     <ToggleButton Click="ViewSelectedPeople_Click" IsChecked="{Binding ViewSelectedRecipients, Mode=OneWayToSource}" Content="{Localization:Localize RecipientDialog.F.Select}" FontSize="14"
                                   VerticalAlignment="Top" Margin="10,5" Template="{StaticResource ToggleBtn}"/>
@@ -126,8 +125,20 @@
                     <!-- Other filter options -->
                 </WrapPanel>
 
-                <!-- Content -->
+                <!-- Result -->
                 <Grid x:Name="VisibleRecipients"/>
+                
+                <!-- No people found -->
+                <Grid Visibility="{Binding ViewNotFound, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" Margin="50">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Image Source="/Assets/person_off.png" Height="100" Grid.Row="0"/>
+                    <TextBlock Text="{Localization:Localize RecipientDialog.NPA}" FontSize="16" Grid.Row="1" HorizontalAlignment="Center"/>
+                </Grid>
+                
             </StackPanel>
         </ScrollViewer>
 

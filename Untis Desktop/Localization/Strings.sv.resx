@@ -370,4 +370,13 @@
   <data name="RecipientDialog.Title" xml:space="preserve">
     <value>Mottagare</value>
   </data>
+  <data name="RecipientDialog.NPA" xml:space="preserve">
+    <value>Inga personer hittades</value>
+  </data>
+  <data name="MessageWindow.Reply" xml:space="preserve">
+    <value>SV:</value>
+  </data>
+  <data name="MessageWindow.Subject" xml:space="preserve">
+    <value>Referens:</value>
+  </data>
 </root>

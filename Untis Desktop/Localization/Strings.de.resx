@@ -370,4 +370,31 @@
   <data name="FilterBox.S" xml:space="preserve">
     <value>Auswählen</value>
   </data>
+  <data name="RecipientDialog.NPA" xml:space="preserve">
+    <value>Keine Personen gefunden</value>
+  </data>
+  <data name="MessageWindow.Reply" xml:space="preserve">
+    <value>Aw:</value>
+  </data>
+  <data name="MessageWindow.Subject" xml:space="preserve">
+    <value>Betreff:</value>
+  </data>
+  <data name="MessageWindow.A.New" xml:space="preserve">
+    <value>Anhang hinzufügen</value>
+  </data>
+  <data name="MessageWindow.A" xml:space="preserve">
+    <value>Anhänge:</value>
+  </data>
+  <data name="MessageWindow.A.T" xml:space="preserve">
+    <value>Dateien anhängen</value>
+  </data>
+  <data name="MessageWindow.A.F" xml:space="preserve">
+    <value>Datei {0}</value>
+  </data>
+  <data name="MessageWindow.A.TMF" xml:space="preserve">
+    <value>Es können maximal {0} Dateien angehängt werden.</value>
+  </data>
+  <data name="MessageWindow.A.TMF.T" xml:space="preserve">
+    <value>Zu viele Dateien</value>
+  </data>
 </root>

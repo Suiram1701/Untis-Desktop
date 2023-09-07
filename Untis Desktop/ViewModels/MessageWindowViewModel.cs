@@ -68,6 +68,20 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
     }
     private string _subject = LangHelper.GetString("MessageWindow.DTitle");
 
+    public bool HasAttachments
+    {
+        get => _hasAttachments;
+        set
+        {
+            if (value != _hasAttachments)
+            {
+                _hasAttachments = value;
+                RaisePropertyChanged();
+            }
+        }
+    }
+    private bool _hasAttachments = true;
+
     public string Content
     {
         get => _content;

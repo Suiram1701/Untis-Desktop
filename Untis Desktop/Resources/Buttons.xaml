@@ -114,4 +114,16 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
+    <ControlTemplate x:Key="DeleteBtn" TargetType="{x:Type Button}">
+        <Label Name="Btn" Content="❌" Foreground="Red"/>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Btn" Property="Foreground" Value="#c93339"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Btn" Property="Foreground" Value="#b40007"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 </ResourceDictionary>

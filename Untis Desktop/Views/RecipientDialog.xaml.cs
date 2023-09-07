@@ -39,10 +39,6 @@ public partial class RecipientDialog : Window
         if (!s_DefaultInstance.Permissions.RecipientOptions.Any())
             DialogResult = false;
 
-        // TODO: Only for development
-        if (!s_DefaultInstance.Permissions.RecipientOptions.Contains("STAFF"))
-            s_DefaultInstance.Permissions.RecipientOptions = s_DefaultInstance.Permissions.RecipientOptions.Append("STAFF").ToArray();
-
         InitializeComponent();
 
         ViewModel.PropertyChanged += (_, e) =>

@@ -15,4 +15,12 @@
             <ContentPresenter/>
         </Border>
     </ControlTemplate>
+
+    <Style x:Key="DeleteBtnBorder" TargetType="{x:Type Border}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource HoverDarkBtnColor}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

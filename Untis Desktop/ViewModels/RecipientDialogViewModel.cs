@@ -73,6 +73,8 @@ internal class RecipientDialogViewModel : ViewModelBase, IWindowViewModel
     }
     private bool _viewSelectedRecipients = false;
 
+    public bool ViewNotFound { get => !AvailablePeople.Any(); }
+
     public Dictionary<string, MessagePerson[]> AvailablePeople = new();
 
     public Dictionary<string, List<FilterItem>> Filters = new();
@@ -170,6 +172,7 @@ internal class RecipientDialogViewModel : ViewModelBase, IWindowViewModel
         }
 
         RaisePropertyChanged(nameof(AvailablePeople));
+        RaisePropertyChanged(nameof(ViewNotFound));
     }
 
     private bool FilterBySearchText(MessagePerson person)
