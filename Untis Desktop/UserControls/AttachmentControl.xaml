@@ -3,13 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Localization="clr-namespace:UntisDesktop.Localization"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              mc:Ignorable="d">
-    <Border Name="Border" CornerRadius="10" VerticalAlignment="Center" Margin="2,0" Padding="5,1" Style="{StaticResource DeleteBtnBorder}">
+    <Border Name="Border" CornerRadius="10" BorderBrush="{DynamicResource HoverDarkBtnColor}" BorderThickness="0.75" VerticalAlignment="Center" Margin="2,0" Padding="5,1">
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding FileName}" FontSize="16" VerticalAlignment="Center"/>
-            <Button Click="Delete_Click" Visibility="{Binding ElementName=Border, Path=IsMouseOver, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}"
-                    VerticalAlignment="Center" Margin="3,0,0,0" Template="{StaticResource DeleteBtn}"/>
+            
+            <!-- Download -->
+            <Button Click="Download_ClickAsync" Visibility="{Binding DownloadAble, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" ToolTip="{Localization:Localize AttachmentControl.D}"
+                    VerticalAlignment="Center" Margin="3,0,0,0" Template="{StaticResource RoundMenuBtn}">
+                <Grid>
+                    <Image x:Name="DownloadImg" Source="/Assets/download.png" Height="18"/>
+                    <TextBlock x:Name="DownloadState" Text="" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-5"/>
+                </Grid>
+            </Button>
+
+            <!-- Delete -->
+            <Button Click="Delete_Click" Visibility="{Binding DeleteAble, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" ToolTip="{Localization:Localize AttachmentControl.DF}"
+                    VerticalAlignment="Center" Margin="3,0,0,0" Template="{StaticResource RoundMenuBtn}">
+                <Image Source="/Assets/cancel.png" Height="18"/>
+            </Button>
         </StackPanel>
     </Border>
 </UserControl>

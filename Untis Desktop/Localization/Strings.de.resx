@@ -397,4 +397,22 @@
   <data name="MessageWindow.A.TMF.T" xml:space="preserve">
     <value>Zu viele Dateien</value>
   </data>
+  <data name="AttachmentControl.D" xml:space="preserve">
+    <value>Herunterladen</value>
+  </data>
+  <data name="AttachmentControl.DF" xml:space="preserve">
+    <value>Anhang löschen</value>
+  </data>
+  <data name="RecipientControl.D" xml:space="preserve">
+    <value>Empfänger löschen</value>
+  </data>
+  <data name="AttachmentControl.DDT" xml:space="preserve">
+    <value>Anhang herunterladen</value>
+  </data>
+  <data name="AttachmentControl.DFE" xml:space="preserve">
+    <value>{0}-Datei</value>
+  </data>
+  <data name="MessageWindow.S" xml:space="preserve">
+    <value>Von:</value>
+  </data>
 </root>

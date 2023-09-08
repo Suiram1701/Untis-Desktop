@@ -33,6 +33,12 @@ public partial class RecipientControl : UserControl
         InitializeComponent();
     }
 
+    public RecipientControl(MessagePerson messagePerson, bool isDeleteAble) : this(messagePerson)
+    {
+        if (!isDeleteAble)
+            DeleteBtn.Visibility = Visibility.Collapsed;
+    }
+
     private void Delete_Click(object sender, RoutedEventArgs e)
     {
         RaiseEvent(new UpdateEventArgs(MessagePerson.Id, DeleteEvent));

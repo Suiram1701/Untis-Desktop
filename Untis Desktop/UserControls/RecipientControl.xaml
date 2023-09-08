@@ -3,13 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Localization="clr-namespace:UntisDesktop.Localization"
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}">
-    <Border Name="Border" CornerRadius="10" VerticalAlignment="Center" Margin="2,0" Padding="5,1" Style="{StaticResource DeleteBtnBorder}">
+    <Border CornerRadius="10" BorderBrush="{DynamicResource HoverDarkBtnColor}" BorderThickness="0.75" VerticalAlignment="Center" Margin="2,0" Padding="5,1">
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding MessagePerson.DisplayName}" FontSize="16" VerticalAlignment="Center"/>
-            <Button Click="Delete_Click" Visibility="{Binding ElementName=Border, Path=IsMouseOver, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}"
-                    VerticalAlignment="Center" Margin="3,0,0,0" Template="{StaticResource DeleteBtn}"/>
+            
+            <!-- Delete -->
+            <Button x:Name="DeleteBtn" Click="Delete_Click" ToolTip="{Localization:Localize RecipientControl.D}"
+                    VerticalAlignment="Center" Margin="3,0,0,0" Template="{StaticResource RoundMenuBtn}">
+                <Image Name="Btn" Source="/Assets/cancel.png" Height="18"/>
+            </Button>
         </StackPanel>
     </Border>
 </UserControl>
