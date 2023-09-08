@@ -19,6 +19,8 @@
     <None Remove="Assets\check.png" />
     <None Remove="Assets\check_circle.png" />
     <None Remove="Assets\delete.png" />
+    <None Remove="Assets\download.png" />
+    <None Remove="Assets\download_done.png" />
     <None Remove="Assets\drafts.png" />
     <None Remove="Assets\mail.png" />
     <None Remove="Assets\mark_email_read.png" />
@@ -45,6 +47,8 @@
     <Resource Include="Assets\add_circle.png" />
     <Resource Include="Assets\cancel.png" />
     <Resource Include="Assets\check_circle.png" />
+    <Resource Include="Assets\download.png" />
+    <Resource Include="Assets\download_done.png" />
     <Resource Include="Assets\mark_email_read.png" />
   </ItemGroup>
 

@@ -82,6 +82,34 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
     }
     private bool _hasAttachments = true;
 
+    public bool IsReplyForm
+    {
+        get => _isReplyForm;
+        set
+        {
+            if (value != _isReplyForm)
+            {
+                _isReplyForm = value;
+                RaisePropertyChanged();
+            }
+        }
+    }
+    private bool _isReplyForm = false;
+
+    public string PersonType
+    {
+        get => _personType;
+        set
+        {
+            if (_personType != value)
+            {
+                _personType = value;
+                RaisePropertyChanged();
+            }
+        }
+    }
+    private string _personType = LangHelper.GetString("MessageWindow.R");
+
     public string Content
     {
         get => _content;

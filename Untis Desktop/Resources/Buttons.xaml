@@ -92,7 +92,7 @@
         <ControlTemplate.Resources>
             <Converter:BoolVisibilityConverter x:Key="BoolVisibility"/>
         </ControlTemplate.Resources>
-        
+
         <Border CornerRadius="5" BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -111,18 +111,6 @@
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
-            </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
-
-    <ControlTemplate x:Key="DeleteBtn" TargetType="{x:Type Button}">
-        <Label Name="Btn" Content="❌" Foreground="Red"/>
-        <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Btn" Property="Foreground" Value="#c93339"/>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter TargetName="Btn" Property="Foreground" Value="#b40007"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
