@@ -20,9 +20,6 @@ using WebUntisAPI.Client.Models.Messages;
 
 namespace UntisDesktop.UserControls;
 
-/// <summary>
-/// A user added attachment
-/// </summary>
 public partial class AttachmentControl : UserControl
 {
     public string FileName { get; set; }
@@ -31,9 +28,9 @@ public partial class AttachmentControl : UserControl
 
     public bool DeleteAble { get; }
 
-    public MemoryStream Stream = new(0);
+    public MemoryStream? Stream;
 
-    private Attachment _attachment = new();
+    public Attachment? Attachment;
 
     public static readonly RoutedEvent DeleteEvent = EventManager.RegisterRoutedEvent("OnDeletion", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AttachmentControl));
     public event RoutedEventHandler DeleteEventHandler
@@ -52,12 +49,18 @@ public partial class AttachmentControl : UserControl
 
     public AttachmentControl(string fileName, Stream content) : this(fileName, false, true)
     {
+        Stream = new(0);
         content.CopyTo(Stream);
     }
 
     public AttachmentControl(Attachment attachment) : this(attachment.Name, true, false)
     {
-        _attachment = attachment;
+        Attachment = attachment;
+    }
+
+    public AttachmentControl(Attachment attachment, bool deleteAble) : this(attachment.Name, true, deleteAble)
+    {
+        Attachment = attachment;
     }
 
     private async void Download_ClickAsync(object sender, RoutedEventArgs e)
@@ -92,7 +95,7 @@ public partial class AttachmentControl : UserControl
                 DownloadImg.Visibility = Visibility.Hidden;
                 IProgress<double> progress = new Progress<double>(value => DownloadState.Text = Math.Round(value, 0) + "%");
 
-                await _attachment.DownloadContentAsStreamAsync(App.Client, stream, TimeSpan.FromSeconds(10), progress);
+                await Attachment?.DownloadContentAsStreamAsync(App.Client, stream, TimeSpan.FromSeconds(10), progress)!;
 
                 DownloadState.Text = string.Empty;
                 DownloadImg.Visibility = Visibility.Visible;
@@ -110,7 +113,7 @@ public partial class AttachmentControl : UserControl
 
     private void Delete_Click(object sender, RoutedEventArgs e)
     {
-        Stream.Dispose();
+        Stream?.Dispose();
         RaiseEvent(new(DeleteEvent));
     }
 }

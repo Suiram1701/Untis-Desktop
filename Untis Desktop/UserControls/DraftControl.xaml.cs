@@ -20,75 +20,46 @@ using UntisDesktop.Views;
 using WebUntisAPI.Client.Exceptions;
 using WebUntisAPI.Client.Models.Messages;
 
-namespace UntisDesktop.UserControls
+namespace UntisDesktop.UserControls;
+
+public partial class DraftControl : UserControl
 {
-    /// <summary>
-    /// Interaktionslogik für DraftControl.xaml
-    /// </summary>
-    public partial class DraftControl : UserControl
+    public DraftPreview Draft { get; set; }
+
+    public DraftControl(DraftPreview draft)
     {
-        public DraftPreview Draft { get; set; }
+        Draft = draft;
+        InitializeComponent();
+    }
 
-        public DraftControl(DraftPreview draft)
+    private async void Delete_ClickAsync(object sender, RoutedEventArgs e)
+    {
+        if (MessageBox.Show(LangHelper.GetString("MainWindow.Mail.Del.D.Text"), LangHelper.GetString("MainWindow.Mail.Del.D.Title"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
         {
-            Draft = draft;
-            InitializeComponent();
-        }
+            MainWindowViewModel viewModel = (MainWindowViewModel)Application.Current.Windows.Cast<Window>().OfType<MainWindow>().First().DataContext;
+            if (viewModel.IsOffline)
+                return;
 
-        private async void Delete_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show(LangHelper.GetString("MainWindow.Mail.Del.D.Text"), LangHelper.GetString("MainWindow.Mail.Del.D.Title"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            try
             {
-                MainWindowViewModel viewModel = (MainWindowViewModel)Application.Current.Windows.Cast<Window>().OfType<MainWindow>().First().DataContext;
-                if (viewModel.IsOffline)
-                    return;
-
-                try
-                {
-                    await App.Client!.DeleteDraftAsync(Draft);
-                }
-                catch (WebUntisException ex)
-                {
-                    switch (ex.Code)
-                    {
-                        case (int)WebUntisException.Codes.NoRightForMethod:
-                            viewModel.ErrorBoxContent = LangHelper.GetString("App.Err.WU.NRFM");
-                            Logger.LogWarning($"Draft deletion: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NoRightForMethod)}");
-                            break;
-                        case (int)WebUntisException.Codes.NotAuthticated:
-                            viewModel.ErrorBoxContent = LangHelper.GetString("App.Err.WU.NA");
-                            Logger.LogWarning($"Draft deletion: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NotAuthticated)}");
-                            break;
-                        default:
-                            viewModel.ErrorBoxContent = LangHelper.GetString("App.Err.WU", ex.Message);
-                            Logger.LogError($"Draft deletion: Unexpected {nameof(WebUntisException)} Message: {ex.Message}, Code: {ex.Code}");
-                            break;
-                    }
-                    return;
-                }
-                catch (HttpRequestException ex)
-                {
-                    if (ex.Source == "System.Net.Http" && ex.StatusCode is null)
-                        viewModel.IsOffline = true;
-                    else
-                        viewModel.ErrorBoxContent = LangHelper.GetString("App.Err.NERR", ex.Message, ((int?)ex.StatusCode)?.ToString() ?? "0");
-                    Logger.LogWarning($"Draft deletion: {nameof(HttpRequestException)} Code: {ex.StatusCode}, Message: {ex.Message}");
-                    return;
-                }
-                catch (Exception ex) when (ex.Source == "System.Net.Http")
-                {
-                    viewModel.IsOffline = true;
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    viewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
-                    Logger.LogError($"Draft deletion: {ex.Source ?? "System.Exception"}; {ex.Message}");
-                    return;
-                }
-
-                await viewModel.LoadMailTabAsync();
+                await App.Client!.DeleteDraftAsync(Draft);
             }
+            catch (Exception ex)
+            {
+                Window window = Window.GetWindow(this);
+                ex.HandleWithDefaultHandler((IWindowViewModel)window.DataContext, "Draft deletion");
+            }
+
+            await viewModel.LoadMailTabAsync();
+        }
+    }
+
+    protected override void OnMouseDown(MouseButtonEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed)
+        {
+            new MessageWindow(Draft).Show();
+            e.Handled = true;
         }
     }
 }

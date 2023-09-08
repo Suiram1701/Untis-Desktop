@@ -27,6 +27,9 @@ public partial class MessageWindow : Window
 {
     private MessageWindowViewModel ViewModel { get => (MessageWindowViewModel)DataContext; }
 
+    private readonly bool _isDraft = false;
+    private Draft? _originalDraft;
+
     public MessageWindow()
     {
         InitializeComponent();
@@ -51,6 +54,8 @@ public partial class MessageWindow : Window
         // Preload the preview
         ViewModel.IsReadOnly = true;
         ViewModel.Subject = preview.Subject;
+        ViewModel.HasAttachments = preview.HasAttachments;
+        ViewModel.Content = preview.ContentPreview;
 
         // Display recipients or sender
         if (preview.Sender is null)
@@ -64,9 +69,6 @@ public partial class MessageWindow : Window
             Recipients.Children.Add(new RecipientControl(preview.Sender, false));
         }
 
-        ViewModel.HasAttachments = preview.HasAttachments;
-        ViewModel.Content = preview.ContentPreview;
-
         _ = Dispatcher.Invoke(async () =>
         {
             try
@@ -76,6 +78,40 @@ public partial class MessageWindow : Window
                 ViewModel.Content = message.Content;
                 foreach (Attachment attachment in message.Attachments)
                     Attachments.Children.Add(new AttachmentControl(attachment));
+            }
+            catch (Exception ex)
+            {
+                ex.HandleWithDefaultHandler(ViewModel, "Load complete message");
+            }
+        }, DispatcherPriority.DataBind);
+    }
+
+    public MessageWindow(DraftPreview preview) : this()
+    {
+        _isDraft = true;
+
+        // Preload the preview
+        ViewModel.Subject = preview.Subject;
+
+        ViewModel.HasAttachments = preview.HasAttachments;
+        ViewModel.Content = preview.ContentPreview;
+
+        _ = Dispatcher.Invoke(async () =>
+        {
+            try
+            {
+                // Load the full message
+                Draft draft = await preview.GetFullMessageAsync(App.Client);
+                ViewModel.Content = draft.Content;
+                foreach (Attachment attachment in draft.Attachments)
+                {
+                    AttachmentControl control = new(attachment, true);
+                    control.DeleteEventHandler += (sender, _) => Attachments.Children.Remove((UIElement)sender);
+
+                    Attachments.Children.Add(control);
+                }
+
+                _originalDraft = draft;
             }
             catch (Exception ex)
             {
@@ -208,8 +244,56 @@ public partial class MessageWindow : Window
         }
     }
 
-    private void Save_ClickAsync(object sender, RoutedEventArgs e)
+    private async void Save_ClickAsync(object sender, RoutedEventArgs e)
     {
+        try
+        {
+            // Update exist draft
+            if (_isDraft)
+            {
+                if (_originalDraft is null)
+                    throw new InvalidOperationException("The object isn't loaded yet.");
+
+                Tuple<string, Stream>[] newAttachments = Attachments.Children
+                    .OfType<AttachmentControl>()
+                    .Where(a => a.Stream is not null)
+                    .Select(a => new Tuple<string, Stream>(a.FileName, a.Stream!))
+                    .ToArray();
+
+                Attachment[] deletedAttachments = _originalDraft.Attachments
+                    .Where(a => Attachments.Children.OfType<AttachmentControl>().All(att => a.Id != att.Attachment!.Value.Id))
+                    .ToArray();
+
+                await App.Client!.UpdateDraftAsync(_originalDraft, newAttachments, deletedAttachments);
+            }
+            else
+            {
+                // Create draft
+                Tuple<string, Stream>[] attachments = Attachments.Children
+                    .OfType<AttachmentControl>()
+                    .Select(a => new Tuple<string, Stream>(a.FileName, a.Stream!))
+                    .ToArray();
+
+                await App.Client!.CreateDraftAsync(
+                    subject: ViewModel.Subject,
+                    content: ViewModel.Content,
+                    recipientOption: MessagePermissionsFile.s_DefaultInstance.Permissions.RecipientOptions[0],
+                    forbidReply: ViewModel.ForbidReply,
+                    copyToStudent: false,
+                    attachments: attachments);
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.HandleWithDefaultHandler(ViewModel, "Draft Saving");
+        }
+
+        // Reload messages
+        MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().First();
+        await ((MainWindowViewModel)mainWindow.DataContext).LoadMailTabAsync();
+
+        mainWindow.Focus();
+        Close();
 
     }
 

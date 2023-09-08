@@ -124,6 +124,20 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
     }
     private string _content = string.Empty;
 
+    public bool ForbidReply
+    {
+        get => _forbidReply;
+        set
+        {
+            if (_forbidReply != value)
+            {
+                _forbidReply = value;
+                RaisePropertyChanged();
+            }
+        }
+    }
+    private bool _forbidReply = false;
+
     public List<MessagePerson> Recipients = new();
 
     public MessageWindowViewModel()
