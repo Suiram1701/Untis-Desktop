@@ -445,4 +445,10 @@
   <data name="MessageWindow.FR" xml:space="preserve">
     <value>Pas de réponses</value>
   </data>
+  <data name="MessageWindow.Save.W.T" xml:space="preserve">
+    <value>Es-tu sur de vouloir continuer?</value>
+  </data>
+  <data name="MessageWindow.Save.W" xml:space="preserve">
+    <value>Les modifications qui ne sont pas enregistrées seront perdues. Voulez-vous toujours continuer ?</value>
+  </data>
 </root>

@@ -445,4 +445,10 @@
   <data name="MessageWindow.Send.NR.T" xml:space="preserve">
     <value>Too few recipients</value>
   </data>
+  <data name="MessageWindow.Save.W" xml:space="preserve">
+    <value>Changes that are not saved will be lost. Do you still want to continue?</value>
+  </data>
+  <data name="MessageWindow.Save.W.T" xml:space="preserve">
+    <value>Are you sure you want to continue?</value>
+  </data>
 </root>

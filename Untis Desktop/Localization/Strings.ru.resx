@@ -445,4 +445,10 @@
   <data name="MessageWindow.FR" xml:space="preserve">
     <value>Нет ответов</value>
   </data>
+  <data name="MessageWindow.Save.W.T" xml:space="preserve">
+    <value>Вы уверены что хотите продолжить?</value>
+  </data>
+  <data name="MessageWindow.Save.W" xml:space="preserve">
+    <value>Несохраненные изменения будут потеряны. Вы все еще хотите продолжить?</value>
+  </data>
 </root>

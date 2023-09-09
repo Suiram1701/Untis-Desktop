@@ -445,4 +445,10 @@
   <data name="MessageWindow.Send.NR.T" xml:space="preserve">
     <value>Muy pocos receptores</value>
   </data>
+  <data name="MessageWindow.Save.W.T" xml:space="preserve">
+    <value>Estás seguro de que quieres continuar?</value>
+  </data>
+  <data name="MessageWindow.Save.W" xml:space="preserve">
+    <value>Los cambios que no se guarden se perderán. ¿Aún quieres continuar?</value>
+  </data>
 </root>

@@ -61,6 +61,20 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
     }
     private bool _isReadOnly = false;
 
+    public DateTime SentDate
+    {
+        get => _sentDate;
+        set
+        {
+            if (_sentDate != value)
+            {
+                _sentDate = value;
+                RaisePropertyChanged();
+            }
+        }
+    }
+    private DateTime _sentDate = DateTime.Now;
+
     public string Subject
     {
         get => _subject;
@@ -103,19 +117,19 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
     }
     private bool _isReplyForm = false;
 
-    public string PersonType
+    public string RecipientType
     {
-        get => _personType;
+        get => _recipientType;
         set
         {
-            if (_personType != value)
+            if (_recipientType != value)
             {
-                _personType = value;
+                _recipientType = value;
                 RaisePropertyChanged();
             }
         }
     }
-    private string _personType = LangHelper.GetString("MessageWindow.R");
+    private string _recipientType = LangHelper.GetString("MessageWindow.R");
 
     public string Content
     {

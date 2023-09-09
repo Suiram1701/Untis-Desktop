@@ -20,6 +20,7 @@ using UntisDesktop.UserControls;
 using UntisDesktop.ViewModels;
 using WebUntisAPI.Client.Models.Messages;
 using System.Windows.Threading;
+using System.ComponentModel;
 
 namespace UntisDesktop.Views;
 
@@ -29,6 +30,8 @@ public partial class MessageWindow : Window
 
     private readonly bool _isDraft = false;
     private Draft? _originalDraft;
+
+    private bool _isClosing = false;
 
     public MessageWindow()
     {
@@ -56,6 +59,7 @@ public partial class MessageWindow : Window
         ViewModel.Subject = preview.Subject;
         ViewModel.HasAttachments = preview.HasAttachments;
         ViewModel.Content = preview.ContentPreview;
+        ViewModel.SentDate = preview.SentTime;
 
         // Display recipients or sender
         if (preview.Sender is null)
@@ -65,7 +69,7 @@ public partial class MessageWindow : Window
         }
         else
         {
-            ViewModel.PersonType = LangHelper.GetString("MessageWindow.S");
+            ViewModel.RecipientType = LangHelper.GetString("MessageWindow.S");
             Recipients.Children.Add(new RecipientControl(preview.Sender, false));
         }
 
@@ -118,6 +122,31 @@ public partial class MessageWindow : Window
                 ex.HandleWithDefaultHandler(ViewModel, "Load complete message");
             }
         }, DispatcherPriority.DataBind);
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        if (!_isClosing)
+        {
+            switch (MessageBox.Show(
+                owner: this,
+                messageBoxText: LangHelper.GetString("MessageWindow.Save.W"),
+                caption: LangHelper.GetString("MessageWindow.Save.W.T"),
+                button: MessageBoxButton.YesNoCancel,
+                icon: MessageBoxImage.Question,
+                defaultResult: MessageBoxResult.Cancel))
+            {
+                case MessageBoxResult.Yes:
+                    ReleaseAllAttachments();
+                    break;
+                case MessageBoxResult.No:
+                case MessageBoxResult.Cancel:
+                    e.Cancel = true;
+                    break;
+            }
+        }
+
+        base.OnClosing(e);
     }
 
     private void ErrorBoxClose_Click(object sender, RoutedEventArgs e)
@@ -291,11 +320,16 @@ public partial class MessageWindow : Window
         {
             ex.HandleWithDefaultHandler(ViewModel, "Draft Saving");
         }
+        finally
+        {
+            ReleaseAllAttachments();
+        }
 
         // Reload messages
         MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().First();
         await ((MainWindowViewModel)mainWindow.DataContext).LoadMailTabAsync();
 
+        _isClosing = true;
         mainWindow.Focus();
         Close();
 
@@ -354,15 +388,13 @@ public partial class MessageWindow : Window
                     requestConfirmation: ViewModel.RequestReadConfirmation,
                     forbidReply: ViewModel.ForbidReply,
                     attachments: attachments);
-
-                foreach (Stream stream in attachments.Select(a => a.Item2))
-                    stream.Dispose();
             }
 
             // Reload messages
             MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().First();
             await ((MainWindowViewModel)mainWindow.DataContext).LoadMailTabAsync();
 
+            _isClosing = true;
             mainWindow.Focus();
             Close();
         }
@@ -370,6 +402,19 @@ public partial class MessageWindow : Window
         {
             ex.HandleWithDefaultHandler(ViewModel, "Send Message");
         }
+        finally
+        {
+            ReleaseAllAttachments();
+        }
+    }
+
+    private void ReleaseAllAttachments()
+    {
+        foreach (Stream stream in Attachments.Children
+            .OfType<AttachmentControl>()
+            .Where(a => a.Stream is not null)
+            .Select(a => a.Stream!))
+            stream.Dispose();
     }
 
     private static string ConvertToSaveUnit(long size)

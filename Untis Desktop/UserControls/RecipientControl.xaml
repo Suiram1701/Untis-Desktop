@@ -11,7 +11,7 @@
             <TextBlock Text="{Binding MessagePerson.DisplayName}" FontSize="16" VerticalAlignment="Center"/>
             
             <!-- Delete -->
-            <Button x:Name="DeleteBtn" Click="Delete_Click" ToolTip="{Localization:Localize RecipientControl.D}"
+            <Button x:Name="DeleteBtn" Click="Delete_Click" Background="Transparent" ToolTip="{Localization:Localize RecipientControl.D}"
                     VerticalAlignment="Center" Margin="3,0,0,0" Template="{StaticResource RoundMenuBtn}">
                 <Image Name="Btn" Source="/Assets/cancel.png" Height="18"/>
             </Button>

@@ -445,4 +445,10 @@
   <data name="MessageWindow.RRC" xml:space="preserve">
     <value>Lesebestätigung anfordern</value>
   </data>
+  <data name="MessageWindow.Save.W" xml:space="preserve">
+    <value>Nicht gespeicherte Änderungen gehen verloren. Wollen sie trotzdem fortfahren?</value>
+  </data>
+  <data name="MessageWindow.Save.W.T" xml:space="preserve">
+    <value>Wollen Sie wirklich fortfahren?</value>
+  </data>
 </root>

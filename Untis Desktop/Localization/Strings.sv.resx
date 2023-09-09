@@ -445,4 +445,10 @@
   <data name="MessageWindow.Send.NR.T" xml:space="preserve">
     <value>För få mottagare</value>
   </data>
+  <data name="MessageWindow.Save.W" xml:space="preserve">
+    <value>Ändringar som inte sparas kommer att gå förlorade. Vill du fortfarande fortsätta?</value>
+  </data>
+  <data name="MessageWindow.Save.W.T" xml:space="preserve">
+    <value>Är du säker på att du vill fortsätta?</value>
+  </data>
 </root>
