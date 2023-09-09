@@ -1,10 +1,13 @@
-﻿using Data.Profiles;
+﻿using Data.Messages;
+using Data.Profiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
 using UntisDesktop.Localization;
 using WebUntisAPI.Client.Models.Messages;
 
@@ -14,6 +17,10 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
 {
     // Commands
     public DelegateCommand ReloadOfflineCommand { get; }
+
+    public DelegateCommand ToggleReplyCommand { get; }
+
+    public DelegateCommand ToggleRequestReadConfirmationCommand { get; }
 
     public string ErrorBoxContent
     {
@@ -124,6 +131,10 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
     }
     private string _content = string.Empty;
 
+    public static bool CanForbidReply { get => MessagePermissionsFile.s_DefaultInstance.Permissions.CanForbidReplies; }
+
+    public static bool CanRequestReadConfirmation { get => MessagePermissionsFile.s_DefaultInstance.Permissions.AllowRequestReadConfirmation; }
+
     public bool ForbidReply
     {
         get => _forbidReply;
@@ -133,10 +144,40 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
             {
                 _forbidReply = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged(nameof(ForbidReplyColor));
             }
         }
     }
     private bool _forbidReply = false;
+
+    public bool RequestReadConfirmation
+    {
+        get => _requestReadConfirmation;
+        set
+        {
+            if (_requestReadConfirmation != value)
+            {
+                _requestReadConfirmation = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(RequestReadConfirmationColor));
+            }
+        }
+    }
+    private bool _requestReadConfirmation = false;
+
+    public Brush ForbidReplyColor
+    {
+        get => ForbidReply
+            ? (Brush)Application.Current.FindResource("PressedDarkBtnColor")
+            : Brushes.White;
+    }
+
+    public Brush RequestReadConfirmationColor
+    {
+        get => RequestReadConfirmation
+            ? (Brush)Application.Current.FindResource("PressedDarkBtnColor")
+            : Brushes.White;
+    }
 
     public List<MessagePerson> Recipients = new();
 
@@ -154,5 +195,9 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
                 IsOffline = true;
             }
         });
+
+        ToggleReplyCommand = new(_ => ForbidReply = !ForbidReply);
+
+        ToggleRequestReadConfirmationCommand = new(_ => RequestReadConfirmation = !RequestReadConfirmation);
     }
 }

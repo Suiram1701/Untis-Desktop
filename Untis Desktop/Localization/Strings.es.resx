@@ -379,4 +379,70 @@
   <data name="MessageWindow.Subject" xml:space="preserve">
     <value>Referencia:</value>
   </data>
+  <data name="RecipientControl.D" xml:space="preserve">
+    <value>Eliminar destinatarios</value>
+  </data>
+  <data name="MessageWindow.Send" xml:space="preserve">
+    <value>Enviar mensaje</value>
+  </data>
+  <data name="MessageWindow.Save" xml:space="preserve">
+    <value>guardar borrador</value>
+  </data>
+  <data name="MessageWindow.S" xml:space="preserve">
+    <value>De:</value>
+  </data>
+  <data name="MessageWindow.A.TMF.T" xml:space="preserve">
+    <value>Demasiados archivos</value>
+  </data>
+  <data name="MessageWindow.A.TMF" xml:space="preserve">
+    <value>Se puede adjuntar un máximo de {0} archivos.</value>
+  </data>
+  <data name="MessageWindow.A.TLFs.T" xml:space="preserve">
+    <value>Archivos demasiado grandes</value>
+  </data>
+  <data name="MessageWindow.A.TLFs" xml:space="preserve">
+    <value>Los archivos {0} y {1} superan el tamaño máximo de {2}.</value>
+  </data>
+  <data name="MessageWindow.A.TLF.T" xml:space="preserve">
+    <value>Archivo demasiado grande</value>
+  </data>
+  <data name="MessageWindow.A.TLF" xml:space="preserve">
+    <value>El archivo {0} excede el tamaño máximo de {1}.</value>
+  </data>
+  <data name="MessageWindow.A.T" xml:space="preserve">
+    <value>adjuntar archivos</value>
+  </data>
+  <data name="MessageWindow.A.New" xml:space="preserve">
+    <value>Añadir un adjunto</value>
+  </data>
+  <data name="MessageWindow.A.F" xml:space="preserve">
+    <value>Archivo {0}</value>
+  </data>
+  <data name="MessageWindow.A" xml:space="preserve">
+    <value>Archivos adjuntos:</value>
+  </data>
+  <data name="AttachmentControl.DFE" xml:space="preserve">
+    <value>{0} archivo</value>
+  </data>
+  <data name="AttachmentControl.DF" xml:space="preserve">
+    <value>Eliminar archivo adjunto</value>
+  </data>
+  <data name="AttachmentControl.DDT" xml:space="preserve">
+    <value>Descargar archivo adjunto</value>
+  </data>
+  <data name="AttachmentControl.D" xml:space="preserve">
+    <value>Descargar archivo adjunto</value>
+  </data>
+  <data name="MessageWindow.FR" xml:space="preserve">
+    <value>Sin respuestas</value>
+  </data>
+  <data name="MessageWindow.RRC" xml:space="preserve">
+    <value>Solicitar recibo de lectura</value>
+  </data>
+  <data name="MessageWindow.Send.NR" xml:space="preserve">
+    <value>Se debe seleccionar al menos un destinatario</value>
+  </data>
+  <data name="MessageWindow.Send.NR.T" xml:space="preserve">
+    <value>Muy pocos receptores</value>
+  </data>
 </root>

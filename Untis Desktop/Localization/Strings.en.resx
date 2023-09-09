@@ -379,4 +379,70 @@
   <data name="MessageWindow.Subject" xml:space="preserve">
     <value>Subject:</value>
   </data>
+  <data name="AttachmentControl.D" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="AttachmentControl.DDT" xml:space="preserve">
+    <value>Download attachment</value>
+  </data>
+  <data name="AttachmentControl.DF" xml:space="preserve">
+    <value>Delete attachment</value>
+  </data>
+  <data name="AttachmentControl.DFE" xml:space="preserve">
+    <value>{0} file</value>
+  </data>
+  <data name="MessageWindow.A" xml:space="preserve">
+    <value>Attachments:</value>
+  </data>
+  <data name="MessageWindow.A.F" xml:space="preserve">
+    <value>File {0}</value>
+  </data>
+  <data name="MessageWindow.A.New" xml:space="preserve">
+    <value>Add attachment</value>
+  </data>
+  <data name="MessageWindow.A.T" xml:space="preserve">
+    <value>attach files</value>
+  </data>
+  <data name="MessageWindow.A.TLF" xml:space="preserve">
+    <value>The file {0} exceeds the maximum size of {1}.</value>
+  </data>
+  <data name="MessageWindow.A.TLF.T" xml:space="preserve">
+    <value>File too large</value>
+  </data>
+  <data name="MessageWindow.A.TLFs" xml:space="preserve">
+    <value>The files {0} and {1} exceed the maximum size of {2}.</value>
+  </data>
+  <data name="MessageWindow.A.TLFs.T" xml:space="preserve">
+    <value>Files too large</value>
+  </data>
+  <data name="MessageWindow.A.TMF" xml:space="preserve">
+    <value>A maximum of {0} files can be attached.</value>
+  </data>
+  <data name="MessageWindow.A.TMF.T" xml:space="preserve">
+    <value>Too many files</value>
+  </data>
+  <data name="MessageWindow.S" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="MessageWindow.Save" xml:space="preserve">
+    <value>save draft</value>
+  </data>
+  <data name="MessageWindow.Send" xml:space="preserve">
+    <value>Send Message</value>
+  </data>
+  <data name="RecipientControl.D" xml:space="preserve">
+    <value>Delete recipients</value>
+  </data>
+  <data name="MessageWindow.FR" xml:space="preserve">
+    <value>No replies</value>
+  </data>
+  <data name="MessageWindow.RRC" xml:space="preserve">
+    <value>Request read confirmation</value>
+  </data>
+  <data name="MessageWindow.Send.NR" xml:space="preserve">
+    <value>At least one recipient must be selected</value>
+  </data>
+  <data name="MessageWindow.Send.NR.T" xml:space="preserve">
+    <value>Too few recipients</value>
+  </data>
 </root>

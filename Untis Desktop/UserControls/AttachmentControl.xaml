@@ -11,7 +11,7 @@
             <TextBlock Text="{Binding FileName}" FontSize="16" VerticalAlignment="Center"/>
             
             <!-- Download -->
-            <Button Click="Download_ClickAsync" Visibility="{Binding DownloadAble, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" ToolTip="{Localization:Localize AttachmentControl.D}"
+            <Button Click="Download_ClickAsync" Visibility="{Binding DownloadAble, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" Background="Transparent" ToolTip="{Localization:Localize AttachmentControl.D}"
                     VerticalAlignment="Center" Margin="3,0,0,0" Template="{StaticResource RoundMenuBtn}">
                 <Grid>
                     <Image x:Name="DownloadImg" Source="/Assets/download.png" Height="18"/>
@@ -20,7 +20,7 @@
             </Button>
 
             <!-- Delete -->
-            <Button Click="Delete_Click" Visibility="{Binding DeleteAble, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" ToolTip="{Localization:Localize AttachmentControl.DF}"
+            <Button Click="Delete_Click" Visibility="{Binding DeleteAble, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" Background="Transparent" ToolTip="{Localization:Localize AttachmentControl.DF}"
                     VerticalAlignment="Center" Margin="3,0,0,0" Template="{StaticResource RoundMenuBtn}">
                 <Image Source="/Assets/cancel.png" Height="18"/>
             </Button>

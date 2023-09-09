@@ -379,4 +379,70 @@
   <data name="MessageWindow.Subject" xml:space="preserve">
     <value>Référence:</value>
   </data>
+  <data name="AttachmentControl.D" xml:space="preserve">
+    <value>Télécharger</value>
+  </data>
+  <data name="AttachmentControl.DDT" xml:space="preserve">
+    <value>Télécharger la pièce jointe</value>
+  </data>
+  <data name="AttachmentControl.DF" xml:space="preserve">
+    <value>Supprimer la pièce jointe</value>
+  </data>
+  <data name="AttachmentControl.DFE" xml:space="preserve">
+    <value>{0} fichier</value>
+  </data>
+  <data name="MessageWindow.A" xml:space="preserve">
+    <value>Pièces jointes :</value>
+  </data>
+  <data name="MessageWindow.A.F" xml:space="preserve">
+    <value>Fichier {0}</value>
+  </data>
+  <data name="MessageWindow.A.New" xml:space="preserve">
+    <value>Ajouter une pièce jointe</value>
+  </data>
+  <data name="MessageWindow.A.T" xml:space="preserve">
+    <value>joindre des fichiers</value>
+  </data>
+  <data name="MessageWindow.A.TLF" xml:space="preserve">
+    <value>Le fichier {0} dépasse la taille maximale de {1}.</value>
+  </data>
+  <data name="MessageWindow.A.TLF.T" xml:space="preserve">
+    <value>Fichier trop large</value>
+  </data>
+  <data name="MessageWindow.A.TLFs" xml:space="preserve">
+    <value>Les fichiers {0} et {1} dépassent la taille maximale de {2}.</value>
+  </data>
+  <data name="MessageWindow.A.TLFs.T" xml:space="preserve">
+    <value>Fichiers trop volumineux</value>
+  </data>
+  <data name="MessageWindow.A.TMF" xml:space="preserve">
+    <value>Un maximum de {0} fichiers peuvent être joints.</value>
+  </data>
+  <data name="MessageWindow.A.TMF.T" xml:space="preserve">
+    <value>Trop de fichiers</value>
+  </data>
+  <data name="MessageWindow.S" xml:space="preserve">
+    <value>Depuis:</value>
+  </data>
+  <data name="MessageWindow.Save" xml:space="preserve">
+    <value>enregistrer le brouillon</value>
+  </data>
+  <data name="MessageWindow.Send" xml:space="preserve">
+    <value>Envoyer le message</value>
+  </data>
+  <data name="RecipientControl.D" xml:space="preserve">
+    <value>Supprimer des destinataires</value>
+  </data>
+  <data name="MessageWindow.Send.NR.T" xml:space="preserve">
+    <value>Trop peu de récepteurs</value>
+  </data>
+  <data name="MessageWindow.Send.NR" xml:space="preserve">
+    <value>Au moins un destinataire doit être sélectionné</value>
+  </data>
+  <data name="MessageWindow.RRC" xml:space="preserve">
+    <value>Demander un accusé de lecture</value>
+  </data>
+  <data name="MessageWindow.FR" xml:space="preserve">
+    <value>Pas de réponses</value>
+  </data>
 </root>

@@ -415,9 +415,6 @@
   <data name="MessageWindow.S" xml:space="preserve">
     <value>Von:</value>
   </data>
-  <data name="MessagwWindow.A.TLF.T" xml:space="preserve">
-    <value>Zu große Datei</value>
-  </data>
   <data name="MessageWindow.A.TLFs.T" xml:space="preserve">
     <value>Zu große Dateien</value>
   </data>
@@ -432,5 +429,20 @@
   </data>
   <data name="MessageWindow.Save" xml:space="preserve">
     <value>Entwurf speichern</value>
+  </data>
+  <data name="MessageWindow.A.TLF.T" xml:space="preserve">
+    <value>Zu große Datei</value>
+  </data>
+  <data name="MessageWindow.FR" xml:space="preserve">
+    <value>Keine Antworten</value>
+  </data>
+  <data name="MessageWindow.Send.NR" xml:space="preserve">
+    <value>Es muss mindestens ein Empfänger ausgewählt sein</value>
+  </data>
+  <data name="MessageWindow.Send.NR.T" xml:space="preserve">
+    <value>Zu wenig Empfänger</value>
+  </data>
+  <data name="MessageWindow.RRC" xml:space="preserve">
+    <value>Lesebestätigung anfordern</value>
   </data>
 </root>

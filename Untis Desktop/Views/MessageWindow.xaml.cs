@@ -254,6 +254,10 @@ public partial class MessageWindow : Window
                 if (_originalDraft is null)
                     throw new InvalidOperationException("The object isn't loaded yet.");
 
+                _originalDraft.Subject = ViewModel.Subject;
+                _originalDraft.Content = ViewModel.Content;
+                _originalDraft.ForbidReply = ViewModel.ForbidReply;
+
                 Tuple<string, Stream>[] newAttachments = Attachments.Children
                     .OfType<AttachmentControl>()
                     .Where(a => a.Stream is not null)
@@ -297,9 +301,75 @@ public partial class MessageWindow : Window
 
     }
 
-    private void Send_ClickAsync(object sender, RoutedEventArgs e)
+    private async void Send_ClickAsync(object sender, RoutedEventArgs e)
     {
+        // Show warning when not enough recipients are selected
+        if (!ViewModel.Recipients.Any())
+        {
+            MessageBox.Show(this, LangHelper.GetString("MessageWindow.Send.NR"), LangHelper.GetString("MessageWindow.Send.NR.T"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            return;
+        }
 
+        try
+        {
+            if (_isDraft)
+            {
+                if (_originalDraft is null)
+                    throw new InvalidOperationException("The object isn't loaded yet.");
+
+                _originalDraft.Subject = ViewModel.Subject;
+                _originalDraft.Content = ViewModel.Content;
+
+                // Add new attachments or remove deleted attachments
+                Tuple<string, Stream>[] newAttachments = Attachments.Children
+                    .OfType<AttachmentControl>()
+                    .Where(a => a.Stream is not null)
+                    .Select(a => new Tuple<string, Stream>(a.FileName, a.Stream!))
+                    .ToArray();
+
+                Attachment[] deletedAttachments = _originalDraft.Attachments
+                    .Where(a => Attachments.Children.OfType<AttachmentControl>().All(att => a.Id != att.Attachment!.Value.Id))
+                    .ToArray();
+                
+                if (newAttachments.Any() || deletedAttachments.Any())
+                    await App.Client!.UpdateDraftAsync(_originalDraft, newAttachments, deletedAttachments);
+
+
+                await App.Client!.SendMessageAsync(_originalDraft, ViewModel.Recipients.ToArray(), ViewModel.RequestReadConfirmation, TimeSpan.FromSeconds(10));
+
+                // Delete the send draft
+                await App.Client!.DeleteDraftAsync(_originalDraft);
+            }
+            else
+            {
+                Tuple<string, Stream>[] attachments = Attachments.Children
+                    .OfType<AttachmentControl>()
+                    .Select(a => new Tuple<string, Stream>(a.FileName, a.Stream!))
+                    .ToArray();
+
+                await App.Client!.SendMessageAsync(
+                    subject: ViewModel.Subject,
+                    content: ViewModel.Content,
+                    recipients: ViewModel.Recipients.ToArray(),
+                    requestConfirmation: ViewModel.RequestReadConfirmation,
+                    forbidReply: ViewModel.ForbidReply,
+                    attachments: attachments);
+
+                foreach (Stream stream in attachments.Select(a => a.Item2))
+                    stream.Dispose();
+            }
+
+            // Reload messages
+            MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().First();
+            await ((MainWindowViewModel)mainWindow.DataContext).LoadMailTabAsync();
+
+            mainWindow.Focus();
+            Close();
+        }
+        catch (Exception ex)
+        {
+            ex.HandleWithDefaultHandler(ViewModel, "Send Message");
+        }
     }
 
     private static string ConvertToSaveUnit(long size)

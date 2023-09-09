@@ -379,4 +379,70 @@
   <data name="MessageWindow.Subject" xml:space="preserve">
     <value>Referens:</value>
   </data>
+  <data name="AttachmentControl.D" xml:space="preserve">
+    <value>Ladda ner</value>
+  </data>
+  <data name="AttachmentControl.DDT" xml:space="preserve">
+    <value>Ladda ner bilaga</value>
+  </data>
+  <data name="AttachmentControl.DF" xml:space="preserve">
+    <value>Ta bort bilaga</value>
+  </data>
+  <data name="AttachmentControl.DFE" xml:space="preserve">
+    <value>{0} fil</value>
+  </data>
+  <data name="MessageWindow.A" xml:space="preserve">
+    <value>Bilagor:</value>
+  </data>
+  <data name="MessageWindow.A.F" xml:space="preserve">
+    <value>Fil {0}</value>
+  </data>
+  <data name="MessageWindow.A.New" xml:space="preserve">
+    <value>Bifoga fil</value>
+  </data>
+  <data name="MessageWindow.A.T" xml:space="preserve">
+    <value>bifoga filer</value>
+  </data>
+  <data name="MessageWindow.A.TLF" xml:space="preserve">
+    <value>Filen {0} överskrider den maximala storleken på {1}.</value>
+  </data>
+  <data name="MessageWindow.A.TLF.T" xml:space="preserve">
+    <value>För stor fil</value>
+  </data>
+  <data name="MessageWindow.A.TLFs" xml:space="preserve">
+    <value>Filerna {0} och {1} överskrider den maximala storleken på {2}.</value>
+  </data>
+  <data name="MessageWindow.A.TLFs.T" xml:space="preserve">
+    <value>Filerna är för stora</value>
+  </data>
+  <data name="MessageWindow.A.TMF" xml:space="preserve">
+    <value>Högst {0} filer kan bifogas.</value>
+  </data>
+  <data name="MessageWindow.A.TMF.T" xml:space="preserve">
+    <value>För många filer</value>
+  </data>
+  <data name="MessageWindow.S" xml:space="preserve">
+    <value>Från:</value>
+  </data>
+  <data name="MessageWindow.Save" xml:space="preserve">
+    <value>spara utkast</value>
+  </data>
+  <data name="MessageWindow.Send" xml:space="preserve">
+    <value>Skicka meddelande</value>
+  </data>
+  <data name="RecipientControl.D" xml:space="preserve">
+    <value>Ta bort mottagare</value>
+  </data>
+  <data name="MessageWindow.FR" xml:space="preserve">
+    <value>Inga svar</value>
+  </data>
+  <data name="MessageWindow.RRC" xml:space="preserve">
+    <value>Begär läskvitto</value>
+  </data>
+  <data name="MessageWindow.Send.NR" xml:space="preserve">
+    <value>Minst en mottagare måste väljas</value>
+  </data>
+  <data name="MessageWindow.Send.NR.T" xml:space="preserve">
+    <value>För få mottagare</value>
+  </data>
 </root>

@@ -64,9 +64,10 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="RoundMenuBtn" TargetType="{x:Type Button}">
-        <Border Name="Border" CornerRadius="50" Padding="2">
+        <Border Name="Border" Background="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" CornerRadius="50" Padding="2">
             <ContentPresenter/>
         </Border>
+        
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="Border" Property="Background" Value="{DynamicResource HoverDarkBtnColor}"/>
