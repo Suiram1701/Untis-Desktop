@@ -118,7 +118,7 @@
   <data name="LoginWindow.D.USR" xml:space="preserve">
     <value>Användarnamn</value>
   </data>
-  <data name="LoginWindow.Err.WU404" xml:space="preserve">
+  <data name="+" xml:space="preserve">
     <value>WebUntis-servern kunde inte hittas.</value>
   </data>
   <data name="LoginWindow.Err.NWU" xml:space="preserve">
@@ -450,5 +450,8 @@
   </data>
   <data name="MessageWindow.Save.W.T" xml:space="preserve">
     <value>Är du säker på att du vill fortsätta?</value>
+  </data>
+  <data name="MessageWindow.CM" xml:space="preserve">
+    <value>Läs på {0}</value>
   </data>
 </root>

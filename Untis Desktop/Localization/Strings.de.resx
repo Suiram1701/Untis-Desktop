@@ -121,7 +121,7 @@
   <data name="LoginWindow.Err.NWU" xml:space="preserve">
     <value>Dies ist keine gültige WebUntis Server URL.</value>
   </data>
-  <data name="LoginWindow.Err.WU404" xml:space="preserve">
+  <data name="+" xml:space="preserve">
     <value>Der WebUntis Server konnte nicht gefunden werden.</value>
   </data>
   <data name="LoginWindow.Login.InvC" xml:space="preserve">
@@ -450,5 +450,11 @@
   </data>
   <data name="MessageWindow.Save.W.T" xml:space="preserve">
     <value>Wollen Sie wirklich fortfahren?</value>
+  </data>
+  <data name="MessageWindow.CM" xml:space="preserve">
+    <value>Gelesen am {0}</value>
+  </data>
+  <data name="MessageWindow.SRC" xml:space="preserve">
+    <value>Lesebestätigung öffnen</value>
   </data>
 </root>

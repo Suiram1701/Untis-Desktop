@@ -118,7 +118,7 @@
   <data name="LoginWindow.D.USR" xml:space="preserve">
     <value>Username</value>
   </data>
-  <data name="LoginWindow.Err.WU404" xml:space="preserve">
+  <data name="+" xml:space="preserve">
     <value>The WebUntis server could not be found.</value>
   </data>
   <data name="LoginWindow.Err.NWU" xml:space="preserve">
@@ -450,5 +450,8 @@
   </data>
   <data name="MessageWindow.Save.W.T" xml:space="preserve">
     <value>Are you sure you want to continue?</value>
+  </data>
+  <data name="MessageWindow.CM" xml:space="preserve">
+    <value>Read on {0}</value>
   </data>
 </root>

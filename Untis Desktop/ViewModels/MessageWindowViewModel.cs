@@ -47,6 +47,48 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
     }
     private bool _isOffline = false;
 
+    public bool IsConfirmationMessage
+    {
+        get => _isConfirmationMessage;
+        set
+        {
+            if (_isConfirmationMessage != value)
+            {
+                _isConfirmationMessage = value;
+                RaisePropertyChanged();
+            }
+        }
+    }
+    private bool _isConfirmationMessage = false;
+
+    public string ConfirmationDateString
+    {
+        get => _confirmationDateString;
+        set
+        {
+            if (_confirmationDateString != value)
+            {
+                _confirmationDateString = value;
+                RaisePropertyChanged();
+            }
+        }
+    }
+    private string _confirmationDateString = string.Empty;
+
+    public bool CanSendRequestConfirmation
+    {
+        get => _canSendRequestConfirmation;
+        set
+        {
+            if (_canSendRequestConfirmation != value)
+            {
+                _canSendRequestConfirmation = value;
+                RaisePropertyChanged();
+            }
+        }
+    }
+    private bool _canSendRequestConfirmation = false;
+
     public bool IsReadOnly
     {
         get => _isReadOnly;

@@ -28,8 +28,10 @@ public partial class MessageWindow : Window
 {
     private MessageWindowViewModel ViewModel { get => (MessageWindowViewModel)DataContext; }
 
+    private Message? _originalMessage = null;
+
     private readonly bool _isDraft = false;
-    private Draft? _originalDraft;
+    private Draft? _originalDraft = null;
 
     private bool _isClosing = false;
 
@@ -79,9 +81,22 @@ public partial class MessageWindow : Window
             {
                 // Load the full message
                 Message message = await preview.GetFullMessageAsync(App.Client);
+                _originalMessage = message;
+
                 ViewModel.Content = message.Content;
                 foreach (Attachment attachment in message.Attachments)
                     Attachments.Children.Add(new AttachmentControl(attachment));
+
+                if (message.ConfirmationInformations is not null)
+                {
+                    if (message.ConfirmationInformations.AllowSendRequestConfirmation)
+                        ViewModel.CanSendRequestConfirmation = true;
+                    else
+                    {
+                        ViewModel.ConfirmationDateString = LangHelper.GetString("MessageWindow.CM", message.ConfirmationInformations.ConfirmationDate.ToString("d"));
+                        ViewModel.IsConfirmationMessage = true;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -126,7 +141,7 @@ public partial class MessageWindow : Window
 
     protected override void OnClosing(CancelEventArgs e)
     {
-        if (!_isClosing)
+        if (!_isClosing && !ViewModel.IsReadOnly)
         {
             switch (MessageBox.Show(
                 owner: this,
@@ -406,6 +421,16 @@ public partial class MessageWindow : Window
         {
             ReleaseAllAttachments();
         }
+    }
+
+    private async void SendReadConfirmation_ClickAsync(object sender, RoutedEventArgs e)
+    {
+        if (_originalMessage is null)
+            throw new InvalidOperationException("The object isn't loaded yet.");
+
+        await App.Client!.ConfirmMessageAsync(_originalMessage);
+
+        e.Handled = true;
     }
 
     private void ReleaseAllAttachments()
