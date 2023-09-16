@@ -110,7 +110,8 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="{Localization:Localize MessageWindow.Subject}" FontSize="16" Grid.Column="0" Margin="0,0,15,0"/>
-            <TextBlock Text="{Localization:Localize MessageWindow.Reply}" FontSize="16" FontWeight="Bold" Visibility="{Binding IsReplyForm, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" Grid.Column="1" Margin="0,0,5,0"/>
+            <TextBlock Text="{Localization:Localize MessageWindow.Reply}" FontSize="16" FontWeight="Bold"
+                       Visibility="{Binding IsReplyForm, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}" Grid.Column="1" Margin="0,0,5,0"/>
             <TextBox Name="Subject" Text="{Binding Subject, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="16" IsReadOnly="{Binding IsReadOnly, Mode=OneWay}"
                      BorderThickness="0" Grid.Column="2"/>
             <Line Stroke="Black" X1="0" X2="{Binding ElementName=Subject, Path=ActualWidth}" Y1="22" Y2="22" Grid.Column="1" Grid.ColumnSpan="2"/>
@@ -129,7 +130,7 @@
 
             <WrapPanel x:Name="Recipients" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="1" Margin="10,0"/>
 
-            <Button Click="AddRecipient_Click" Visibility="{Binding IsReadOnly, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Inv, Mode=OneWay}"
+            <Button Click="AddRecipient_Click" Visibility="{Binding ShowRecipientAdd, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}"
                     Background="Transparent" ToolTip="{Localization:Localize MessageWindow.R.New}"
                     Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" Template="{StaticResource RoundMenuBtn}">
                 <Image Source="/Assets/person_add.png" Stretch="Uniform" Height="25"/>
@@ -161,7 +162,16 @@
         
         <!-- Content -->
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="4" Margin="0,5">
-            <TextBox Text="{Binding Content, Mode=TwoWay}" FontSize="14" TextWrapping="Wrap" IsReadOnly="{Binding IsReadOnly, Mode=OneWay}" KeyDown="TextContent_KeyDown"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="100" Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                
+                <TextBox Text="{Binding Content, Mode=TwoWay}" FontSize="14" TextWrapping="Wrap" IsReadOnly="{Binding IsReadOnly, Mode=OneWay}" KeyDown="TextContent_KeyDown" Grid.Row="0"/>
+
+                <StackPanel x:Name="ReplyHistory" Orientation="Vertical" Grid.Row="1"/>
+            </Grid>
         </ScrollViewer>
         
         <!-- Interactions -->
@@ -172,7 +182,8 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <Button Click="Save_ClickAsync" Visibility="{Binding IsReadOnly, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Inv}"
+            <!-- Save as draft -->
+            <Button Click="Save_ClickAsync" Visibility="{Binding CanSaveAsDraft, Converter={StaticResource BoolVisibilityConverter}}"
                     Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Template="{StaticResource DarkBtn}">
                 <TextBlock Text="{Localization:Localize MessageWindow.Save}" FontSize="14"/>
             </Button>
@@ -216,7 +227,7 @@
                 </Button>
 
                 <!-- Send read confirmation -->
-                <Button Click="SendReadConfirmation_ClickAsync"  Background="Transparent" Visibility="{Binding CanSendRequestConfirmation, Converter={StaticResource BoolVisibilityConverter}}"
+                <Button Click="SendReadConfirmation_ClickAsync" Background="Transparent" Visibility="{Binding CanSendRequestConfirmation, Converter={StaticResource BoolVisibilityConverter}}"
                         VerticalAlignment="Bottom" Template="{StaticResource Btn}">
                     <TextBlock Text="{Localization:Localize MessageWindow.SRC}" FontSize="14"/>
                 </Button>

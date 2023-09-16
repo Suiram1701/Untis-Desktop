@@ -54,6 +54,25 @@ public partial class MessageWindow : Window
         };
     }
 
+    /// <summary>
+    /// Reply a message
+    /// </summary>
+    /// <param name="message">the reply form</param>
+    public MessageWindow(Message message) : this()
+    {
+        ViewModel.IsReplyForm = true;
+        ViewModel.Subject = message.Subject;
+        ViewModel.Content = message.Content;
+
+        Recipients.Children.Add(new RecipientControl(message.Recipients[0], false));
+
+        RenderReplyHistory(message.ReplyHistory);
+    }
+
+    /// <summary>
+    /// Display a sent or a incoming message
+    /// </summary>
+    /// <param name="preview">The preview</param>
     public MessageWindow(MessagePreview preview) : this()
     {
         // Preload the preview
@@ -87,16 +106,9 @@ public partial class MessageWindow : Window
                 foreach (Attachment attachment in message.Attachments)
                     Attachments.Children.Add(new AttachmentControl(attachment));
 
-                if (message.ConfirmationInformations is not null)
-                {
-                    if (message.ConfirmationInformations.AllowSendRequestConfirmation)
-                        ViewModel.CanSendRequestConfirmation = true;
-                    else
-                    {
-                        ViewModel.ConfirmationDateString = LangHelper.GetString("MessageWindow.CM", message.ConfirmationInformations.ConfirmationDate.ToString("d"));
-                        ViewModel.IsConfirmationMessage = true;
-                    }
-                }
+                RenderConfirmationBox(message.ConfirmationInformations);
+
+                RenderReplyHistory(message.ReplyHistory);
             }
             catch (Exception ex)
             {
@@ -105,6 +117,10 @@ public partial class MessageWindow : Window
         }, DispatcherPriority.DataBind);
     }
 
+    /// <summary>
+    /// Display a draft
+    /// </summary>
+    /// <param name="preview">The preview</param>
     public MessageWindow(DraftPreview preview) : this()
     {
         _isDraft = true;
@@ -245,7 +261,7 @@ public partial class MessageWindow : Window
 
             if (tooLargeFiles.Any())
             {
-                string fileSizeString = ConvertToSaveUnit(maxFileSize);
+                string fileSizeString = ConvertToSavingUnit(maxFileSize);
 
                 if (tooLargeFiles.Count > 1)
                 {
@@ -352,6 +368,20 @@ public partial class MessageWindow : Window
 
     private async void Send_ClickAsync(object sender, RoutedEventArgs e)
     {
+        if (ViewModel.IsReplyForm)
+        {
+            await SendAsReplyAsync();
+
+            // Reload messages
+            MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().First();
+            await ((MainWindowViewModel)mainWindow.DataContext).LoadMailTabAsync();
+
+            _isClosing = true;
+            mainWindow.Focus();
+            Close();
+            return;
+        }
+
         // Show warning when not enough recipients are selected
         if (!ViewModel.Recipients.Any())
         {
@@ -398,7 +428,7 @@ public partial class MessageWindow : Window
 
                 await App.Client!.SendMessageAsync(
                     subject: ViewModel.Subject,
-                    content: ViewModel.Content,
+                    content: ViewModel.Content.Replace(Environment.NewLine, "<br>"),
                     recipients: ViewModel.Recipients.ToArray(),
                     requestConfirmation: ViewModel.RequestReadConfirmation,
                     forbidReply: ViewModel.ForbidReply,
@@ -433,6 +463,27 @@ public partial class MessageWindow : Window
         e.Handled = true;
     }
 
+    public async Task SendAsReplyAsync()
+    {
+        try
+        {
+            Tuple<string, Stream>[] attachments = Attachments.Children
+                    .OfType<AttachmentControl>()
+                    .Select(a => new Tuple<string, Stream>(a.FileName, a.Stream!))
+                    .ToArray();
+
+            await App.Client!.ReplyMessageAsync(_originalMessage, ViewModel.Subject, ViewModel.Content.Replace(Environment.NewLine, "<br>"), attachments);
+        }
+        catch (Exception ex)
+        {
+            ex.HandleWithDefaultHandler(ViewModel, "Send reply");
+        }
+        finally
+        {
+            ReleaseAllAttachments();
+        }
+    }
+
     private void ReleaseAllAttachments()
     {
         foreach (Stream stream in Attachments.Children
@@ -442,7 +493,27 @@ public partial class MessageWindow : Window
             stream.Dispose();
     }
 
-    private static string ConvertToSaveUnit(long size)
+    private void RenderReplyHistory(List<Message> history)
+    {
+        foreach (Message message in history)
+            ReplyHistory.Children.Add(new ReplyMessage(message));
+    }
+
+    private void RenderConfirmationBox(ConfirmationInformations? confirmationInformation)
+    {
+        if (confirmationInformation is not null)
+        {
+            if (confirmationInformation.AllowSendRequestConfirmation)
+                ViewModel.CanSendRequestConfirmation = true;
+            else
+            {
+                ViewModel.ConfirmationDateString = LangHelper.GetString("MessageWindow.CM", confirmationInformation.ConfirmationDate.ToString("d"));
+                ViewModel.IsConfirmationMessage = true;
+            }
+        }
+    }
+
+    private static string ConvertToSavingUnit(long size)
     {
         string[] sizes = { "Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
         int order = 0;

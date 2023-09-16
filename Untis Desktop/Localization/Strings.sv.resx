@@ -454,4 +454,7 @@
   <data name="MessageWindow.CM" xml:space="preserve">
     <value>Läs på {0}</value>
   </data>
+  <data name="MessageWindow.SRC" xml:space="preserve">
+    <value>Skicka läskvitto</value>
+  </data>
 </root>

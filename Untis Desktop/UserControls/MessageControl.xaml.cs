@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UntisDesktop.Extensions;
 using UntisDesktop.Localization;
 using UntisDesktop.ViewModels;
 using UntisDesktop.Views;
@@ -45,8 +46,8 @@ public partial class MessageControl : UserControl
     public MessageControl(MessagePreview message, bool isSentMessage = false)
     {
         Message = message;
-        InitializeComponent();
         IsSentMessage = isSentMessage;
+        InitializeComponent();
     }
 
     private async void Delete_ClickAsync(object sender, RoutedEventArgs e)
@@ -109,61 +110,40 @@ public partial class MessageControl : UserControl
     {
         if (MessageBox.Show(LangHelper.GetString("MainWindow.Mail.Revoke.Text"), LangHelper.GetString("MainWindow.Mail.Revoke.Title"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
         {
-            MainWindowViewModel viewModel = (MainWindowViewModel)Application.Current.Windows.Cast<Window>().OfType<MainWindow>().First().DataContext;
-            if (viewModel.IsOffline)
+            MainWindowViewModel mainWindowViewModel = (MainWindowViewModel)Window.GetWindow(this).DataContext;
+
+            if (mainWindowViewModel.IsOffline)
                 return;
 
             try
             {
                 await App.Client!.RevokeMessageAsync(Message);
             }
-            catch (WebUntisException ex)
-            {
-                switch (ex.Code)
-                {
-                    case (int)WebUntisException.Codes.NoRightForMethod:
-                        viewModel.ErrorBoxContent = LangHelper.GetString("App.Err.WU.NRFM");
-                        Logger.LogWarning($"Message revoke: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NoRightForMethod)}");
-                        break;
-                    case (int)WebUntisException.Codes.NotAuthticated:
-                        viewModel.ErrorBoxContent = LangHelper.GetString("App.Err.WU.NA");
-                        Logger.LogWarning($"Message revoke: {nameof(WebUntisException)} {nameof(WebUntisException.Codes.NotAuthticated)}");
-                        break;
-                    default:
-                        viewModel.ErrorBoxContent = LangHelper.GetString("App.Err.WU", ex.Message);
-                        Logger.LogError($"Message revoke: Unexpected {nameof(WebUntisException)} Message: {ex.Message}, Code: {ex.Code}");
-                        break;
-                }
-                return;
-            }
-            catch (HttpRequestException ex)
-            {
-                if (ex.Source == "System.Net.Http" && ex.StatusCode is null)
-                    viewModel.IsOffline = true;
-                else
-                    viewModel.ErrorBoxContent = LangHelper.GetString("App.Err.NERR", ex.Message, ((int?)ex.StatusCode)?.ToString() ?? "0");
-                Logger.LogWarning($"Message revoke: {nameof(HttpRequestException)} Code: {ex.StatusCode}, Message: {ex.Message}");
-                return;
-            }
-            catch (Exception ex) when (ex.Source == "System.Net.Http")
-            {
-                viewModel.IsOffline = true;
-                return;
-            }
             catch (Exception ex)
             {
-                viewModel.ErrorBoxContent = LangHelper.GetString("App.Err.OEX", ex.Source ?? "System.Exception", ex.Message);
-                Logger.LogError($"Message revoke: {ex.Source ?? "System.Exception"}; {ex.Message}");
-                return;
+                ex.HandleWithDefaultHandler(mainWindowViewModel, "Message revoke");
             }
 
-            await viewModel.LoadMailTabAsync();
+            await mainWindowViewModel.LoadMailTabAsync();
+
+            e.Handled = true;
         }
     }
 
-    private void Reply_Click(object sender, RoutedEventArgs e)
+    private async void Reply_ClickAsync(object sender, RoutedEventArgs e)
     {
+        try
+        {
+            Message replyMessage = await App.Client!.GetReplyFormAsync(Message);
+            new MessageWindow(replyMessage).Show();
+        }
+        catch (Exception ex)
+        {
+            IWindowViewModel viewModel = (IWindowViewModel)Window.GetWindow(this).DataContext;
+            ex.HandleWithDefaultHandler(viewModel, "Reply Message");
+        }
 
+        e.Handled = true;
     }
 
     protected override void OnMouseDown(MouseButtonEventArgs e)

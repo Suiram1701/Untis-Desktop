@@ -454,4 +454,7 @@
   <data name="MessageWindow.CM" xml:space="preserve">
     <value>Читайте {0}</value>
   </data>
+  <data name="MessageWindow.SRC" xml:space="preserve">
+    <value>Отправить уведомление о прочтении</value>
+  </data>
 </root>

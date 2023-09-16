@@ -454,4 +454,7 @@
   <data name="MessageWindow.CM" xml:space="preserve">
     <value>Sigue leyendo {0}</value>
   </data>
+  <data name="MessageWindow.SRC" xml:space="preserve">
+    <value>Enviar recibo de lectura</value>
+  </data>
 </root>

@@ -77,7 +77,7 @@ public partial class App : Application
 
     protected async override void OnExit(ExitEventArgs e)
     {
-        await Client!.LogoutAsync();
+        await (Client?.LogoutAsync() ?? Task.CompletedTask);
 
         Logger.EndLogging(e.ApplicationExitCode);
         base.OnExit(e);

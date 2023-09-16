@@ -455,6 +455,6 @@
     <value>Gelesen am {0}</value>
   </data>
   <data name="MessageWindow.SRC" xml:space="preserve">
-    <value>Lesebestätigung öffnen</value>
+    <value>Lesebestätigung senden</value>
   </data>
 </root>

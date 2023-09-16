@@ -98,6 +98,8 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
             {
                 _isReadOnly = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged(nameof(ShowRecipientAdd));
+                RaisePropertyChanged(nameof(CanSaveAsDraft));
             }
         }
     }
@@ -154,6 +156,8 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
             {
                 _isReplyForm = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged(nameof(ShowRecipientAdd));
+                RaisePropertyChanged(nameof(CanSaveAsDraft));
             }
         }
     }
@@ -173,6 +177,8 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
     }
     private string _recipientType = LangHelper.GetString("MessageWindow.R");
 
+    public bool ShowRecipientAdd { get => !IsReplyForm && !IsReadOnly; }
+
     public string Content
     {
         get => _content;
@@ -186,6 +192,8 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
         }
     }
     private string _content = string.Empty;
+
+    public bool CanSaveAsDraft { get => !IsReadOnly && !IsReplyForm; }
 
     public static bool CanForbidReply { get => MessagePermissionsFile.s_DefaultInstance.Permissions.CanForbidReplies; }
 
