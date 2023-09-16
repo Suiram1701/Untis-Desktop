@@ -364,18 +364,5 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
         });
 
         NewMailCommand = new(_ => !IsOffline, _ => new MessageWindow().Show());
-
-        _ = Task.Run(async () =>
-        {
-            using Ping ping = new();
-            try
-            {
-                App.Client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None);
-            }
-            catch
-            {
-                IsOffline = true;
-            }
-        });
     }
 }

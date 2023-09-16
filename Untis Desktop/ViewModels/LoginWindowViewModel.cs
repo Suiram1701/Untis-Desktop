@@ -339,7 +339,7 @@ internal class LoginWindowViewModel : ViewModelBase, IWindowViewModel
                     _ = ProfileCollection.SetActiveProfileAsync(profile);
 
                     Application.Current.MainWindow.Close();
-                    new MainWindow().Show();
+                    new MainWindow(false).Show();
                 }
                 else
                     ErrorBoxContent = LangHelper.GetString("LoginWindow.Login.InvC");

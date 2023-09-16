@@ -72,6 +72,8 @@ public class ProfileFile : FileBase<ProfileFile>
             School school = await SchoolSearch.GetSchoolByNameAsync(School?.LoginName, "UpdateSchoolData", ct);
             if (School != school)
                 School = school;
+
+            Update();
         }
         catch (HttpRequestException ex)
         {

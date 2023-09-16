@@ -20,6 +20,7 @@ public partial class App : Application
     public static WebUntisClient? Client { get; set; }
 
     protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
         AppDomain.CurrentDomain.UnhandledException += (_, e) =>
@@ -68,10 +69,25 @@ public partial class App : Application
             new LoginWindow().Show();
         else
         {
-            // Update static data
-            Task.Run(async () => await ProfileCollection.SetActiveProfileAsync(ProfileCollection.GetActiveProfile()));
+            Exception? exception = null;
+            try
+            {
+                ProfileFile activeProfile = ProfileCollection.GetActiveProfile();
 
-            new MainWindow().Show();
+                Client = await activeProfile.LoginAsync(CancellationToken.None);
+                _ = Task.Run(async () => await ProfileCollection.SetActiveProfileAsync(activeProfile));
+            }
+            catch (UnauthorizedAccessException)     // Bad credentials
+            {
+                Logger.LogWarning("Profile deletion in cause of bad credentials");
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+                Logger.LogInformation("Started without WU connection");
+            }
+
+            new MainWindow(exception is not null).Show();
         }
     }
 

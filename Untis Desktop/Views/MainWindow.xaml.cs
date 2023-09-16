@@ -45,11 +45,12 @@ public partial class MainWindow : Window
 
     private MainWindowViewModel ViewModel => (MainWindowViewModel)DataContext;
 
-    public MainWindow()
+    public MainWindow(bool isOffline)
     {
         s_SelectedWeek = ProfileCollection.GetActiveProfile().Options.SelectedWeek;
 
         InitializeComponent();
+        ViewModel.IsOffline = isOffline;
 
         ViewModel.PropertyChanged += async (_, e) =>
         {
