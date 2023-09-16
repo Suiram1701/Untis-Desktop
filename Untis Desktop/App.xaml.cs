@@ -7,11 +7,16 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Threading;
 using System.Windows;
 using UntisDesktop.Views;
 using WebUntisAPI.Client;
 using Data.Timetable;
+using UntisDesktop.ViewModels;
+using UntisDesktop.Extensions;
+using System.Timers;
+using System.Threading;
+using Timer = System.Timers.Timer;
+using System.Windows.Threading;
 
 namespace UntisDesktop;
 
@@ -19,7 +24,31 @@ public partial class App : Application
 {
     public static WebUntisClient? Client { get; set; }
 
-    protected override void OnStartup(StartupEventArgs e)
+    private readonly Timer _timer = new(TimeSpan.FromMinutes(1));
+
+    private async void UpdateClientTokenAsync(object? sender, ElapsedEventArgs e)
+    {
+        bool isAnyOffline = Dispatcher.Invoke(() => Windows.Cast<Window>().Where(w => w.DataContext is IWindowViewModel).Any(w => ((IWindowViewModel)w.DataContext).IsOffline));
+
+        if (!Client?.LoggedIn ?? true || isAnyOffline)
+            return;
+
+        if (e.SignalTime.AddMinutes(1.5) >= Client!.SessionExpires.ToLocalTime())
+        {
+            try
+            {
+                await Client!.ReloadSessionAsync();
+                Logger.LogInformation("Session token updated");
+            }
+            catch (Exception ex)
+            {
+                IWindowViewModel viewModel = (IWindowViewModel)Dispatcher.Invoke(() => Windows.Cast<Window>().FirstOrDefault(w => w.IsActive, MainWindow).DataContext);
+
+                ex.HandleWithDefaultHandler(viewModel, "Update client token");
+            }
+        }
+    }
+
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -87,13 +116,20 @@ public partial class App : Application
                 Logger.LogInformation("Started without WU connection");
             }
 
-            new MainWindow(exception is not null).Show();
+            _timer.Elapsed += UpdateClientTokenAsync;
+            _timer.Start();
+
+            MainWindow = new MainWindow(exception is not null);
+            MainWindow.Show();
         }
     }
 
     protected async override void OnExit(ExitEventArgs e)
     {
         await (Client?.LogoutAsync() ?? Task.CompletedTask);
+
+        _timer.Stop();
+        _timer.Dispose();
 
         Logger.EndLogging(e.ApplicationExitCode);
         base.OnExit(e);
