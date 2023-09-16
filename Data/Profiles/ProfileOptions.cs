@@ -13,7 +13,7 @@ public class ProfileOptions
     /// Last selected week for this profile
     /// </summary>
     [XmlElement("selectedWeek")]
-    public DateTime SelectedWeek { get; set; } = DateTime.Now;
+    public DateTime SelectedWeek { get; set; } = DateTime.Now.Date;
 
     /// <summary>
     /// Weeks in the past that are saved

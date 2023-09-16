@@ -21,14 +21,4 @@ internal static class ImageExtensions
 
         img.Source = image;
     }
-
-    public static void LoadImage(this Image img, Stream source)
-    {
-        BitmapImage image = new();
-        image.BeginInit();
-        image.StreamSource = source;
-        image.EndInit();
-
-        img.Source = image;
-    }
 }

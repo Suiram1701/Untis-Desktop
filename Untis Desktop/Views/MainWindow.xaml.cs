@@ -161,7 +161,8 @@ public partial class MainWindow : Window
 
         // Remove old elements
         foreach (UIElement element in Timegrid.Children.Cast<UIElement>()
-            .Where(e => e.GetType() == typeof(UserControls.SchoolHour) || e.GetType() == typeof(Grid) || e.GetType() == typeof(UserControls.Holidays)).ToArray())
+            .Where(e => e.GetType() == typeof(UserControls.SchoolHour) || e.GetType() == typeof(Grid) || e.GetType() == typeof(UserControls.Holidays))
+            .ToArray())
             Timegrid.Children.Remove(element);
 
         WebUntis.Holidays[] holidays = HolidaysFile.s_DefaultInstance.Holidays.ToArray();
@@ -180,25 +181,21 @@ public partial class MainWindow : Window
         }
 
         // Set holidays
-        foreach (WebUntis.Holidays holiday in holidays.Where(h => h.StartDate <= SelectedWeek && SelectedWeek.AddDays(6) <= h.EndDate))
+        for (DateTime date = SelectedWeek; date < SelectedWeek.AddDays(6); date = date.AddDays(1))
         {
-            for (DateTime date = SelectedWeek; date <= SelectedWeek.AddDays(6); date = date.AddDays(1))
+            if (holidays.FirstOrDefault(h => h.StartDate <= date && h.EndDate >= date) is WebUntis.Holidays holiday)
             {
-                if (holiday.StartDate <= date.Date && holiday.EndDate >= date.Date)
-                {
-                    int targetRow = Timegrid.RowDefinitions.IndexOf(Timegrid.RowDefinitions.FirstOrDefault(r => r.Name == date.DayOfWeek.ToString()));
+                int targetRow = Timegrid.RowDefinitions.IndexOf(Timegrid.RowDefinitions.FirstOrDefault(r => r.Name == date.DayOfWeek.ToString()));
+                if (targetRow == -1)
+                    continue;
 
-                    if (targetRow == -1)
-                        continue;
+                int id = Timegrid.Children.Add(new UserControls.Holidays(holiday.LongName));
+                Grid.SetRow(Timegrid.Children[id], targetRow);
+                Grid.SetColumn(Timegrid.Children[id], 1);
+                Grid.SetColumnSpan(Timegrid.Children[id], Timegrid.ColumnDefinitions.Count - 1);
 
-                    int id = Timegrid.Children.Add(new UserControls.Holidays(holiday.LongName));
-                    Grid.SetRow(Timegrid.Children[id], targetRow);
-                    Grid.SetColumn(Timegrid.Children[id], 1);
-                    Grid.SetColumnSpan(Timegrid.Children[id], Timegrid.ColumnDefinitions.Count - 1);
-
-                    // Remove overlayed periods
-                    periods = periods.Where(p => date == p.Date).ToArray();
-                }
+                // Remove overlayed periods
+                periods = periods.Where(p => date != p.Date).ToArray();
             }
         }
 

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -19,6 +22,7 @@ using UntisDesktop.ViewModels;
 using UntisDesktop.Views;
 using WebUntisAPI.Client.Exceptions;
 using WebUntisAPI.Client.Models.Messages;
+using System.Windows.Threading;
 
 namespace UntisDesktop.UserControls;
 
@@ -30,24 +34,50 @@ public partial class MessageControl : UserControl
 
     public string DisplayedName { get => Message.Sender?.DisplayName ?? Message.Recipients.Select(r => r.DisplayName).FirstOrDefault("Err"); }
 
-    public string DisplayedProfileImg
-    {
-        get
-        {
-            StringBuilder sb = new();
-            foreach (char c in DisplayedName.Split(' ').Select(s => s[0]).Take(2))
-                sb.Append(c);
-            return sb.ToString();
-        }
-    }
-
     public bool IsSentMessage { get; set; }
+
+    public static readonly DependencyProperty ProfileImgProperty = DependencyProperty.Register("ProfileImg", typeof(BitmapImage), typeof(MessageControl));
+    public BitmapImage ProfileImg
+    {
+        get => (BitmapImage)GetValue(ProfileImgProperty);
+        set => SetValue(ProfileImgProperty, value);
+    }
 
     public MessageControl(MessagePreview message, bool isSentMessage = false)
     {
         Message = message;
         IsSentMessage = isSentMessage;
         InitializeComponent();
+        Unloaded += (_, _) => ProfileImg.StreamSource?.Dispose();
+
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                MessagePerson person = Message.Sender;
+                person ??= Message.Recipients[0];
+
+                using SixLabors.ImageSharp.Image profileImg = await App.Client!.GetMessagePersonProfileImageAsync(person);
+                MemoryStream stream = new();
+                await profileImg.SaveAsPngAsync(stream);
+
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    BitmapImage img = new();
+
+                    img.BeginInit();
+                    img.StreamSource = stream;
+                    img.EndInit();
+
+                    ProfileImg = img;
+                }, DispatcherPriority.Render);
+            }
+            catch (Exception ex)
+            {
+                IWindowViewModel viewModel = (IWindowViewModel)Window.GetWindow(this).DataContext;
+                ex.HandleWithDefaultHandler(viewModel, "Load recipient prof. img.");
+            }
+        });
     }
 
     private async void Delete_ClickAsync(object sender, RoutedEventArgs e)

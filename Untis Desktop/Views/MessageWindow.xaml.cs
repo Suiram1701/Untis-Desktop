@@ -455,10 +455,17 @@ public partial class MessageWindow : Window
 
     private async void SendReadConfirmation_ClickAsync(object sender, RoutedEventArgs e)
     {
-        if (_originalMessage is null)
-            throw new InvalidOperationException("The object isn't loaded yet.");
+        try
+        {
+            if (_originalMessage is null)
+                throw new InvalidOperationException("The object isn't loaded yet.");
 
-        await App.Client!.ConfirmMessageAsync(_originalMessage);
+            await App.Client!.ConfirmMessageAsync(_originalMessage);
+        }
+        catch (Exception ex)
+        {
+            ex.HandleWithDefaultHandler(ViewModel, "Send read confirmation");
+        }
 
         e.Handled = true;
     }

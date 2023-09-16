@@ -45,24 +45,7 @@ public class HolidaysFile : FileBase<HolidaysFile>
     {
         try
         {
-            // TODO: java.lang.NullPointerException fix
-            /*
-             * The server kept throwing a java.lang.NullPointerException and I suspect it's because the school year is over, but I'm not sure.
-             * In order to be able to continue my work on this project, I use some holidays from Germany.
-             */
-
-            //s_DefaultInstance.Holidays = (await client.GetHolidaysAsync("reloadHolidays", CancellationToken.None)).ToList();
-
-            s_DefaultInstance.Holidays = new()
-            {
-                new() {Id = 0, Name = "WF", LongName = "Winterferien", StartDate = new(2023, 1, 30), EndDate = new(2023, 2, 3)},
-                new() {Id = 1, Name = "OSF", LongName = "Osterferien", StartDate = new(2023, 4, 3), EndDate = new(2023, 4, 14)},
-                new() {Id = 2, Name = "PF", LongName = "Pfingsten", StartDate = new(2023, 5, 19), EndDate = new(2023, 5, 19)},
-                new() {Id = 3, Name = "SF", LongName = "Sommerferien", StartDate = new(2023, 7, 13), EndDate = new(2023, 8, 26)},
-                new() {Id = 4, Name = "HF", LongName = "Herbstferien", StartDate = new(2023, 10, 23), EndDate = new(2023, 11, 4)},
-                new() {Id = 5, Name = "W", LongName = "Weinachten", StartDate = new(2023, 12, 23), EndDate = new(2024, 1, 5)}
-            };
-
+            s_DefaultInstance.Holidays = (await client.GetHolidaysAsync("reloadHolidays")).ToList();
             s_DefaultInstance.Update();
         }
         catch (WebUntisException ex)

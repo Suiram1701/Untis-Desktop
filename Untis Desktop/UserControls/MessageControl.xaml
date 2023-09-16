@@ -16,13 +16,15 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Sender -->
+            <!-- Sender / Recipient -->
             <StackPanel Orientation="Horizontal" Grid.Column="0" HorizontalAlignment="Left">
                 <Ellipse Visibility="{Binding Message.IsMessageRead, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=Inv, Mode=OneTime}" Fill="{DynamicResource PressedBtnColor}" 
                          Grid.Column="0" Height="10" Width="10"/>
+
                 <Border CornerRadius="50" BorderBrush="Black" BorderThickness="1" Height="40" Width="40" Margin="10,0">
-                    <TextBlock Text="{Binding DisplayedProfileImg, Mode=OneTime}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Image Source="{Binding ProfileImg, Mode=OneWay}"/>
                 </Border>
+
                 <TextBlock Text="{Binding DisplayedName, Mode=OneTime}" FontSize="16" VerticalAlignment="Center"/>
             </StackPanel>
 

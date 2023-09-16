@@ -113,37 +113,7 @@ public class TimegridFile : FileBase<TimegridFile>
     {
         try
         {
-            // TODO: java.lang.NullPointerException fix
-            /*
-             * The server kept throwing a java.lang.NullPointerException and I suspect it's because the school year is over, but I'm not sure.
-             * In order to be able to continue my work on this project, I use this data temporarily
-             */
-
-            //s_DefaultInstance.Timegrid = await client.GetTimegridAsync("reloadTimegrid", CancellationToken.None);
-            SchoolHour[] normalDay = new SchoolHour[]
-            {
-                new() { Name = "1.", StartTime = new DateTime(2020, 1, 1, 7, 40, 0), EndTime = new DateTime(2020, 1, 1, 8, 25, 0) },
-                new() { Name = "2.", StartTime = new DateTime(2020, 1, 1, 8, 35, 0), EndTime = new DateTime(2020, 1, 1, 9, 20, 0) },
-                new() { Name = "3.", StartTime = new DateTime(2020, 1, 1, 9, 35, 0), EndTime = new DateTime(2020, 1, 1, 10, 20, 0) },
-                new() { Name = "4.", StartTime = new DateTime(2020, 1, 1, 10, 20, 0), EndTime = new DateTime(2020, 1, 1, 11, 05, 0) },
-                new() { Name = "5.", StartTime = new DateTime(2020, 1, 1, 11, 35, 0), EndTime = new DateTime(2020, 1, 1, 12, 20, 0) },
-                new() { Name = "6.", StartTime = new DateTime(2020, 1, 1, 12, 20, 0), EndTime = new DateTime(2020, 1, 1, 13, 05, 0) },
-                new() { Name = "7.", StartTime = new DateTime(2020, 1, 1, 13, 35, 0), EndTime = new DateTime(2020, 1, 1, 14, 20, 0) },
-                new() { Name = "8.", StartTime = new DateTime(2020, 1, 1, 14, 30, 0), EndTime = new DateTime(2020, 1, 1, 15, 15, 0) },
-                new() { Name = "9.", StartTime = new DateTime(2020, 1, 1, 15, 25, 0), EndTime = new DateTime(2020, 1, 1, 16, 10, 0) }
-            };
-            s_DefaultInstance.Timegrid = new Timegrid()
-            {
-                SchoolDays = new Dictionary<Day, SchoolHour[]>(new List<KeyValuePair<Day, SchoolHour[]>>()
-                {
-                    new(Day.Monday, normalDay),
-                    new(Day.Tuesday, normalDay),
-                    new(Day.Wednesday, normalDay),
-                    new(Day.Thursday, normalDay),
-                    new(Day.Friday, normalDay),
-                })
-            };
-
+            s_DefaultInstance.Timegrid = await client.GetTimegridAsync("reloadTimegrid");
             s_DefaultInstance.Update();
         }
         catch (WebUntisException ex)
