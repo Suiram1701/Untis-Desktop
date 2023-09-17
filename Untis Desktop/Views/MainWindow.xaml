@@ -509,6 +509,9 @@
                         <TabItem x:Name="NotificationOptItem" IsSelected="False">
                         </TabItem>
                         <TabItem x:Name="ThirdPartyItem" IsSelected="False">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                <StackPanel x:Name="ThirdParty" Orientation="Vertical"/>
+                            </ScrollViewer>
                         </TabItem>
                     </TabControl>
                 </Grid>

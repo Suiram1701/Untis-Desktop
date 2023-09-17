@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Update", "Update\Update.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{0619766B-35F0-4257-91FB-D91ABB60F2E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Licenses", "Licenses\Licenses.csproj", "{2A4FCFF5-B51B-47FC-8B59-6EEE6E103762}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0619766B-35F0-4257-91FB-D91ABB60F2E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0619766B-35F0-4257-91FB-D91ABB60F2E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0619766B-35F0-4257-91FB-D91ABB60F2E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A4FCFF5-B51B-47FC-8B59-6EEE6E103762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A4FCFF5-B51B-47FC-8B59-6EEE6E103762}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A4FCFF5-B51B-47FC-8B59-6EEE6E103762}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A4FCFF5-B51B-47FC-8B59-6EEE6E103762}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -57,6 +57,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj" />
+    <ProjectReference Include="..\Licenses\Licenses.csproj" />
     <ProjectReference Include="..\Update\Update.csproj" />
   </ItemGroup>
 

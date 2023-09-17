@@ -24,6 +24,11 @@ using WebUntisAPI.Client.Models;
 using WebUntisAPI.Client.Models.Messages;
 using WebUntis = WebUntisAPI.Client.Models;
 using Data;
+using Licenses;
+using System.Windows.Shapes;
+using System.Windows.Media;
+using System.Windows.Data;
+using UntisDesktop.Converter;
 
 namespace UntisDesktop.Views;
 
@@ -100,6 +105,8 @@ public partial class MainWindow : Window
 
         SetupTimegrid();
         _ = UpdateTimetableAsync();
+
+        RenderLicenses();
 
         DisplayLastMenuItem(options.SelectedMenuItem);
         DisplayLastOptionsMenuItem(options.SelectedOptionsMenuItems);
@@ -554,6 +561,35 @@ public partial class MainWindow : Window
                 ThirdPartyItem.IsSelected = true;
                 break;
         }
+    }
+
+    private void RenderLicenses()
+    {
+        List<LicenceInformation> licenses = Licenses.Licenses.GetLicenses().ToList();
+
+        for (int i = 0; i < licenses.Count - 1; i++)
+        {
+            licenses[i].AddToPanel(ThirdParty);
+
+            // Render the border line
+            Line line = new()
+            {
+                Stroke = Brushes.Black,
+                StrokeThickness = 1,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Margin = new(0, 10, 0, 10)
+            };
+            line.SetBinding(Line.X2Property, new Binding
+            {
+                Source = ThirdParty,
+                Path = new("ActualWidth"),
+                Converter = new MathConverter(),
+                ConverterParameter = "-20"
+            });
+            ThirdParty.Children.Add(line);
+        }
+
+        licenses.Last().AddToPanel(ThirdParty);
     }
 
     protected override void OnClosing(CancelEventArgs e)
