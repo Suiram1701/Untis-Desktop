@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Suiram1.WebUntisAPI.Client" Version="1.1.1" />
+    <PackageReference Include="Suiram1.WebUntisAPI.Client" Version="1.2.3" />
   </ItemGroup>
 
 </Project>

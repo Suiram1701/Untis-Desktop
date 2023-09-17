@@ -33,19 +33,21 @@ public partial class App : Application
         if (!Client?.LoggedIn ?? true || isAnyOffline)
             return;
 
-        if (e.SignalTime.AddMinutes(1.5) >= Client!.SessionExpires.ToLocalTime())
+        try
         {
-            try
+            if (e.SignalTime.AddMinutes(1.5) >= Client!.SessionExpires.ToLocalTime())
             {
-                await Client!.ReloadSessionAsync();
+                await Client!.ReloadSessionFixAsync();
                 Logger.LogInformation("Session token updated");
             }
-            catch (Exception ex)
+        }
+        catch (Exception ex)
+        {
+            Dispatcher.Invoke(() =>
             {
-                IWindowViewModel viewModel = (IWindowViewModel)Dispatcher.Invoke(() => Windows.Cast<Window>().FirstOrDefault(w => w.IsActive, MainWindow).DataContext);
-
+                IWindowViewModel viewModel = (IWindowViewModel)Windows.Cast<Window>().FirstOrDefault(w => w.IsActive, MainWindow).DataContext;
                 ex.HandleWithDefaultHandler(viewModel, "Update client token");
-            }
+            });
         }
     }
 

@@ -22,15 +22,6 @@ public partial class ReplyMessage : UserControl
 {
     public Message Message { get; set; }
 
-    public DateTime SentTime
-    {
-        get
-        {
-            PropertyInfo propertyInfo = typeof(Message).GetProperty("SentTime", BindingFlags.NonPublic | BindingFlags.Instance)!;
-            return (DateTime)(propertyInfo.GetValue(Message) ?? DateTime.Now);
-        }
-    }
-
     public bool HasAttachments { get => Message.Attachments.Any(); }
 
     public static readonly DependencyProperty RecipientTypeProperty = DependencyProperty.Register("RecipientType", typeof(string), typeof(ReplyMessage), new(LangHelper.GetString("MessageWindow.R")));

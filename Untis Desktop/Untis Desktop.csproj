@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Suiram1.WebUntisAPI.Client" Version="1.2.2" />
+    <PackageReference Include="Suiram1.WebUntisAPI.Client" Version="1.2.3" />
   </ItemGroup>
 
   <ItemGroup>
