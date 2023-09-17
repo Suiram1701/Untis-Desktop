@@ -23,6 +23,7 @@ using WebUntisAPI.Client.Exceptions;
 using WebUntisAPI.Client.Models;
 using WebUntisAPI.Client.Models.Messages;
 using WebUntis = WebUntisAPI.Client.Models;
+using Data;
 
 namespace UntisDesktop.Views;
 
@@ -47,7 +48,8 @@ public partial class MainWindow : Window
 
     public MainWindow(bool isOffline)
     {
-        s_SelectedWeek = ProfileCollection.GetActiveProfile().Options.SelectedWeek;
+        ProfileOptions options = ProfileCollection.GetActiveProfile().Options;
+        s_SelectedWeek = options.SelectedWeek;
 
         InitializeComponent();
         ViewModel.IsOffline = isOffline;
@@ -98,6 +100,9 @@ public partial class MainWindow : Window
 
         SetupTimegrid();
         _ = UpdateTimetableAsync();
+
+        DisplayLastMenuItem(options.SelectedMenuItem);
+        DisplayLastOptionsMenuItem(options.SelectedOptionsMenuItems);
     }
 
     [GeneratedRegex(@"^Hour(\d{2}){2}_(?:\d{2}){2}$")]
@@ -348,27 +353,62 @@ public partial class MainWindow : Window
 
     private void MenuBtn_Click(object sender, RoutedEventArgs e)
     {
+        ProfileFile profile = ProfileCollection.GetActiveProfile();
+
         string targetName = ((FrameworkElement)sender).Name;
         switch (targetName)
         {
             case nameof(TodayBtn):
                 TodayItem.IsSelected = true;
+                profile.Options.SelectedMenuItem = MenuItems.TodayItem;
                 break;
             case nameof(TimetableBtn):
                 TimetableItem.IsSelected = true;
+                profile.Options.SelectedMenuItem = MenuItems.TimetableItem;
                 break;
             case nameof(MailBtn):
                 MailItem.IsSelected = true;
+                profile.Options.SelectedMenuItem = MenuItems.MailItem;
                 break;
             case nameof(SettingsBtn):
                 SettingsItem.IsSelected = true;
+                profile.Options.SelectedMenuItem = MenuItems.SettingsItem;
                 break;
             case nameof(ProfileBtn):
                 ProfileItem.IsSelected = true;
+                profile.Options.SelectedMenuItem = MenuItems.ProfileItem;
                 break;
             default:
                 return;
         }
+        profile.Update();
+
+        e.Handled = true;
+    }
+
+    private void OptionsMenuBtn_Click(object sender, RoutedEventArgs e)
+    {
+        ProfileFile profile = ProfileCollection.GetActiveProfile();
+
+        string targetName = ((FrameworkElement)sender).Name;
+        switch (targetName)
+        {
+            case nameof(TimetableOptBtn):
+                TimetableOptItem.IsSelected = true;
+                profile.Options.SelectedOptionsMenuItems = OptionsMenuItems.TimetableOptItem;
+                break;
+            case nameof(NotificationOptBtn):
+                NotificationOptItem.IsSelected = true;
+                profile.Options.SelectedOptionsMenuItems = OptionsMenuItems.NotifyOptItem;
+                break;
+            case nameof(ThirdPartyBtn):
+                ThirdPartyItem.IsSelected = true;
+                profile.Options.SelectedOptionsMenuItems = OptionsMenuItems.ThirdPartyItem;
+                break;
+            default:
+                return;
+        }
+        profile.Update();
 
         e.Handled = true;
     }
@@ -473,6 +513,46 @@ public partial class MainWindow : Window
             DraftMails.RowDefinitions.Add(new() { Height = GridLength.Auto });
             int id = DraftMails.Children.Add(new DraftControl(preview));
             Grid.SetRow(DraftMails.Children[id], DraftMails.RowDefinitions.Count - 1);
+        }
+    }
+
+    private void DisplayLastMenuItem(MenuItems item)
+    {
+        switch (item)
+        {
+            case MenuItems.TodayItem:
+                _ = ViewModel.LoadTodayTabAsync();
+                TodayItem.IsSelected = true;
+                break;
+            case MenuItems.TimetableItem:
+                TimetableItem.IsSelected = true;
+                break;
+            case MenuItems.MailItem:
+                _ = ViewModel.LoadMailTabAsync();
+                MailItem.IsSelected = true;
+                break;
+            case MenuItems.SettingsItem:
+                SettingsItem.IsSelected = true;
+                break;
+            case MenuItems.ProfileItem:
+                ProfileItem.IsSelected = true;
+                break;
+        }
+    }
+
+    private void DisplayLastOptionsMenuItem(OptionsMenuItems item)
+    {
+        switch (item)
+        {
+            case OptionsMenuItems.TimetableOptItem:
+                TimetableOptItem.IsSelected = true;
+                break;
+            case OptionsMenuItems.NotifyOptItem:
+                NotificationOptItem.IsSelected = true;
+                break;
+            case OptionsMenuItems.ThirdPartyItem:
+                ThirdPartyItem.IsSelected = true;
+                break;
         }
     }
 

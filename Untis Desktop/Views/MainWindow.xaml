@@ -101,6 +101,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <StackPanel Orientation="Vertical" Grid.Row="0" VerticalAlignment="Center">
+                
                 <!-- Today -->
                 <Button Name="TodayBtn" ToolTip="{Localization:Localize MainWindow.Menu.Today}" Template="{StaticResource MenuBtn}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
                         Click="MenuBtn_Click" Command="{Binding ReloadTabCommand, Mode=OneTime}" CommandParameter="TodayBtn">
@@ -311,7 +312,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="MailItem" IsSelected="True">
+            <TabItem x:Name="MailItem" IsSelected="False">
                 <Grid Margin="0,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -445,7 +446,72 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="SettingsItem" IsSelected="False">
-                <TextBlock Text="Settings"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Timetable -->
+                    <Button Name="TimetableOptBtn" Click="OptionsMenuBtn_Click" Grid.Row="0" Grid.Column="0" Template="{StaticResource MenuBtn}">
+                        <TextBlock Text="{Localization:Localize MainWindow.Opt.Timetable}" FontSize="14"/>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=TimetableOptItem, Path=IsSelected}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <!-- Notifications -->
+                    <Button Name="NotificationOptBtn" Click="OptionsMenuBtn_Click" Grid.Row="1" Grid.Column="0" Template="{StaticResource MenuBtn}">
+                        <TextBlock Text="{Localization:Localize MainWindow.Opt.Notify}" FontSize="14"/>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=NotificationOptItem, Path=IsSelected}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <!-- Third-Party -->
+                    <Button Name="ThirdPartyBtn" Click="OptionsMenuBtn_Click" Grid.Row="2" Grid.Column="0" Template="{StaticResource MenuBtn}">
+                        <TextBlock Text="{Localization:Localize MainWindow.Opt.TPL}" FontSize="14"/>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=ThirdPartyItem, Path=IsSelected}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <TabControl BorderThickness="0" Grid.RowSpan="4" Grid.Column="1" Style="{StaticResource HeaderLessTabControl}">
+                        <TabItem x:Name="TimetableOptItem" IsSelected="True">
+                        </TabItem>
+                        <TabItem x:Name="NotificationOptItem" IsSelected="False">
+                        </TabItem>
+                        <TabItem x:Name="ThirdPartyItem" IsSelected="False">
+                        </TabItem>
+                    </TabControl>
+                </Grid>
             </TabItem>
             <TabItem x:Name="ProfileItem" IsSelected="False">
                 <TextBlock Text="Profiles"/>

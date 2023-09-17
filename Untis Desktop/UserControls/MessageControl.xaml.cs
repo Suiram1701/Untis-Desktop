@@ -48,7 +48,7 @@ public partial class MessageControl : UserControl
         Message = message;
         IsSentMessage = isSentMessage;
         InitializeComponent();
-        Unloaded += (_, _) => ProfileImg.StreamSource?.Dispose();
+        Unloaded += (_, _) => ProfileImg?.StreamSource?.Dispose();
 
         _ = Task.Run(async () =>
         {

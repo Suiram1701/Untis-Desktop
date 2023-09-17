@@ -16,6 +16,18 @@ public class ProfileOptions
     public DateTime SelectedWeek { get; set; } = DateTime.Now.Date;
 
     /// <summary>
+    /// The currently selected menu item
+    /// </summary>
+    [XmlElement("selectedMI")]
+    public MenuItems SelectedMenuItem { get; set; } = MenuItems.TodayItem;
+
+    /// <summary>
+    /// The currently selected options menu item
+    /// </summary>
+    [XmlElement("selectedOMI")]
+    public OptionsMenuItems SelectedOptionsMenuItems { get; set; } = OptionsMenuItems.TimetableOptItem;
+
+    /// <summary>
     /// Weeks in the past that are saved
     /// </summary>
     [XmlElement("pastWeeks")]
@@ -26,4 +38,16 @@ public class ProfileOptions
     /// </summary>
     [XmlElement("preloadWeeks")]
     public int PreloadWeeks { get; set; } = 4;
+
+    /// <summary>
+    /// Notify on new messages
+    /// </summary>
+    [XmlElement("notifyMsg")]
+    public bool NotifyOnMessages { get; set; } = true;
+
+    /// <summary>
+    /// Notify on news
+    /// </summary>
+    [XmlElement("notifyNews")]
+    public bool NotifyOnNews { get; set; } = true;
 }

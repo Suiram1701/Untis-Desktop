@@ -1,76 +1,97 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="ProfileSchema"
-	elementFormDefault="qualified"
-	xmlns="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/ProfileSchema.xsd"
+    elementFormDefault="qualified"
+    xmlns="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/ProfileSchema.xsd"
     targetNamespace="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/ProfileSchema.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:element name="ProfileFile">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="encodedPassword" type="xs:string"/>
-				<xs:choice minOccurs="1" maxOccurs="1">
-					<xs:element name="studentUser">
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="Id" type="xs:int"/>
-								<xs:element name="Name" type="xs:string"/>
-								<xs:element name="ForeName" type="xs:string"/>
-								<xs:element name="LongName" type="xs:string"/>
-								<xs:element name="Key" type="xs:string"/>
-								<xs:element name="Gender" nillable="true">
-									<xs:simpleType>
-										<xs:restriction base="xs:string">
-											<xs:enumeration value="Male"/>
-											<xs:enumeration value="Female"/>
-										</xs:restriction>
-									</xs:simpleType>
-								</xs:element>
-							</xs:sequence>
-						</xs:complexType>
-					</xs:element>
-					<xs:element name="teacherUser">
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="Id" type="xs:int"/>
-								<xs:element name="Name" type="xs:string"/>
-								<xs:element name="ForeName" type="xs:string"/>
-								<xs:element name="LongName" type="xs:string"/>
-								<xs:element name="Title" type="xs:string"/>
-								<xs:element name="Active" type="xs:boolean"/>
-								<xs:element name="Dids" nillable="true">
-									<xs:complexType>
-										<xs:sequence>
-											<xs:any minOccurs="0" maxOccurs="unbounded"/>
-										</xs:sequence>
-									</xs:complexType>
-								</xs:element>
-							</xs:sequence>
-						</xs:complexType>
-					</xs:element>
-				</xs:choice>
-				<xs:element name="school">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="DisplayName" type="xs:string"/>
-							<xs:element name="SchoolId" type="xs:int"/>
-							<xs:element name="LoginName" type="xs:string"/>
-							<xs:element name="Address" type="xs:string"/>
-							<xs:element name="Server" type="xs:string"/>
-							<xs:element name="ServerUrl" type="xs:anyURI"/>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="options">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="selectedWeek" type="xs:dateTime"/>
-							<xs:element name="pastWeeks" type="xs:unsignedInt"/>
-							<xs:element name="preloadWeeks" type="xs:unsignedInt"/>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-			</xs:sequence>
-			<xs:attribute name="isActive" type="xs:boolean"/>
-		</xs:complexType>
-	</xs:element>
+	<xs:simpleType name="MenuItems">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TodayItem"/>
+		    <xs:enumeration value="TimetableItem"/>
+			<xs:enumeration value="MailItem"/>
+			<xs:enumeration value="SettingsItem"/>
+		    <xs:enumeration value="ProfileItem"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OptionsMenuItems">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TimetableOptItem"/>
+		    <xs:enumeration value="NotificationOptItem"/>
+		    <xs:enumeration value="ThirdPartyItem"/>
+		</xs:restriction>
+	</xs:simpleType>
+		
+    <xs:element name="ProfileFile">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="encodedPassword" type="xs:string"/>
+                <xs:choice minOccurs="1" maxOccurs="1">
+                    <xs:element name="studentUser">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Id" type="xs:int"/>
+                                <xs:element name="Name" type="xs:string"/>
+                                <xs:element name="ForeName" type="xs:string"/>
+                                <xs:element name="LongName" type="xs:string"/>
+                                <xs:element name="Key" type="xs:string"/>
+                                <xs:element name="Gender" nillable="true">
+                                    <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                            <xs:enumeration value="Male"/>
+                                            <xs:enumeration value="Female"/>
+                                        </xs:restriction>
+                                    </xs:simpleType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="teacherUser">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Id" type="xs:int"/>
+                                <xs:element name="Name" type="xs:string"/>
+                                <xs:element name="ForeName" type="xs:string"/>
+                                <xs:element name="LongName" type="xs:string"/>
+                                <xs:element name="Title" type="xs:string"/>
+                                <xs:element name="Active" type="xs:boolean"/>
+                                <xs:element name="Dids" nillable="true">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:any minOccurs="0" maxOccurs="unbounded"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:choice>
+                <xs:element name="school">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="DisplayName" type="xs:string"/>
+                            <xs:element name="SchoolId" type="xs:int"/>
+                            <xs:element name="LoginName" type="xs:string"/>
+                            <xs:element name="Address" type="xs:string"/>
+                            <xs:element name="Server" type="xs:string"/>
+                            <xs:element name="ServerUrl" type="xs:anyURI"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="options">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="selectedWeek" type="xs:dateTime"/>
+							<xs:element name="selectedMI" type="MenuItems"/>
+							<xs:element name="selectedOMI" type="OptionsMenuItems"/>
+                            <xs:element name="pastWeeks" type="xs:unsignedInt"/>
+                            <xs:element name="preloadWeeks" type="xs:unsignedInt"/>
+                            <xs:element name="notifyMsg" type="xs:boolean"/>
+                            <xs:element name="notifyNews" type="xs:boolean"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="isActive" type="xs:boolean"/>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>

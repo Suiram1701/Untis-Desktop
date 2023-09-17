@@ -60,7 +60,7 @@ public partial class App : Application
             if (e.IsTerminating)
                 MessageBox.Show($"An unhandled exception: {ex.Source}\nMessage: {ex.Message}\nStack trace: {ex.StackTrace}", "unhandled exception", MessageBoxButton.OK, MessageBoxImage.Error);
         };
-        Logger.LogInformation("Application started with args: " + (e.Args.Length > 0 ? string.Join("; ", e.Args) : "No args available"));
+        Logger.LogInformation("Application started with args: " + (e.Args.Length > 0 ? string.Join(';', e.Args) : "No args available"));
 
 #if RELEASE
         ProcessStartInfo updateStartInf = new()     // Update checking
@@ -108,7 +108,8 @@ public partial class App : Application
             }
             catch (UnauthorizedAccessException)     // Bad credentials
             {
-                Logger.LogWarning("Profile deletion in cause of bad credentials");
+                // TODO: Bad credentials
+                Logger.LogInformation("Profile deletion in cause of bad credentials");
             }
             catch (Exception ex)
             {
