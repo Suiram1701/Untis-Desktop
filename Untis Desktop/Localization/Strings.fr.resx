@@ -457,4 +457,22 @@
   <data name="MessageWindow.SRC" xml:space="preserve">
     <value>Envoyer un accusé de lecture</value>
   </data>
+  <data name="ToggleBtn.OFF" xml:space="preserve">
+    <value>Désactivé</value>
+  </data>
+  <data name="ToggleBtn.ON" xml:space="preserve">
+    <value>Activé</value>
+  </data>
+  <data name="MainWindow.Opt.Notify" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="MainWindow.Opt.Notify.NM" xml:space="preserve">
+    <value>Notification des notifications non lues</value>
+  </data>
+  <data name="MainWindow.Opt.Notify.UrM" xml:space="preserve">
+    <value>Notification des messages non lus</value>
+  </data>
+  <data name="MainWindow.Opt.TPL" xml:space="preserve">
+    <value>Licences tierces</value>
+  </data>
 </root>

@@ -457,4 +457,22 @@
   <data name="MessageWindow.SRC" xml:space="preserve">
     <value>Enviar recibo de lectura</value>
   </data>
+  <data name="ToggleBtn.OFF" xml:space="preserve">
+    <value>Desactivado</value>
+  </data>
+  <data name="ToggleBtn.ON" xml:space="preserve">
+    <value>Activado</value>
+  </data>
+  <data name="MainWindow.Opt.Notify" xml:space="preserve">
+    <value>Notificaciones</value>
+  </data>
+  <data name="MainWindow.Opt.Notify.NM" xml:space="preserve">
+    <value>Notificación de notificaciones no leídas</value>
+  </data>
+  <data name="MainWindow.Opt.Notify.UrM" xml:space="preserve">
+    <value>Notificación de mensajes no leídos</value>
+  </data>
+  <data name="MainWindow.Opt.TPL" xml:space="preserve">
+    <value>Licencias de terceros</value>
+  </data>
 </root>

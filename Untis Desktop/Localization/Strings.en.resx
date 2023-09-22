@@ -457,4 +457,22 @@
   <data name="MessageWindow.SRC" xml:space="preserve">
     <value>Send read confirmation</value>
   </data>
+  <data name="ToggleBtn.OFF" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="ToggleBtn.ON" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="MainWindow.Opt.Notify" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="MainWindow.Opt.Notify.NM" xml:space="preserve">
+    <value>Notification of unread notifications</value>
+  </data>
+  <data name="MainWindow.Opt.Notify.UrM" xml:space="preserve">
+    <value>Notification of unread messages</value>
+  </data>
+  <data name="MainWindow.Opt.TPL" xml:space="preserve">
+    <value>Third Party Licenses</value>
+  </data>
 </root>

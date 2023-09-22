@@ -463,4 +463,16 @@
   <data name="MainWindow.Opt.TPL" xml:space="preserve">
     <value>Drittanbieter Lizenzen</value>
   </data>
+  <data name="MainWindow.Opt.Notify.NM" xml:space="preserve">
+    <value>Benachrichtigung bei ungelesenen Benachrichtigungen</value>
+  </data>
+  <data name="MainWindow.Opt.Notify.UrM" xml:space="preserve">
+    <value>Benachrichtigung bei ungelesenen Mitteilungen</value>
+  </data>
+  <data name="ToggleBtn.ON" xml:space="preserve">
+    <value>Aktiviert</value>
+  </data>
+  <data name="ToggleBtn.OFF" xml:space="preserve">
+    <value>Deaktiviert</value>
+  </data>
 </root>

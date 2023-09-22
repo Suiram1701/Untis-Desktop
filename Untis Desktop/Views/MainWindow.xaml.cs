@@ -444,6 +444,24 @@ public partial class MainWindow : Window
         e.Handled = true;
     }
 
+    private void NotifyOptBtn_Click(object sender, RoutedEventArgs e)
+    {
+        string targetName = (((FrameworkElement)sender).Name);
+        switch (targetName)
+        {
+            case nameof(NotifyNews):
+                ViewModel.CurrentProfile.Options.NotifyOnNews = !ViewModel.CurrentProfile.Options.NotifyOnNews;
+                break;
+            case nameof(NotifyMail):
+                ViewModel.CurrentProfile.Options.NotifyOnMessages = !ViewModel.CurrentProfile.Options.NotifyOnMessages;
+                break;
+        }
+
+        ViewModel.CurrentProfile.Update();
+
+        e.Handled = true;
+    }
+
     private void ToggleTimetableLoadingAnimation(bool turnOn)
     {
         Storyboard animation = (Storyboard)TimetableLoadingProgressImg.FindResource("TimetableLoadingAnimation");
@@ -590,4 +608,5 @@ public partial class MainWindow : Window
         base.OnClosing(e);
         Application.Current.Shutdown(0);
     }
+
 }

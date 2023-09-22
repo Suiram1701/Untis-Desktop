@@ -457,4 +457,22 @@
   <data name="MessageWindow.SRC" xml:space="preserve">
     <value>Отправить уведомление о прочтении</value>
   </data>
+  <data name="ToggleBtn.OFF" xml:space="preserve">
+    <value>Неполноценный</value>
+  </data>
+  <data name="ToggleBtn.ON" xml:space="preserve">
+    <value>Включено</value>
+  </data>
+  <data name="MainWindow.Opt.Notify" xml:space="preserve">
+    <value>Уведомления</value>
+  </data>
+  <data name="MainWindow.Opt.Notify.NM" xml:space="preserve">
+    <value>Уведомление о непрочитанных уведомлениях</value>
+  </data>
+  <data name="MainWindow.Opt.Notify.UrM" xml:space="preserve">
+    <value>Уведомление о непрочитанных сообщениях</value>
+  </data>
+  <data name="MainWindow.Opt.TPL" xml:space="preserve">
+    <value>Лицензии третьих лиц</value>
+  </data>
 </root>

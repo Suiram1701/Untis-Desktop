@@ -457,4 +457,22 @@
   <data name="MessageWindow.SRC" xml:space="preserve">
     <value>Skicka läskvitto</value>
   </data>
+  <data name="ToggleBtn.OFF" xml:space="preserve">
+    <value>Inaktiverad</value>
+  </data>
+  <data name="ToggleBtn.ON" xml:space="preserve">
+    <value>Aktiverad</value>
+  </data>
+  <data name="MainWindow.Opt.Notify" xml:space="preserve">
+    <value>Aviseringar</value>
+  </data>
+  <data name="MainWindow.Opt.Notify.NM" xml:space="preserve">
+    <value>Meddelande om olästa aviseringar</value>
+  </data>
+  <data name="MainWindow.Opt.Notify.UrM" xml:space="preserve">
+    <value>Meddelande om olästa meddelanden</value>
+  </data>
+  <data name="MainWindow.Opt.TPL" xml:space="preserve">
+    <value>Tredjepartslicenser</value>
+  </data>
 </root>
