@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using UntisDesktop.Extensions;
 using UntisDesktop.Localization;
@@ -224,13 +225,16 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
         }
         catch (Exception ex)
         {
-            ex.HandleWithDefaultHandler(this, "{logName}");
+            ex.HandleWithDefaultHandler(this, "Msg tab update");
         }
 
         IsMailsLoading = false;
+        RaisePropertyChanged(nameof(IsUnreadMessageAvailable));
     }
 
     // Visibility
+    public bool IsUnreadMessageAvailable { get => MsgInbox.Any(m => !m.IsMessageRead) || ConfirmationMsgInbox.Any(cm => !cm.IsMessageRead); }
+
     public bool ShowSentTab { get => MessagePermissionsFile.s_DefaultInstance.Permissions.ShowSentTab; }
 
     public bool ShowDraftsTab { get => MessagePermissionsFile.s_DefaultInstance.Permissions.ShowDraftsTab; }
@@ -367,6 +371,8 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
             {
                 ex.HandleWithDefaultHandler(this, "Reload Mails tab");
             }
+
+            RaisePropertyChanged(nameof(IsUnreadMessageAvailable));
 
             IsMailsLoading = false;
         });

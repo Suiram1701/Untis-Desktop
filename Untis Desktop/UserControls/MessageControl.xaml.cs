@@ -180,6 +180,25 @@ public partial class MessageControl : UserControl
     {
         if (e.LeftButton == MouseButtonState.Pressed)
         {
+            // Set the message to read state
+            if (!Message.IsMessageRead)
+            {
+                Message.IsMessageRead = true;
+
+                MainWindowViewModel viewModel = (MainWindowViewModel)Application.Current.Windows
+                    .OfType<MainWindow>()
+                    .First().DataContext;
+
+                try
+                {
+                    ((ICommand)viewModel.ReloadMailsCommand).Execute(0);
+                }
+                catch (Exception ex)
+                {
+                    ex.HandleWithDefaultHandler(viewModel, "Set Msg Read");
+                }
+            }
+
             new MessageWindow(Message).Show();
             e.Handled = true;
         }
