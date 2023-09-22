@@ -107,11 +107,19 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
         get => _todayNews;
         set
         {
-            if (TodayNews != _todayNews)
+            if (_todayNews != value)
             {
-                _todayNews = TodayNews;
+                _todayNews = value;
+
+                // Replace every <br> with a \r\n
+                if (value.SystemMessage is not null)
+                    value.SystemMessage.Text = value.SystemMessage.Text.Replace("<br>", Environment.NewLine);
+
+                foreach (NewsMessage newsMessage in value.Messages)
+                    newsMessage.Text = newsMessage.Text.Replace("<br>", Environment.NewLine);
+
                 RaisePropertyChanged();
-                RaiseErrorsChanged(nameof(IsSysNewsAvailable));
+                RaisePropertyChanged(nameof(IsSysNewsAvailable));
                 RaisePropertyChanged(nameof(IsNewsAvailable));
                 RaisePropertyChanged(nameof(IsAnyNewsAvailable));
             }

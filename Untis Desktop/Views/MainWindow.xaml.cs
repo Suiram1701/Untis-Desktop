@@ -400,10 +400,6 @@ public partial class MainWindow : Window
         string targetName = ((FrameworkElement)sender).Name;
         switch (targetName)
         {
-            case nameof(TimetableOptBtn):
-                TimetableOptItem.IsSelected = true;
-                profile.Options.SelectedOptionsMenuItems = OptionsMenuItems.TimetableOptItem;
-                break;
             case nameof(NotificationOptBtn):
                 NotificationOptItem.IsSelected = true;
                 profile.Options.SelectedOptionsMenuItems = OptionsMenuItems.NotifyOptItem;
@@ -551,9 +547,6 @@ public partial class MainWindow : Window
     {
         switch (item)
         {
-            case OptionsMenuItems.TimetableOptItem:
-                TimetableOptItem.IsSelected = true;
-                break;
             case OptionsMenuItems.NotifyOptItem:
                 NotificationOptItem.IsSelected = true;
                 break;

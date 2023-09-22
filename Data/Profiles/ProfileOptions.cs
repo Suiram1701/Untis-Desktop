@@ -25,7 +25,7 @@ public class ProfileOptions
     /// The currently selected options menu item
     /// </summary>
     [XmlElement("selectedOMI")]
-    public OptionsMenuItems SelectedOptionsMenuItems { get; set; } = OptionsMenuItems.TimetableOptItem;
+    public OptionsMenuItems SelectedOptionsMenuItems { get; set; } = OptionsMenuItems.NotifyOptItem;
 
     /// <summary>
     /// Weeks in the past that are saved

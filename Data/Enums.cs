@@ -17,7 +17,6 @@ public enum MenuItems
 
 public enum OptionsMenuItems
 {
-    TimetableOptItem,
     NotifyOptItem,
     ThirdPartyItem
 }

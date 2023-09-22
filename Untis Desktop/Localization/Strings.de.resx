@@ -457,9 +457,6 @@
   <data name="MessageWindow.SRC" xml:space="preserve">
     <value>Lesebestätigung senden</value>
   </data>
-  <data name="MainWindow.Opt.Timetable" xml:space="preserve">
-    <value>Stundenplan</value>
-  </data>
   <data name="MainWindow.Opt.Notify" xml:space="preserve">
     <value>Benachrichtigungen</value>
   </data>

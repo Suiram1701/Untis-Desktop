@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:UntisDesktop.ViewModels"
         xmlns:Localization="clr-namespace:UntisDesktop.Localization"
+        xmlns:UserControls="clr-namespace:UntisDesktop.UserControls"
         mc:Ignorable="d"
         Title="Untis Desktop"
         MinHeight="0" MinWidth="0" Height="600" Width="1000">
@@ -450,32 +451,16 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-
-                    <!-- Timetable -->
-                    <Button Name="TimetableOptBtn" Click="OptionsMenuBtn_Click" Grid.Row="0" Grid.Column="0" Template="{StaticResource MenuBtn}">
-                        <TextBlock Text="{Localization:Localize MainWindow.Opt.Timetable}" FontSize="14"/>
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=TimetableOptItem, Path=IsSelected}" Value="True">
-                                        <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-
+                    
                     <!-- Notifications -->
                     <Button Name="NotificationOptBtn" Click="OptionsMenuBtn_Click" Grid.Row="1" Grid.Column="0" Template="{StaticResource MenuBtn}">
-                        <TextBlock Text="{Localization:Localize MainWindow.Opt.Notify}" FontSize="14"/>
+                        <TextBlock Text="{Localization:Localize MainWindow.Opt.Notify}" FontSize="16" Margin="6,1"/>
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="Background" Value="Transparent"/>
@@ -490,7 +475,7 @@
 
                     <!-- Third-Party -->
                     <Button Name="ThirdPartyBtn" Click="OptionsMenuBtn_Click" Grid.Row="2" Grid.Column="0" Template="{StaticResource MenuBtn}">
-                        <TextBlock Text="{Localization:Localize MainWindow.Opt.TPL}" FontSize="14"/>
+                        <TextBlock Text="{Localization:Localize MainWindow.Opt.TPL}" FontSize="16" Margin="6,1"/>
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="Background" Value="Transparent"/>
@@ -504,8 +489,6 @@
                     </Button>
 
                     <TabControl BorderThickness="0" Grid.RowSpan="4" Grid.Column="1" Style="{StaticResource HeaderLessTabControl}">
-                        <TabItem x:Name="TimetableOptItem" IsSelected="True">
-                        </TabItem>
                         <TabItem x:Name="NotificationOptItem" IsSelected="False">
                         </TabItem>
                         <TabItem x:Name="ThirdPartyItem" IsSelected="False">
