@@ -437,6 +437,24 @@ public partial class MainWindow : Window
         e.Handled = true;
     }
 
+    private void ProfileMenuBtn_Click(object sender, RoutedEventArgs e)
+    {
+        string targetName = ((FrameworkElement)sender).Name;
+        switch (targetName)
+        {
+            case nameof(GenerallyBtn):
+                GenerallyItem.IsSelected = true;
+                break;
+            case nameof(ContactDetailsBtn):
+                ContactDetailsItem.IsSelected = true;
+                break;
+            default:
+                return;
+        }
+
+        e.Handled = true;
+    }
+
     private void ListViewScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
     {
         ScrollViewer scrollViewer = (ScrollViewer)sender;

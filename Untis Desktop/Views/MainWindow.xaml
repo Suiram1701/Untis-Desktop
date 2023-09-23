@@ -203,7 +203,7 @@
             </StackPanel>
         </Grid>
 
-        <TabControl Grid.Row="1" Grid.Column="1" BorderThickness="0" Style="{StaticResource HeaderLessTabControl}">
+        <TabControl Grid.Row="1" Grid.Column="1" Style="{StaticResource HeaderLessTabControl}">
             <TabItem x:Name="TodayItem" IsSelected="True">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -426,7 +426,7 @@
                     </Button>
                     
                     <!-- View -->
-                    <TabControl Name="MailView" BorderThickness="0" Grid.Row="1" Style="{StaticResource HeaderLessTabControl}">
+                    <TabControl Name="MailView" Grid.Row="1" Style="{StaticResource HeaderLessTabControl}">
                         <TabItem x:Name="InboxItem" IsSelected="True">
                             <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
                                 <StackPanel Orientation="Vertical">
@@ -498,7 +498,7 @@
                         </Button.Style>
                     </Button>
 
-                    <TabControl BorderThickness="0" Grid.RowSpan="4" Grid.Column="1" Style="{StaticResource HeaderLessTabControl}">
+                    <TabControl Grid.RowSpan="4" Grid.Column="1" Style="{StaticResource HeaderLessTabControl}">
                         <TabItem x:Name="NotificationOptItem" IsSelected="False">
                             <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
                                 <Grid Margin="20">
@@ -544,16 +544,141 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Genrally -->
-                    <Button Grid.Row="0" Grid.Column="0" Template="{StaticResource MenuBtn}">
+                    <!-- Generally btn -->
+                    <Button Name="GenerallyBtn" Click="ProfileMenuBtn_Click" Grid.Row="0" Grid.Column="0" Template="{StaticResource MenuBtn}">
                         <TextBlock Text="{Localization:Localize MainWindow.Profile.G}" FontSize="16" HorizontalAlignment="Center" Margin="5,0"/>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=GenerallyItem, Path=IsSelected}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
                     </Button>
 
-                    <!-- Contact details -->
-                    <Button Width="{Binding ElementName=ProfileGrid, Path=ActualWidth, Converter={StaticResource MathConverter}, ConverterParameter=/2}"
+                    <!-- Contact details btn -->
+                    <Button Name="ContactDetailsBtn" Click="ProfileMenuBtn_Click" Visibility="{Binding CurrentProfile.AccountConfig.CanReadContactDetails, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
+                            Width="{Binding ElementName=ProfileGrid, Path=ActualWidth, Converter={StaticResource MathConverter}, ConverterParameter=/2}"
                             Grid.Row="0" Grid.Column="1" Template="{StaticResource MenuBtn}">
                         <TextBlock Text="{Localization:Localize MainWindow.Profile.CD}" FontSize="16" HorizontalAlignment="Center" Margin="5,0"/>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=ContactDetailsItem, Path=IsSelected}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
                     </Button>
+
+                    <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource HeaderLessTabControl}">
+                        <TabItem x:Name="GenerallyItem" IsSelected="True">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <StackPanel Orientation="Vertical">
+                                    
+                                    <!-- User name -->
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Localization:Localize MainWindow.Profile.G.UN}" Style="{StaticResource ProfileItemLabel}"/>
+                                        <TextBox Text="{Binding UserName, Mode=OneWay}" Style="{StaticResource ProfileItem}"/>
+                                    </Grid>
+
+                                    <!-- Email -->
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Localization:Localize MainWindow.Profile.G.EM}" Style="{StaticResource ProfileItemLabel}"/>
+                                        <TextBox Text="{Binding Email, Mode=OneWay}" Style="{StaticResource ProfileItem}"/>
+                                    </Grid>
+
+                                    <!-- Language -->
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Localization:Localize MainWindow.Profile.G.Lang}" Style="{StaticResource ProfileItemLabel}"/>
+                                        <TextBox Text="{Binding Language, Mode=OneWay}" Style="{StaticResource ProfileItem}"/>
+                                    </Grid>
+
+                                    <!-- Usergroup -->
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Localization:Localize MainWindow.Profile.G.UG}" Style="{StaticResource ProfileItemLabel}"/>
+                                        <TextBox Text="{Binding UserGroup, Mode=OneWay}" Style="{StaticResource ProfileItem}"/>
+                                    </Grid>
+
+                                    <!-- Department -->
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Localization:Localize MainWindow.Profile.G.D}" Style="{StaticResource ProfileItemLabel}"/>
+                                        <TextBox Text="{Binding Department, Mode=OneWay}" Style="{StaticResource ProfileItem}"/>
+                                    </Grid>
+
+                                    <!-- Open bookings -->
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Localization:Localize MainWindow.Profile.G.OB}" Style="{StaticResource ProfileItemLabel}"/>
+                                        <TextBox Text="{Binding OpenBookings, Mode=OneWay}" Style="{StaticResource ProfileItem}"/>
+                                    </Grid>
+
+                                    <!-- Max. open bookings -->
+                                    <Grid Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Localization:Localize MainWindow.Profile.G.MOB}" Style="{StaticResource ProfileItemLabel}"/>
+                                        <TextBox Text="{Binding MaxOBookings, Mode=OneWay}" Style="{StaticResource ProfileItem}"/>
+                                    </Grid>
+
+                                    <!-- Notify on email for messages -->
+                                    <Grid Margin="10,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox IsChecked="{Binding NotifyMessageEmail, Mode=OneWay}" IsHitTestVisible="False" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                                        <TextBlock Text="{Localization:Localize MainWindow.Profile.G.NME}" FontSize="16" FontWeight="Medium" Grid.Column="1"/>
+                                    </Grid>
+
+                                    <!-- Get notify from ticket system -->
+                                    <Grid Margin="10,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox IsChecked="{Binding NotifyTicketSystem, Mode=OneWay}" IsHitTestVisible="False" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                                        <TextBlock Text="{Localization:Localize MainWindow.Profile.G.NTS}" FontSize="16" FontWeight="Medium" Grid.Column="1"/>
+                                    </Grid>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+                        <TabItem x:Name="ContactDetailsItem" IsSelected="False">
+                            Contact Details
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </TabItem>
         </TabControl>

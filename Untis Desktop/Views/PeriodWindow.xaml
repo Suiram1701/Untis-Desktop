@@ -9,18 +9,6 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Title="{Binding WindowTitle, Mode=OneTime}"
         MinHeight="350" MinWidth="465">
-    <Window.Resources>
-        <Style x:Key="InformationStyle" TargetType="{x:Type Border}">
-            <Setter Property="CornerRadius" Value="7"/>
-            <Setter Property="Margin" Value="4"/>
-            <Setter Property="Padding" Value="20,1,20,1"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="LightGray"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

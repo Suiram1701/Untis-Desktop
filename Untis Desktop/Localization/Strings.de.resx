@@ -481,4 +481,34 @@
   <data name="MainWindow.Profile.CD" xml:space="preserve">
     <value>Kontaktdaten</value>
   </data>
+  <data name="MainWindow.Profile.G.UG" xml:space="preserve">
+    <value>Benutzergruppe</value>
+  </data>
+  <data name="MainWindow.Profile.G.UN" xml:space="preserve">
+    <value>Schüler*innen</value>
+  </data>
+  <data name="MainWindow.Profile.G.EM" xml:space="preserve">
+    <value>E-Mail Adresse</value>
+  </data>
+  <data name="MainWindow.Profile.G.D" xml:space="preserve">
+    <value>Abteilung</value>
+  </data>
+  <data name="MainWindow.Profile.G.OB" xml:space="preserve">
+    <value>Offene Buchungen</value>
+  </data>
+  <data name="MainWindow.Profile.G.MOB" xml:space="preserve">
+    <value>Max. offene Buchungen</value>
+  </data>
+  <data name="MainWindow.Profile.G.NME" xml:space="preserve">
+    <value>Benachrichtigungen über neue Mitteilungen per E-Mail erhalten</value>
+  </data>
+  <data name="MainWindow.Profile.G.NTS" xml:space="preserve">
+    <value>Benachrichtigungen des Aufgaben- und Ticketsystems erhalten</value>
+  </data>
+  <data name="MainWindow.Profile.G.Lang" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="MainWindow.Profile.G.D.E" xml:space="preserve">
+    <value>Keine Abteilung</value>
+  </data>
 </root>

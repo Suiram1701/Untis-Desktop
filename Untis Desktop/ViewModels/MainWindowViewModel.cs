@@ -278,6 +278,20 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
     public async Task LoadProfileTabAsync()
     {
         await LoadProfileImageAsync();
+
+        try
+        {
+            CurrentProfile.GeneralAccount = await App.Client!.GetGenerallyAccountInformationAsync();
+            (ContactDetails details, bool canRead, _) = await App.Client!.GetContactDetailsAsync();
+            if (canRead)
+                CurrentProfile.ContactDetails = details;
+
+            CurrentProfile.Update();
+        }
+        catch (Exception ex)
+        {
+            ex.HandleWithDefaultHandler(this, "Load profile tab");
+        }
     }
 
     public async Task LoadProfileImageAsync()
@@ -334,7 +348,7 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
         }
         catch (Exception ex)
         {
-            ex.HandleWithDefaultHandler(this, "Load own profile");
+            ex.HandleWithDefaultHandler(this, "Load own profile image");
         }
     }
 
@@ -351,6 +365,35 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
         }
     }
     private BitmapImage _profileImage = new(new($"pack://application:,,,/{Assembly.GetExecutingAssembly().GetName().Name};component/Assets/person.png"));
+
+    // Generally account information
+    public string UserName { get => CurrentProfile.GeneralAccount.Name; }
+
+    public string Email { get => CurrentProfile.GeneralAccount.Email; }
+
+    public string Language { get => "de-DE"; }
+
+    public string UserGroup { get => CurrentProfile.GeneralAccount.UserGroup; }
+
+    public string Department
+    {
+        get
+        {
+            string department = CurrentProfile.GeneralAccount.Department;
+            if (string.IsNullOrEmpty(department))
+                return LangHelper.GetString("MainWindow.Profile.G.D.E");
+            else
+                return department;
+        }
+    }
+
+    public int OpenBookings { get => CurrentProfile.GeneralAccount.OpenBookings; }
+
+    public int MaxOBookings { get => CurrentProfile.GeneralAccount.EffectiveMaxBookings; }
+
+    public bool NotifyMessageEmail { get => CurrentProfile.GeneralAccount.ForwardMessageToMail; }
+
+    public bool NotifyTicketSystem { get => CurrentProfile.GeneralAccount.UserTaskNotifications; }
     #endregion
 
     public MainWindowViewModel()
