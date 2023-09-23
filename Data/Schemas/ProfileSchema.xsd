@@ -4,23 +4,23 @@
     xmlns="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/ProfileSchema.xsd"
     targetNamespace="https://github.com/Suiram1701/Untis-Desktop/raw/develop/Data/Schemas/ProfileSchema.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:simpleType name="MenuItems">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="TodayItem"/>
-		    <xs:enumeration value="TimetableItem"/>
-			<xs:enumeration value="MailItem"/>
-			<xs:enumeration value="SettingsItem"/>
-		    <xs:enumeration value="ProfileItem"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="OptionsMenuItems">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="TimetableOptItem"/>
-		    <xs:enumeration value="NotificationOptItem"/>
-		    <xs:enumeration value="ThirdPartyItem"/>
-		</xs:restriction>
-	</xs:simpleType>
-		
+    <xs:simpleType name="MenuItems">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="TodayItem"/>
+            <xs:enumeration value="TimetableItem"/>
+            <xs:enumeration value="MailItem"/>
+            <xs:enumeration value="SettingsItem"/>
+            <xs:enumeration value="ProfileItem"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="OptionsMenuItems">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="TimetableOptItem"/>
+            <xs:enumeration value="NotificationOptItem"/>
+            <xs:enumeration value="ThirdPartyItem"/>
+        </xs:restriction>
+    </xs:simpleType>
+        
     <xs:element name="ProfileFile">
         <xs:complexType>
             <xs:sequence>
@@ -65,24 +65,82 @@
                         </xs:complexType>
                     </xs:element>
                 </xs:choice>
-                <xs:element name="school">
+				<xs:element name="school">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DisplayName" type="xs:string"/>
+							<xs:element name="SchoolId" type="xs:int"/>
+							<xs:element name="LoginName" type="xs:string"/>
+							<xs:element name="Address" type="xs:string"/>
+							<xs:element name="Server" type="xs:string"/>
+							<xs:element name="ServerUrl" type="xs:anyURI"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+                <xs:element name="accountConfig">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="DisplayName" type="xs:string"/>
-                            <xs:element name="SchoolId" type="xs:int"/>
-                            <xs:element name="LoginName" type="xs:string"/>
-                            <xs:element name="Address" type="xs:string"/>
-                            <xs:element name="Server" type="xs:string"/>
-                            <xs:element name="ServerUrl" type="xs:anyURI"/>
+                            <xs:element name="CanReadContactDetails" type="xs:boolean"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
+                <xs:element name="accountGenerally">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Name" type="xs:string"/>
+                            <xs:element name="UserGroup" type="xs:string"/>
+                            <xs:element name="RoleId" type="xs:int"/>
+                            <xs:element name="Department" type="xs:string"/>
+                            <xs:element name="LanguageCode" type="xs:string"/>
+                            <xs:element name="Email" type="xs:string"/>
+                            <xs:element name="EffectiveMaxBookings" type="xs:int"/>
+                            <xs:element name="OpenBookings" type="xs:int"/>
+                            <xs:element name="ForwardMessageToMail" type="xs:boolean"/>
+                            <xs:element name="UserTaskNotifications" type="xs:boolean"/>
+                            <xs:element name="PasswordChangeAllowed" type="xs:boolean"/>
+                            <xs:element name="SystemMailForwarding" type="xs:boolean"/>
+                            <xs:element name="UserGender">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Id" type="xs:int"/>
+                                        <xs:element name="LongLabel" type="xs:string"/>
+                                        <xs:element name="ShortMale" type="xs:string"/>
+                                        <xs:element name="Icon" type="xs:string"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="ItemsOnStartPage" type="xs:int"/>
+                            <xs:element name="ShowLessonsOfDay" type="xs:int"/>
+                            <xs:element name="ShowNextDayPeriods" type="xs:boolean"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="accountContactDetails">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="PersonId" type="xs:int"/>
+                            <xs:element name="PersonType" type="xs:int"/>
+                            <xs:element name="Id" type="xs:int"/>
+                            <xs:element name="Name" type="xs:string"/>
+                            <xs:element name="AddressType" type="xs:string"/>
+                            <xs:element name="AddressTypeValue" type="xs:int"/>
+                            <xs:element name="Street" type="xs:string"/>
+                            <xs:element name="City" type="xs:string"/>
+                            <xs:element name="PostCode" type="xs:string"/>
+                            <xs:element name="Country" type="xs:string"/>
+                            <xs:element name="Email" type="xs:string"/>
+                            <xs:element name="PhoneNumber" type="xs:string"/>
+                            <xs:element name="FaxNumber" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="profileImageEncoded" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 <xs:element name="options">
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element name="selectedWeek" type="xs:dateTime"/>
-							<xs:element name="selectedMI" type="MenuItems"/>
-							<xs:element name="selectedOMI" type="OptionsMenuItems"/>
+                            <xs:element name="selectedMI" type="MenuItems"/>
+                            <xs:element name="selectedOMI" type="OptionsMenuItems"/>
                             <xs:element name="pastWeeks" type="xs:unsignedInt"/>
                             <xs:element name="preloadWeeks" type="xs:unsignedInt"/>
                             <xs:element name="notifyMsg" type="xs:boolean"/>

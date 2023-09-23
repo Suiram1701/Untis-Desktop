@@ -534,7 +534,27 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="ProfileItem" IsSelected="False">
-                <TextBlock Text="Profiles"/>
+                <Grid Name="ProfileGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Genrally -->
+                    <Button Grid.Row="0" Grid.Column="0" Template="{StaticResource MenuBtn}">
+                        <TextBlock Text="{Localization:Localize MainWindow.Profile.G}" FontSize="16" HorizontalAlignment="Center" Margin="5,0"/>
+                    </Button>
+
+                    <!-- Contact details -->
+                    <Button Width="{Binding ElementName=ProfileGrid, Path=ActualWidth, Converter={StaticResource MathConverter}, ConverterParameter=/2}"
+                            Grid.Row="0" Grid.Column="1" Template="{StaticResource MenuBtn}">
+                        <TextBlock Text="{Localization:Localize MainWindow.Profile.CD}" FontSize="16" HorizontalAlignment="Center" Margin="5,0"/>
+                    </Button>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

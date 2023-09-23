@@ -275,17 +275,37 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
     #endregion
 
     #region Profile
-    public async Task RenderProfileImageAsync()
+    public async Task LoadProfileTabAsync()
+    {
+        await LoadProfileImageAsync();
+    }
+
+    public async Task LoadProfileImageAsync()
     {
         try
         {
-            (Image image, bool canRead, _) = await App.Client!.GetOwnProfileImageAsync();
+            BitmapImage bitmapImage = new();
+            bitmapImage.BeginInit();
+
+            // Load the saved image
+            if (IsOffline || App.Client is null)
+            {
+                Image? savedImage = CurrentProfile.ProfileImage;
+                if (savedImage is null)     // Null when noting saved
+                    return;
+
+                bitmapImage.StreamSource = new MemoryStream();
+                await savedImage.SaveAsPngAsync(bitmapImage.StreamSource);
+
+                bitmapImage.EndInit();
+                ProfileImage = bitmapImage;
+                return;
+            }
+
+            (Image image, bool canRead, _) = await App.Client.GetOwnProfileImageAsync();
 
             if (!canRead)
                 return;
-
-            BitmapImage bitmapImage = new();
-            bitmapImage.BeginInit();
 
             if (image is null)
             {
@@ -294,6 +314,9 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
             }
             else
             {
+                // Save the image
+                CurrentProfile.ProfileImage = image;
+
                 // Load the image
                 bitmapImage.StreamSource = new MemoryStream();
                 await image.SaveAsPngAsync(bitmapImage.StreamSource);
@@ -304,7 +327,7 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
         }
         catch (Exception ex)
         {
-            ex.HandleWithDefaultHandler(this, "Load own profile image");
+            ex.HandleWithDefaultHandler(this, "Load own profile");
         }
     }
 
@@ -352,6 +375,7 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
                 case "SettingsBtn":
                     break;
                 case "ProfileBtn":
+                    await LoadProfileTabAsync().ConfigureAwait(true);
                     break;
             }
         });
@@ -433,7 +457,5 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
         });
 
         NewMailCommand = new(_ => !IsOffline, _ => new MessageWindow().Show());
-
-        Application.Current.Dispatcher.Invoke(RenderProfileImageAsync);
     }
 }

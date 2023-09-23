@@ -539,6 +539,9 @@ public partial class MainWindow : Window
 
     private void DisplayLastMenuItem(MenuItems item)
     {
+        if (item != MenuItems.ProfileItem)
+            _ = ViewModel.LoadProfileTabAsync();
+
         switch (item)
         {
             case MenuItems.TodayItem:
@@ -556,6 +559,7 @@ public partial class MainWindow : Window
                 SettingsItem.IsSelected = true;
                 break;
             case MenuItems.ProfileItem:
+                _ = ViewModel.LoadProfileTabAsync();
                 ProfileItem.IsSelected = true;
                 break;
         }

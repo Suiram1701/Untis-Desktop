@@ -1,6 +1,8 @@
-﻿using System;
+﻿using SixLabors.ImageSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -39,8 +41,45 @@ public class ProfileFile : FileBase<ProfileFile>
     public Teacher? Teacher = null;
     public bool ShouldSerialize_teacher() => Teacher != null;
 
+    [XmlElement("accountConfig")]
+    public AccountConfig AccountConfig { get; set; } = new();
+
+    [XmlElement("accountGenerally")]
+    public GeneralAccount GeneralAccount { get; set; } = new();
+
+    [XmlElement("accountContactDetails")]
+    public ContactDetails ContactDetails { get; set; } = new();
+
+    [XmlIgnore]
+    public Image? ProfileImage
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(ProfileImageEncoded))
+                return null;
+
+            return Image.Load(Convert.FromBase64String(ProfileImageEncoded));
+        }
+        set
+        {
+            using MemoryStream imageStream = new();
+            value.SaveAsPng(imageStream);
+            ProfileImageEncoded = Convert.ToBase64String(imageStream.ToArray());
+        }
+    }
+
+    [XmlElement("profileImageEncoded")]
+    public string ProfileImageEncoded { get; set; } = string.Empty;
+    public bool ShouldSerialize_ProfileImageEncoded() => !string.IsNullOrEmpty(ProfileImageEncoded);
+
     [XmlElement("options")]
     public ProfileOptions Options { get; set; } = new();
+
+    static ProfileFile()
+    {
+        s_Overrides.Add(typeof(Gender), new(new CustomAttributeProvider(new XmlTypeAttribute("Gender"))));
+        s_Overrides.Add(typeof(GeneralAccount.Gender), new(new CustomAttributeProvider(new XmlTypeAttribute("UserGender"))));
+    }
 
     /// <summary>
     /// Login into the profile
@@ -63,15 +102,23 @@ public class ProfileFile : FileBase<ProfileFile>
                 throw new UnauthorizedAccessException();
             }
 
+            // Update user information
             if (User != client.User)
             {
                 Student = client.User as Student;
                 Teacher = client.User as Teacher;
             }
 
+            // Update school information
             School school = await SchoolSearch.GetSchoolByNameAsync(School?.LoginName, "UpdateSchoolData", ct);
-            if (School != school)
-                School = school;
+
+            // Update account information
+            AccountConfig = await client.GetAccountConfigAsync(ct);
+            GeneralAccount = await client.GetGenerallyAccountInformationAsync(ct);
+
+            (ContactDetails contactDetails, bool canRead, _) = await client.GetContactDetailsAsync(ct);
+            if (canRead)
+                ContactDetails = contactDetails;
 
             Update();
         }
@@ -90,5 +137,22 @@ public class ProfileFile : FileBase<ProfileFile>
         }
 
         return client;
+    }
+
+    private static XmlAttributeOverrides s_Overrides = new();
+
+    protected override void Serialize(Stream stream, FileBase<ProfileFile> file)
+    {
+        XmlSerializerNamespaces namespaces = new();
+        string? xmlns = GetType().GetCustomAttribute<XmlRootAttribute>()?.Namespace;
+        if (xmlns is string ns)
+            namespaces.Add("", ns);
+
+        new XmlSerializer(typeof(ProfileFile), s_Overrides).Serialize(stream, file, namespaces);
+    }
+
+    protected override ProfileFile? Deserialize(Stream stream)
+    {
+        return new XmlSerializer(typeof(ProfileFile), s_Overrides).Deserialize(stream) as ProfileFile;
     }
 }

@@ -475,4 +475,10 @@
   <data name="ToggleBtn.OFF" xml:space="preserve">
     <value>Deaktiviert</value>
   </data>
+  <data name="MainWindow.Profile.G" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="MainWindow.Profile.CD" xml:space="preserve">
+    <value>Kontaktdaten</value>
+  </data>
 </root>

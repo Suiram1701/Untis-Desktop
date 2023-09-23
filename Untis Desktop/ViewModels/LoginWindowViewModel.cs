@@ -329,14 +329,24 @@ internal class LoginWindowViewModel : ViewModelBase, IWindowViewModel
                     ProfileFile profile = ProfileCollection.s_DefaultInstance.Add(client.User.Id.ToString());
                     profile.School = await WebUntisAPI.Client.SchoolSearch.GetSchoolByNameAsync(SchoolName);
                     profile.Password = Password;
-                    if (client.UserType == UserType.Student)
-                        profile.Student = client.User as Student;
-                    else
-                        profile.Teacher = client.User as Teacher;
+
+                    // Set user data
+                    profile.Student = client.User as Student;
+                    profile.Teacher = client.User as Teacher;
+
+                    // Update account information
+                    profile.AccountConfig = await client.GetAccountConfigAsync();
+                    profile.GeneralAccount = await client.GetGenerallyAccountInformationAsync();
+
+                    (ContactDetails contactDetails, bool canRead, _) = await client.GetContactDetailsAsync();
+                    if (canRead)
+                        profile.ContactDetails = contactDetails;
 
                     profile.Update();
                     ProfileCollection.s_DefaultInstance.ReloadCollection();
-                    _ = ProfileCollection.SetActiveProfileAsync(profile);
+                    await ProfileCollection.SetActiveProfileAsync(profile);
+
+                    App.Client = await profile.LoginAsync(CancellationToken.None);
 
                     Application.Current.MainWindow.Close();
                     new MainWindow(false).Show();
