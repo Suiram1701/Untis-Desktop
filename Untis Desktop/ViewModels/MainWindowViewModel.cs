@@ -305,7 +305,14 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
             (Image image, bool canRead, _) = await App.Client.GetOwnProfileImageAsync();
 
             if (!canRead)
+            {
+                if (CurrentProfile.ProfileImage != null)
+                {
+                    CurrentProfile.ProfileImage = null;
+                    CurrentProfile.Update();
+                }
                 return;
+            }
 
             if (image is null)
             {

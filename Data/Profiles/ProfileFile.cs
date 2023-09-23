@@ -62,6 +62,12 @@ public class ProfileFile : FileBase<ProfileFile>
         }
         set
         {
+            if (value is null)
+            {
+                ProfileImageEncoded = string.Empty;
+                return;
+            }
+
             using MemoryStream imageStream = new();
             value.SaveAsPng(imageStream);
             ProfileImageEncoded = Convert.ToBase64String(imageStream.ToArray());
@@ -69,7 +75,7 @@ public class ProfileFile : FileBase<ProfileFile>
     }
 
     [XmlElement("profileImageEncoded")]
-    public string ProfileImageEncoded { get; set; } = string.Empty;
+    public string ProfileImageEncoded = string.Empty;
     public bool ShouldSerialize_ProfileImageEncoded() => !string.IsNullOrEmpty(ProfileImageEncoded);
 
     [XmlElement("options")]
