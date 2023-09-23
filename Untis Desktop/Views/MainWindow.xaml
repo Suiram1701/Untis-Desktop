@@ -101,6 +101,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
+            
             <StackPanel Orientation="Vertical" Grid.Row="0" VerticalAlignment="Center">
                 
                 <!-- Today -->
@@ -108,7 +109,7 @@
                         Click="MenuBtn_Click" Command="{Binding ReloadTabCommand, Mode=OneTime}" CommandParameter="TodayBtn">
                     <Grid>
                         <Image Source="/Assets/today.png" Height="50" Panel.ZIndex="0"/>
-                        <Border Background="{Binding ElementName=TodayBtn, Path=Background, Mode=OneWay}" Visibility="Visible" CornerRadius="50"
+                        <Border CornerRadius="50" Background="{Binding ElementName=TodayBtn, Path=Background, Mode=OneWay}" Visibility="{Binding IsUnreadNewsAvailable, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}"
                                 Height="16" Width="16" Margin="0,-29,-26,0" Padding="2.5" Panel.ZIndex="1">
                             <Ellipse Fill="Red"/>
                         </Border>
@@ -185,7 +186,9 @@
                 <!-- Profiles -->
                 <Button Name="ProfileBtn" ToolTip="{Localization:Localize MainWindow.Menu.Profile}" Template="{StaticResource MenuBtn}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
                         Click="MenuBtn_Click" Command="{Binding ReloadTabCommand, Mode=OneTime}" CommandParameter="ProfileBtn">
-                    <Image Source="/Assets/person.png" Height="50"/>
+                    <Border CornerRadius="50" BorderBrush="Black" BorderThickness="2.5" Margin="-2.5" Padding="2.5">
+                        <Image Source="{Binding ProfileImage, Mode=OneWay}" Height="50"/>
+                    </Border>
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="Transparent"/>

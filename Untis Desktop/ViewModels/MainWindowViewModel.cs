@@ -1,18 +1,22 @@
 ﻿using Data.Messages;
 using Data.Profiles;
 using Data.Timetable;
+using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using UntisDesktop.Extensions;
 using UntisDesktop.Localization;
@@ -80,7 +84,9 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
 
         try
         {
-            IsUnreadNewsAvailable = (await App.Client!.GetUnreadNewsCountAsync()) > 0;
+            int unreadNewsCount = await App.Client!.GetUnreadNewsCountAsync();
+            IsUnreadNewsAvailable = unreadNewsCount > 0;
+
             TodayNews = await App.Client!.GetNewsFeedAsync(DateTime.Now);
         }
         catch (Exception ex)
@@ -268,6 +274,55 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
     public bool ViewMailsReloadBtn { get => !IsOffline && !IsMailsLoading; }
     #endregion
 
+    #region Profile
+    public async Task RenderProfileImageAsync()
+    {
+        try
+        {
+            (Image image, bool canRead, _) = await App.Client!.GetOwnProfileImageAsync();
+
+            if (!canRead)
+                return;
+
+            BitmapImage bitmapImage = new();
+            bitmapImage.BeginInit();
+
+            if (image is null)
+            {
+                // Load the default image
+                bitmapImage.UriSource = new($"pack://application:,,,/{Assembly.GetExecutingAssembly().GetName().Name};component/Assets/person.png");
+            }
+            else
+            {
+                // Load the image
+                bitmapImage.StreamSource = new MemoryStream();
+                await image.SaveAsPngAsync(bitmapImage.StreamSource);
+            }
+
+            bitmapImage.EndInit();
+            ProfileImage = bitmapImage;
+        }
+        catch (Exception ex)
+        {
+            ex.HandleWithDefaultHandler(this, "Load own profile image");
+        }
+    }
+
+    public BitmapImage ProfileImage
+    {
+        get => _profileImage;
+        set
+        {
+            if (_profileImage != value)
+            {
+                _profileImage = value;
+                RaisePropertyChanged();
+            }
+        }
+    }
+    private BitmapImage _profileImage = new(new($"pack://application:,,,/{Assembly.GetExecutingAssembly().GetName().Name};component/Assets/person.png"));
+    #endregion
+
     public MainWindowViewModel()
     {
         ReloadOfflineCommand = new(async _ =>
@@ -378,5 +433,7 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
         });
 
         NewMailCommand = new(_ => !IsOffline, _ => new MessageWindow().Show());
+
+        Application.Current.Dispatcher.Invoke(RenderProfileImageAsync);
     }
 }
