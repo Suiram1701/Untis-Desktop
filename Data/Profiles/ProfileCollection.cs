@@ -60,6 +60,9 @@ public class ProfileCollection : FileCollectionBase<ProfileCollection, ProfileFi
             StatusDataFile.SetProfile(profile);
             Task statusDataTask = StatusDataFile.UpdateFromClientAsync(client);
 
+            LanguageFile.SetProfile(profile);
+            Task languageTask = LanguageFile.UpdateFromClientAsync(client);
+
             // Timetable
             SchoolYearFile.SetProfile(profile);
             Task schoolYearsTask = SchoolYearFile.UpdateFromClientAsync(client);
@@ -77,7 +80,7 @@ public class ProfileCollection : FileCollectionBase<ProfileCollection, ProfileFi
             MessagePermissionsFile.SetProfile(profile);
             Task messagePermissionTask = MessagePermissionsFile.UpdateFromClientAsync(client);
 
-            await Task.WhenAll(teacherTask, roomTask, subjectTask, classesTask, statusDataTask, schoolYearsTask, timegridTask, periodsTask, holidaysTask, messagePermissionTask);
+            await Task.WhenAll(teacherTask, roomTask, subjectTask, classesTask, statusDataTask, languageTask, schoolYearsTask, timegridTask, periodsTask, holidaysTask, messagePermissionTask);
         }
     }
 }

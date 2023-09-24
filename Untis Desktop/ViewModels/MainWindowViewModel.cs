@@ -1,5 +1,6 @@
 ﻿using Data.Messages;
 using Data.Profiles;
+using Data.Static;
 using Data.Timetable;
 using SixLabors.ImageSharp;
 using System;
@@ -371,7 +372,7 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
 
     public string Email { get => CurrentProfile.GeneralAccount.Email; }
 
-    public string Language { get => "de-DE"; }
+    public string Language { get => LanguageFile.s_DefaultInstance[CurrentProfile.GeneralAccount.LanguageCode]?.FullName ?? "Err"; }
 
     public string UserGroup { get => CurrentProfile.GeneralAccount.UserGroup; }
 

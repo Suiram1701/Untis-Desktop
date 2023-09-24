@@ -9,7 +9,7 @@ namespace Data;
 
 internal class CustomAttributeProvider : ICustomAttributeProvider
 {
-    private List<Attribute> _attributes = new();
+    private readonly List<Attribute> _attributes = new();
 
     public CustomAttributeProvider(Attribute attribute)
     {
