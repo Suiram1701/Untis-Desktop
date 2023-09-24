@@ -370,7 +370,7 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
     // Generally account information
     public string UserName { get => CurrentProfile.GeneralAccount.Name; }
 
-    public string Email { get => CurrentProfile.GeneralAccount.Email; }
+    public string G_Email { get => CurrentProfile.GeneralAccount.Email; }
 
     public string Language { get => LanguageFile.s_DefaultInstance[CurrentProfile.GeneralAccount.LanguageCode]?.FullName ?? "Err"; }
 
@@ -395,6 +395,19 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
     public bool NotifyMessageEmail { get => CurrentProfile.GeneralAccount.ForwardMessageToMail; }
 
     public bool NotifyTicketSystem { get => CurrentProfile.GeneralAccount.UserTaskNotifications; }
+
+    // Contact details
+    public string CD_Email { get => CurrentProfile.ContactDetails.Email; }
+
+    public string PhoneNumber { get => CurrentProfile.ContactDetails.PhoneNumber; }
+
+    public string MobilePhoneNumber { get => CurrentProfile.ContactDetails.MobileNumber; }
+
+    public string Street { get => CurrentProfile.ContactDetails.Street; }
+
+    public string ZipCode { get => CurrentProfile.ContactDetails.PostCode; }
+
+    public string City { get => CurrentProfile.ContactDetails.City; }
     #endregion
 
     public MainWindowViewModel()

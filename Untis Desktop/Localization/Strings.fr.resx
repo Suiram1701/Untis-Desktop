@@ -118,7 +118,7 @@
   <data name="LoginWindow.D.USR" xml:space="preserve">
     <value>nom d'utilisateur</value>
   </data>
-  <data name="+" xml:space="preserve">
+  <data name="LoginWindow.Err.WU404" xml:space="preserve">
     <value>Le serveur WebUntis est introuvable.</value>
   </data>
   <data name="LoginWindow.Err.NWU" xml:space="preserve">
@@ -474,5 +474,59 @@
   </data>
   <data name="MainWindow.Opt.TPL" xml:space="preserve">
     <value>Licences tierces</value>
+  </data>
+  <data name="MainWindow.Profile.CD" xml:space="preserve">
+    <value>détails du contact</value>
+  </data>
+  <data name="MainWindow.Profile.CD.C" xml:space="preserve">
+    <value>Ville</value>
+  </data>
+  <data name="MainWindow.Profile.CD.EM" xml:space="preserve">
+    <value>adresse e-mail</value>
+  </data>
+  <data name="MainWindow.Profile.CD.MPN" xml:space="preserve">
+    <value>Téléphone mobile</value>
+  </data>
+  <data name="MainWindow.Profile.CD.PN" xml:space="preserve">
+    <value>Numéro de téléphone</value>
+  </data>
+  <data name="MainWindow.Profile.CD.S" xml:space="preserve">
+    <value>Rue</value>
+  </data>
+  <data name="MainWindow.Profile.CD.ZC" xml:space="preserve">
+    <value>Code Postal</value>
+  </data>
+  <data name="MainWindow.Profile.G" xml:space="preserve">
+    <value>En général</value>
+  </data>
+  <data name="MainWindow.Profile.G.D" xml:space="preserve">
+    <value>Département</value>
+  </data>
+  <data name="MainWindow.Profile.G.D.E" xml:space="preserve">
+    <value>Aucun département</value>
+  </data>
+  <data name="MainWindow.Profile.G.EM" xml:space="preserve">
+    <value>adresse e-mail</value>
+  </data>
+  <data name="MainWindow.Profile.G.Lang" xml:space="preserve">
+    <value>Langue</value>
+  </data>
+  <data name="MainWindow.Profile.G.MOB" xml:space="preserve">
+    <value>Réservations ouvertes max.</value>
+  </data>
+  <data name="MainWindow.Profile.G.NME" xml:space="preserve">
+    <value>Recevoir des notifications de nouvelles communications par email</value>
+  </data>
+  <data name="MainWindow.Profile.G.NTS" xml:space="preserve">
+    <value>Recevoir des notifications du système de tâches et de tickets</value>
+  </data>
+  <data name="MainWindow.Profile.G.OB" xml:space="preserve">
+    <value>Réservations ouvertes</value>
+  </data>
+  <data name="MainWindow.Profile.G.UG" xml:space="preserve">
+    <value>Groupe d'utilisateurs</value>
+  </data>
+  <data name="MainWindow.Profile.G.UN" xml:space="preserve">
+    <value>Étudiants</value>
   </data>
 </root>

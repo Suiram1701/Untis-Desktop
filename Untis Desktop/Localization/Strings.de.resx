@@ -121,7 +121,7 @@
   <data name="LoginWindow.Err.NWU" xml:space="preserve">
     <value>Dies ist keine gültige WebUntis Server URL.</value>
   </data>
-  <data name="+" xml:space="preserve">
+  <data name="LoginWindow.Err.WU404" xml:space="preserve">
     <value>Der WebUntis Server konnte nicht gefunden werden.</value>
   </data>
   <data name="LoginWindow.Login.InvC" xml:space="preserve">
@@ -510,5 +510,23 @@
   </data>
   <data name="MainWindow.Profile.G.D.E" xml:space="preserve">
     <value>Keine Abteilung</value>
+  </data>
+  <data name="MainWindow.Profile.CD.EM" xml:space="preserve">
+    <value>E-Mail Adresse</value>
+  </data>
+  <data name="MainWindow.Profile.CD.MPN" xml:space="preserve">
+    <value>Mobiltelefon</value>
+  </data>
+  <data name="MainWindow.Profile.CD.S" xml:space="preserve">
+    <value>Straße</value>
+  </data>
+  <data name="MainWindow.Profile.CD.ZC" xml:space="preserve">
+    <value>Postleitzahl</value>
+  </data>
+  <data name="MainWindow.Profile.CD.C" xml:space="preserve">
+    <value>Stadt</value>
+  </data>
+  <data name="MainWindow.Profile.CD.PN" xml:space="preserve">
+    <value>Telefonnummer</value>
   </data>
 </root>
