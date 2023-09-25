@@ -19,13 +19,14 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         
         <!-- Error box -->
         <Border x:Name="ErrorBox" Panel.ZIndex="1" Background="#FFFB4D4D" BorderBrush="Red" BorderThickness="1" CornerRadius="10"
-                Grid.RowSpan="5" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="20,10,20,10" Margin="0,-90,0,0">
+                Grid.RowSpan="7" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="20,10,20,10" Margin="0,-90,0,0">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding ErrorBoxContent, Mode=OneWay}" VerticalAlignment="Center"/>
                 <Button Template="{StaticResource ErrBoxBtn}" Click="ErrorBoxClose_Click" VerticalAlignment="Center"/>
@@ -46,7 +47,7 @@
 
         <!-- Offline bar -->
         <Border Background="DarkGray" Visibility="{Binding IsOffline, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}"
-                CornerRadius="10" Grid.RowSpan="5" Margin="10" Padding="20,5,20,5">
+                CornerRadius="10" Grid.Row="0" Margin="10" Padding="20,5,20,5">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>

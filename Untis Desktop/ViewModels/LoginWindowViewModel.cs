@@ -23,11 +23,9 @@ using WebUntisAPI.Client.Models;
 
 namespace UntisDesktop.ViewModels;
 
-internal class LoginWindowViewModel : ViewModelBase, IWindowViewModel
+internal class LoginWindowViewModel : WindowViewModelBase
 {
     // Commands
-    public DelegateCommand ReloadOfflineCommand { get; }
-
     public DelegateCommand BackCommand { get; }
 
     public DelegateCommand ExtendedOptionsCommand { get; }
@@ -37,23 +35,6 @@ internal class LoginWindowViewModel : ViewModelBase, IWindowViewModel
     public DelegateCommand LoginCommand { get; }
 
     // views
-    public string ErrorBoxContent
-    {
-        get => _errorBoxContent;
-        set
-        {
-            _errorBoxContent = value;
-            RaisePropertyChanged();
-        }
-    }
-    private string _errorBoxContent = string.Empty;
-
-    public bool IsOffline
-    {
-        get => false;
-        set => ErrorBoxContent = LangHelper.GetString("LoginWindow.Err.NIC");
-    }
-
     public bool IsLoginPage
     {
         get => _isLoginPage;
@@ -273,25 +254,10 @@ internal class LoginWindowViewModel : ViewModelBase, IWindowViewModel
         }
     }
 
-    bool IWindowViewModel.IsOffline { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
     private bool _isPasswordVisible = false;
 
-    public LoginWindowViewModel()
+    public LoginWindowViewModel() : base()
     {
-        ReloadOfflineCommand = new(async _ =>
-        {
-            try
-            {
-                App.Client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None);
-                IsOffline = false;
-            }
-            catch
-            {
-                IsOffline = true;
-            }
-        });
-
         BackCommand = new DelegateCommand(_ =>
         {
             ServerUrl = string.Empty;

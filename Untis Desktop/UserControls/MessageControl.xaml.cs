@@ -74,7 +74,7 @@ public partial class MessageControl : UserControl
             }
             catch (Exception ex)
             {
-                IWindowViewModel viewModel = (IWindowViewModel)Window.GetWindow(this).DataContext;
+                WindowViewModelBase viewModel = (WindowViewModelBase)Window.GetWindow(this).DataContext;
                 ex.HandleWithDefaultHandler(viewModel, "Load recipient prof. img.");
             }
         });
@@ -169,7 +169,7 @@ public partial class MessageControl : UserControl
         }
         catch (Exception ex)
         {
-            IWindowViewModel viewModel = (IWindowViewModel)Window.GetWindow(this).DataContext;
+            WindowViewModelBase viewModel = (WindowViewModelBase)Window.GetWindow(this).DataContext;
             ex.HandleWithDefaultHandler(viewModel, "Reply Message");
         }
 

@@ -30,10 +30,9 @@ using WebUntisAPI.Client.Models.Messages;
 
 namespace UntisDesktop.ViewModels;
 
-internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
+internal class MainWindowViewModel : WindowViewModelBase
 {
     // Commands
-    public DelegateCommand ReloadOfflineCommand { get; }
 
     public DelegateCommand ReloadTabCommand { get; }
 
@@ -43,34 +42,18 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
 
     public DelegateCommand NewMailCommand { get; }
 
-    // views
-    public string ErrorBoxContent
+    // Views
+    public override bool IsOffline
     {
-        get => _errorBoxContent;
+        get => base.IsOffline;
         set
         {
-            _errorBoxContent = value;
-            RaisePropertyChanged();
+            base.IsOffline = value;
+            RaisePropertyChanged(nameof(ViewTimetableReloadBtn));
+            RaisePropertyChanged(nameof(ViewMailsReloadBtn));
+            NewMailCommand.RaiseCanExecuteChanged();
         }
     }
-    private string _errorBoxContent = string.Empty;
-
-    public bool IsOffline
-    {
-        get => _isOffline;
-        set
-        {
-            if (_isOffline != value)
-            {
-                _isOffline = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(ViewTimetableReloadBtn));
-                RaisePropertyChanged(nameof(ViewMailsReloadBtn));
-                NewMailCommand.RaiseCanExecuteChanged();
-            }
-        }
-    }
-    private bool _isOffline = false;
 
     // General
     public DateTime CurrentDate { get => DateTime.Now.ToLocalTime(); }
@@ -410,21 +393,8 @@ internal class MainWindowViewModel : ViewModelBase, IWindowViewModel
     public string City { get => CurrentProfile.ContactDetails.City; }
     #endregion
 
-    public MainWindowViewModel()
+    public MainWindowViewModel() : base()
     {
-        ReloadOfflineCommand = new(async _ =>
-        {
-            try
-            {
-                App.Client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None);
-                IsOffline = false;
-            }
-            catch
-            {
-                IsOffline = true;
-            }
-        });
-
         ReloadTabCommand = new(async parameter =>
         {
             string targetName = (string)parameter;

@@ -28,7 +28,7 @@ public partial class App : Application
 
     private async void UpdateClientTokenAsync(object? sender, ElapsedEventArgs e)
     {
-        bool isAnyOffline = Dispatcher.Invoke(() => Windows.Cast<Window>().Where(w => w.DataContext is IWindowViewModel).Any(w => ((IWindowViewModel)w.DataContext).IsOffline));
+        bool isAnyOffline = Dispatcher.Invoke(() => Windows.Cast<Window>().Where(w => w.DataContext is WindowViewModelBase).Any(w => ((WindowViewModelBase)w.DataContext).IsOffline));
 
         if (!Client?.LoggedIn ?? true || isAnyOffline)
             return;
@@ -45,7 +45,7 @@ public partial class App : Application
         {
             Dispatcher.Invoke(() =>
             {
-                IWindowViewModel viewModel = (IWindowViewModel)Windows.Cast<Window>().FirstOrDefault(w => w.IsActive, MainWindow).DataContext;
+                WindowViewModelBase viewModel = (WindowViewModelBase)Windows.Cast<Window>().FirstOrDefault(w => w.IsActive, MainWindow).DataContext;
                 ex.HandleWithDefaultHandler(viewModel, "Update client token");
             });
         }
