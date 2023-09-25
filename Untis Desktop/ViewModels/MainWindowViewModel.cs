@@ -263,6 +263,9 @@ internal class MainWindowViewModel : WindowViewModelBase
     {
         await LoadProfileImageAsync();
 
+        if (IsOffline)
+            return;
+
         try
         {
             CurrentProfile.GeneralAccount = await App.Client!.GetGenerallyAccountInformationAsync();
@@ -302,7 +305,7 @@ internal class MainWindowViewModel : WindowViewModelBase
 
             (Image image, bool canRead, _) = await App.Client.GetOwnProfileImageAsync();
 
-            if (!canRead)
+            if (!canRead || image is null)
             {
                 if (CurrentProfile.ProfileImage != null)
                 {
