@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using UntisDesktop.Localization;
 using UntisDesktop.ViewModels;
 using WebUntisAPI.Client.Exceptions;
@@ -12,7 +13,7 @@ namespace UntisDesktop.Extensions;
 
 internal static class ExceptionExtensions
 {
-    public static void HandleWithDefaultHandler(this Exception exception, IWindowViewModel handler, string logName)
+    public static void HandleWithDefaultHandler(this Exception exception, WindowViewModelBase handler, string logName)
     {
         if (exception is null)
             throw new ArgumentNullException(nameof(exception));
@@ -43,15 +44,11 @@ internal static class ExceptionExtensions
         }
         else if (exception is HttpRequestException httpEx)
         {
-            if (httpEx.Source == "System.Net.Http" && httpEx.StatusCode is null)
-                handler.IsOffline = true;
+            if (httpEx.Source == "System.Net.Http")
+                ViewModelBase.SetOffline(true);
             else
                 handler.ErrorBoxContent = LangHelper.GetString("App.Err.NERR", httpEx.Message, ((int?)httpEx.StatusCode)?.ToString() ?? "0");
             Logger.LogWarning($"{logName}: {nameof(HttpRequestException)} Code: {httpEx.StatusCode}, Message: {httpEx.Message}");
-        }
-        else if (exception.Source == "System.Net.Http")
-        {
-            handler.IsOffline = true;
         }
         else
         {

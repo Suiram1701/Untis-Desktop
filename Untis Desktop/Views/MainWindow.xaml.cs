@@ -480,6 +480,10 @@ public partial class MainWindow : Window
         e.Handled = true;
     }
 
+    private void ManageProfilesBtn_Click(object sender, RoutedEventArgs e)
+    {
+    }
+
     private void ToggleTimetableLoadingAnimation(bool turnOn)
     {
         Storyboard animation = (Storyboard)TimetableLoadingProgressImg.FindResource("TimetableLoadingAnimation");
@@ -630,5 +634,4 @@ public partial class MainWindow : Window
         base.OnClosing(e);
         Application.Current.Shutdown(0);
     }
-
 }

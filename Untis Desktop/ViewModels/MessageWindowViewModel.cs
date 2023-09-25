@@ -13,39 +13,13 @@ using WebUntisAPI.Client.Models.Messages;
 
 namespace UntisDesktop.ViewModels;
 
-internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
+internal class MessageWindowViewModel : WindowViewModelBase
 {
     // Commands
-    public DelegateCommand ReloadOfflineCommand { get; }
 
     public DelegateCommand ToggleReplyCommand { get; }
 
     public DelegateCommand ToggleRequestReadConfirmationCommand { get; }
-
-    public string ErrorBoxContent
-    {
-        get => _errorBoxContent;
-        set
-        {
-            _errorBoxContent = value;
-            RaisePropertyChanged();
-        }
-    }
-    private string _errorBoxContent = string.Empty;
-
-    public bool IsOffline
-    {
-        get => _isOffline;
-        set
-        {
-            if (_isOffline != value)
-            {
-                _isOffline = value;
-                RaisePropertyChanged();
-            }
-        }
-    }
-    private bool _isOffline = false;
 
     public bool IsConfirmationMessage
     {
@@ -245,21 +219,8 @@ internal class MessageWindowViewModel : ViewModelBase, IWindowViewModel
 
     public List<MessagePerson> Recipients = new();
 
-    public MessageWindowViewModel()
+    public MessageWindowViewModel() : base()
     {
-        ReloadOfflineCommand = new(async _ =>
-        {
-            try
-            {
-                App.Client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None);
-                IsOffline = false;
-            }
-            catch
-            {
-                IsOffline = true;
-            }
-        });
-
         ToggleReplyCommand = new(_ => ForbidReply = !ForbidReply);
 
         ToggleRequestReadConfirmationCommand = new(_ => RequestReadConfirmation = !RequestReadConfirmation);

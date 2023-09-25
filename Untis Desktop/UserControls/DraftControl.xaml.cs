@@ -47,7 +47,7 @@ public partial class DraftControl : UserControl
             catch (Exception ex)
             {
                 Window window = Window.GetWindow(this);
-                ex.HandleWithDefaultHandler((IWindowViewModel)window.DataContext, "Draft deletion");
+                ex.HandleWithDefaultHandler((WindowViewModelBase)window.DataContext, "Draft deletion");
             }
 
             await viewModel.LoadMailTabAsync();

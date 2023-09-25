@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace UntisDesktop.ViewModels;
 
@@ -90,5 +91,20 @@ internal abstract class ViewModelBase : INotifyPropertyChanged, INotifyDataError
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
 
         RaisePropertyChanged(nameof(Error));
+    }
+
+    /// <summary>
+    /// Set the offline value of the viewModel
+    /// </summary>
+    /// <param name="isOffline">The desired state</param>
+    public static void SetOffline(bool isOffline)
+    {
+        IEnumerable<WindowViewModelBase> windowViewModels = Application.Current.Windows
+            .Cast<Window>()
+            .Select(w => w.DataContext)
+            .OfType<WindowViewModelBase>();
+
+        foreach (WindowViewModelBase windowViewModel in windowViewModels)
+            windowViewModel.IsOffline = isOffline;
     }
 }

@@ -13,36 +13,8 @@ using WebUntisAPI.Client.Models.Messages;
 
 namespace UntisDesktop.ViewModels;
 
-internal class RecipientDialogViewModel : ViewModelBase, IWindowViewModel
+internal class RecipientDialogViewModel : WindowViewModelBase
 {
-    // Commands
-    public DelegateCommand ReloadOfflineCommand { get; }
-
-    public string ErrorBoxContent
-    {
-        get => _errorBoxContent;
-        set
-        {
-            _errorBoxContent = value;
-            RaisePropertyChanged();
-        }
-    }
-    private string _errorBoxContent = string.Empty;
-
-    public bool IsOffline
-    {
-        get => _isOffline;
-        set
-        {
-            if (_isOffline != value)
-            {
-                _isOffline = value;
-                RaisePropertyChanged();
-            }
-        }
-    }
-    private bool _isOffline = false;
-
     public string SearchText
     {
         get => _searchText;
@@ -101,20 +73,8 @@ internal class RecipientDialogViewModel : ViewModelBase, IWindowViewModel
     }
     private string _currentRecipientOption = MessagePermissionsFile.s_DefaultInstance.Permissions.RecipientOptions.First();
 
-    public RecipientDialogViewModel()
+    public RecipientDialogViewModel() : base()
     {
-        ReloadOfflineCommand = new(async _ =>
-        {
-            try
-            {
-                App.Client = await ProfileCollection.GetActiveProfile().LoginAsync(CancellationToken.None);
-                IsOffline = false;
-            }
-            catch
-            {
-                IsOffline = true;
-            }
-        });
     }
 
     public async Task ApplyFiltersAsync()

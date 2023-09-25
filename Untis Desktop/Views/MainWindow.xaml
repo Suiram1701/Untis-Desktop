@@ -540,13 +540,22 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
+                    <!-- Profile btn -->
+                    <Button Click="ManageProfilesBtn_Click" Grid.Row="0" Grid.Column="0" Template="{StaticResource Btn}">
+                        <StackPanel Orientation="Horizontal" Margin="-15,0">
+                            <Image Source="/Assets/person.png" Height="21" Margin="10,0"/>
+                            <TextBlock Text="{Localization:Localize MainWindow.Profile.M}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0"/>
+                        </StackPanel>
+                    </Button>
+
                     <!-- Generally btn -->
-                    <Button Name="GenerallyBtn" Click="ProfileMenuBtn_Click" Grid.Row="0" Grid.Column="0" Template="{StaticResource MenuBtn}">
-                        <TextBlock Text="{Localization:Localize MainWindow.Profile.G}" FontSize="16" HorizontalAlignment="Center" Margin="5,0"/>
+                    <Button Name="GenerallyBtn" Click="ProfileMenuBtn_Click" Grid.Row="0" Grid.Column="1" Template="{StaticResource MenuBtn}">
+                        <TextBlock Text="{Localization:Localize MainWindow.Profile.G}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0"/>
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="Background" Value="Transparent"/>
@@ -561,9 +570,8 @@
 
                     <!-- Contact details btn -->
                     <Button Name="ContactDetailsBtn" Click="ProfileMenuBtn_Click" Visibility="{Binding CurrentProfile.AccountConfig.CanReadContactDetails, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
-                            Width="{Binding ElementName=ProfileGrid, Path=ActualWidth, Converter={StaticResource MathConverter}, ConverterParameter=/2}"
-                            Grid.Row="0" Grid.Column="1" Template="{StaticResource MenuBtn}">
-                        <TextBlock Text="{Localization:Localize MainWindow.Profile.CD}" FontSize="16" HorizontalAlignment="Center" Margin="5,0"/>
+                            Grid.Row="0" Grid.Column="2" Template="{StaticResource MenuBtn}">
+                        <TextBlock Text="{Localization:Localize MainWindow.Profile.CD}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0"/>
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Setter Property="Background" Value="Transparent"/>
@@ -576,7 +584,7 @@
                         </Button.Style>
                     </Button>
 
-                    <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource HeaderLessTabControl}">
+                    <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource HeaderLessTabControl}">
                         <TabItem x:Name="GenerallyItem" IsSelected="True">
                             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                                 <StackPanel Orientation="Vertical">
