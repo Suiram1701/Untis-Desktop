@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 using UntisDesktop.Extensions;
 using UntisDesktop.Localization;
@@ -280,9 +281,11 @@ internal class LoginWindowViewModel : WindowViewModelBase
 
         LoginCommand = new DelegateCommand(_ => !HasErrors && !IsServerUrlEmpty && !IsSchoolNameEmpty && !IsUserNameEmpty && !IsPasswordEmpty, async _ =>
         {
-            using WebUntisClient client = new("UntisDesktop", TimeSpan.FromSeconds(5));
             try
             {
+                Mouse.OverrideCursor = Cursors.Wait;
+
+                using WebUntisClient client = new("UntisDesktop", TimeSpan.FromSeconds(5));
                 if (await client.LoginAsync(ServerUrl, SchoolName, UserName, Password, "LoginCheck"))
                 {
                     if (ProfileCollection.s_DefaultInstance.Any(profile => profile.User?.Name == UserName))
@@ -314,21 +317,32 @@ internal class LoginWindowViewModel : WindowViewModelBase
                     App.Client = await profile.LoginAsync(CancellationToken.None);
                     await ProfileCollection.SetActiveProfileAsync(profile, App.Client);
 
-                    Application.Current.MainWindow.Close();
-                    new MainWindow(false).Show();
+                    Application app = Application.Current;
+
+                    if (app.Windows.OfType<MainWindow>().Any())
+                        app.Windows.OfType<LoginWindow>().First().Close();
+                    else
+                    {
+                        app.MainWindow = new MainWindow(false);
+                        app.Windows.OfType<LoginWindow>().First().Close();
+                        app.MainWindow.Show();
+                    }
                 }
                 else
                     ErrorBoxContent = LangHelper.GetString("LoginWindow.Login.InvC");
             }
+            catch (WebUntisException ex)
+            {
+                if (ex.Code == -8500)     // School not found
+                    ErrorBoxContent = LangHelper.GetString("LoginWindow.D.InvSN");
+            }
             catch (Exception ex)
             {
-                if (ex is WebUntisException wuEx)
-                {
-                    if (wuEx.Code == -8500)
-                        ErrorBoxContent = LangHelper.GetString("LoginWindow.D.InvSN");
-                }
-                else
-                    ex.HandleWithDefaultHandler(this, "LoginWindow login try");
+                ex.HandleWithDefaultHandler(this, "Profile login");
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
             }
         });
         LoginCommand.RaiseCanExecuteChanged();

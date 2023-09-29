@@ -553,4 +553,10 @@
   <data name="ProfileManageDialog.Title" xml:space="preserve">
     <value>Hantera profiler</value>
   </data>
+  <data name="ProfileManageDialog.D.T" xml:space="preserve">
+    <value>radera profil</value>
+  </data>
+  <data name="ProfileManageDialog.D.C" xml:space="preserve">
+    <value>Är du säker på att du vill ta bort profilen?\nDatan kan inte återställas.</value>
+  </data>
 </root>

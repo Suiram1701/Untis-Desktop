@@ -553,4 +553,10 @@
   <data name="ProfileControl.D" xml:space="preserve">
     <value>Profil löschen</value>
   </data>
+  <data name="ProfileManageDialog.D.C" xml:space="preserve">
+    <value>Wollen Sie das Profil wirklich löschen?\nDie Daten können nicht wiederhergestellt werden.</value>
+  </data>
+  <data name="ProfileManageDialog.D.T" xml:space="preserve">
+    <value>Profil löschen</value>
+  </data>
 </root>

@@ -553,4 +553,10 @@
   <data name="ProfileManageDialog.Title" xml:space="preserve">
     <value>Управление профилями</value>
   </data>
+  <data name="ProfileManageDialog.D.T" xml:space="preserve">
+    <value>удалить профиль</value>
+  </data>
+  <data name="ProfileManageDialog.D.C" xml:space="preserve">
+    <value>Вы уверены, что хотите удалить профиль?\nДанные невозможно восстановить.</value>
+  </data>
 </root>

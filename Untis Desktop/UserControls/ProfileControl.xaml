@@ -32,9 +32,8 @@
 
             <TextBlock Text="{Binding ProfileName, Mode=OneTime}" FontSize="18" Grid.Column="2" VerticalAlignment="Center"/>
 
-            <Button Click="DeleteBtn_Click" IsEnabled="{Binding IsDeleteAble, Mode=OneTime}" ToolTip="{Localization:Localize ProfileControl.D}"
-                    Height="{Binding ElementName=ImgBorder, Path=ActualHeight, Converter={StaticResource MathConverter}, ConverterParameter=*0.55}" Grid.Column="3" Margin="15,0"
-                    Template="{StaticResource DeleteBtn}"/>
+            <Button Click="DeleteBtn_Click" ToolTip="{Localization:Localize ProfileControl.D}" Height="{Binding ElementName=ImgBorder, Path=ActualHeight, Converter={StaticResource MathConverter}, ConverterParameter=*0.55}"
+                    Grid.Column="3" Margin="15,0" Template="{StaticResource DeleteBtn}"/>
         </Grid>
     </Border>
 </UserControl>

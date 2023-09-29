@@ -553,4 +553,10 @@
   <data name="ProfileControl.Active" xml:space="preserve">
     <value>Actif</value>
   </data>
+  <data name="ProfileManageDialog.D.T" xml:space="preserve">
+    <value>Supprimer le profil</value>
+  </data>
+  <data name="ProfileManageDialog.D.C" xml:space="preserve">
+    <value>Etes-vous sûr de vouloir supprimer le profil ?\nLes données ne peuvent pas être restaurées.</value>
+  </data>
 </root>

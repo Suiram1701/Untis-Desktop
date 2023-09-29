@@ -483,7 +483,11 @@ public partial class MainWindow : Window
     private async void ManageProfilesBtn_ClickAsync(object sender, RoutedEventArgs e)
     {
         if (new ProfileManageDialog().ShowDialog() ?? false)
+        {
+            SetupTimegrid();
+            await UpdateTimetableAsync();
             await ViewModel.LoadProfileTabAsync();
+        }
 
         e.Handled = true;
     }
