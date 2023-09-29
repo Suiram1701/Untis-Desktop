@@ -41,6 +41,7 @@ public partial class ProfileManageDialog : Window
     {
         new LoginWindow().Show();
         DialogResult = true;
+        e.Handled = true;
     }
 
     private void ProfileSwitchBtn_Click(object sender, RoutedEventArgs e)

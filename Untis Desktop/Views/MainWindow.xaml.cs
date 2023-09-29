@@ -462,7 +462,7 @@ public partial class MainWindow : Window
         e.Handled = true;
     }
 
-    private void NotifyOptBtn_Click(object sender, RoutedEventArgs e)
+    private void NotifyOptBtn_ClickAsync(object sender, RoutedEventArgs e)
     {
         string targetName = (((FrameworkElement)sender).Name);
         switch (targetName)
@@ -480,9 +480,11 @@ public partial class MainWindow : Window
         e.Handled = true;
     }
 
-    private void ManageProfilesBtn_Click(object sender, RoutedEventArgs e)
+    private async void ManageProfilesBtn_ClickAsync(object sender, RoutedEventArgs e)
     {
-        new ProfileManageDialog().ShowDialog(); 
+        if (new ProfileManageDialog().ShowDialog() ?? false)
+            await ViewModel.LoadProfileTabAsync();
+
         e.Handled = true;
     }
 

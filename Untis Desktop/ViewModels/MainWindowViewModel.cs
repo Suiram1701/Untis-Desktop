@@ -274,6 +274,22 @@ internal class MainWindowViewModel : WindowViewModelBase
                 CurrentProfile.ContactDetails = details;
 
             CurrentProfile.Update();
+
+            RaisePropertyChanged(nameof(UserName));
+            RaisePropertyChanged(nameof(G_Email));
+            RaisePropertyChanged(nameof(Language));
+            RaisePropertyChanged(nameof(UserGroup));
+            RaisePropertyChanged(nameof(Department));
+            RaisePropertyChanged(nameof(OpenBookings));
+            RaisePropertyChanged(nameof(MaxOBookings));
+            RaisePropertyChanged(nameof(NotifyMessageEmail));
+            RaisePropertyChanged(nameof(NotifyTicketSystem));
+            RaisePropertyChanged(nameof(CD_Email));
+            RaisePropertyChanged(nameof(PhoneNumber));
+            RaisePropertyChanged(nameof(MobilePhoneNumber));
+            RaisePropertyChanged(nameof(Street));
+            RaisePropertyChanged(nameof(ZipCode));
+            RaisePropertyChanged(nameof(City));
         }
         catch (Exception ex)
         {

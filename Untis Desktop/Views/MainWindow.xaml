@@ -518,9 +518,9 @@
                                     <TextBlock Text="{Localization:Localize MainWindow.Opt.Notify.UrM}" FontSize="16" Grid.Row="1" Grid.Column="0"
                                                VerticalAlignment="Center" HorizontalAlignment="Right"/>
 
-                                    <ToggleButton Name="NotifyNews" Click="NotifyOptBtn_Click" IsChecked="{Binding CurrentProfile.Options.NotifyOnNews, Mode=OneTime}"
+                                    <ToggleButton Name="NotifyNews" Click="NotifyOptBtn_ClickAsync" IsChecked="{Binding CurrentProfile.Options.NotifyOnNews, Mode=OneTime}"
                                                   Grid.Row="0" Grid.Column="1" Margin="10,5" Template="{StaticResource ON_OFF_ToggleBtn}"/>
-                                    <ToggleButton Name="NotifyMail" Click="NotifyOptBtn_Click" IsChecked="{Binding CurrentProfile.Options.NotifyOnMessages, Mode=OneTime}"
+                                    <ToggleButton Name="NotifyMail" Click="NotifyOptBtn_ClickAsync" IsChecked="{Binding CurrentProfile.Options.NotifyOnMessages, Mode=OneTime}"
                                                   Grid.Row="1" Grid.Column="1" Margin="10,5" Template="{StaticResource ON_OFF_ToggleBtn}"/>
                                 </Grid>
                             </ScrollViewer>
@@ -546,7 +546,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Profile btn -->
-                    <Button Click="ManageProfilesBtn_Click" Grid.Row="0" Grid.Column="0" Template="{StaticResource Btn}">
+                    <Button Click="ManageProfilesBtn_ClickAsync" Grid.Row="0" Grid.Column="0" Template="{StaticResource Btn}">
                         <StackPanel Orientation="Horizontal" Margin="-15,-10">
                             <Image Source="/Assets/person.png" Height="21" Margin="10,0"/>
                             <TextBlock Text="{Localization:Localize MainWindow.Profile.M}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0"/>
