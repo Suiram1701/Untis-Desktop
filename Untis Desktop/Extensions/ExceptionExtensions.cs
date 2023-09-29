@@ -45,7 +45,7 @@ internal static class ExceptionExtensions
         else if (exception is HttpRequestException httpEx)
         {
             if (httpEx.Source == "System.Net.Http")
-                ViewModelBase.SetOffline(true);
+                WindowViewModelBase.SetOffline(true);
             else
                 handler.ErrorBoxContent = LangHelper.GetString("App.Err.NERR", httpEx.Message, ((int?)httpEx.StatusCode)?.ToString() ?? "0");
             Logger.LogWarning($"{logName}: {nameof(HttpRequestException)} Code: {httpEx.StatusCode}, Message: {httpEx.Message}");

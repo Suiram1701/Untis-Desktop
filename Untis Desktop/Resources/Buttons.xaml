@@ -133,4 +133,20 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
+    <ControlTemplate x:Key="DeleteBtn" TargetType="{x:Type Button}">
+        <Border Name="Border" CornerRadius="5" Background="{DynamicResource PressedRedBtnColor}" Margin="0,0" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                Padding="3.5">
+            <Image Source="/Assets/delete.png"/>
+        </Border>
+
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource HoverRedBtnColor}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource DisabledBtnColor}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 </ResourceDictionary>

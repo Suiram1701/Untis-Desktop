@@ -14,7 +14,7 @@ internal class MathConverter : IValueConverter
         string para = (string)parameter;
 
         char @operator = para[0];
-        double otherValue = double.Parse(para[1..]);
+        double otherValue = double.Parse(para[1..].Replace('.', ','));     // Replace '.' with ',' because double not listening to '.'
 
         return @operator switch
         {

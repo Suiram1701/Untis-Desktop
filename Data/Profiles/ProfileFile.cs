@@ -31,7 +31,7 @@ public class ProfileFile : FileBase<ProfileFile>
     public string EncodedPassword = string.Empty;
 
     [XmlIgnore]
-    public IUser? User { get => Student as IUser ?? Teacher; }
+    public IUser User { get => Student as IUser ?? Teacher!; }
 
     [XmlElement("studentUser")]
     public Student? Student = null;

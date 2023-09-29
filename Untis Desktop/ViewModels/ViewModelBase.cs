@@ -92,19 +92,4 @@ internal abstract class ViewModelBase : INotifyPropertyChanged, INotifyDataError
 
         RaisePropertyChanged(nameof(Error));
     }
-
-    /// <summary>
-    /// Set the offline value of the viewModel
-    /// </summary>
-    /// <param name="isOffline">The desired state</param>
-    public static void SetOffline(bool isOffline)
-    {
-        IEnumerable<WindowViewModelBase> windowViewModels = Application.Current.Windows
-            .Cast<Window>()
-            .Select(w => w.DataContext)
-            .OfType<WindowViewModelBase>();
-
-        foreach (WindowViewModelBase windowViewModel in windowViewModels)
-            windowViewModel.IsOffline = isOffline;
-    }
 }

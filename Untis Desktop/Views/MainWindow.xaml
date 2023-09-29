@@ -186,7 +186,7 @@
                 <!-- Profiles -->
                 <Button Name="ProfileBtn" ToolTip="{Localization:Localize MainWindow.Menu.Profile}" Template="{StaticResource MenuBtn}" Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
                         Click="MenuBtn_Click" Command="{Binding ReloadTabCommand, Mode=OneTime}" CommandParameter="ProfileBtn">
-                    <Border CornerRadius="50" BorderBrush="Black" BorderThickness="2.5" Margin="-2.5" Padding="2.5">
+                    <Border CornerRadius="50" BorderBrush="Black" BorderThickness="2.5" Margin="-2.5" Padding="4.5">
                         <Image Source="{Binding ProfileImage, Mode=OneWay}" Height="50"/>
                     </Border>
                     <Button.Style>
@@ -547,7 +547,7 @@
 
                     <!-- Profile btn -->
                     <Button Click="ManageProfilesBtn_Click" Grid.Row="0" Grid.Column="0" Template="{StaticResource Btn}">
-                        <StackPanel Orientation="Horizontal" Margin="-15,0">
+                        <StackPanel Orientation="Horizontal" Margin="-15,-10">
                             <Image Source="/Assets/person.png" Height="21" Margin="10,0"/>
                             <TextBlock Text="{Localization:Localize MainWindow.Profile.M}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0"/>
                         </StackPanel>

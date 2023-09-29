@@ -288,47 +288,34 @@ internal class MainWindowViewModel : WindowViewModelBase
             BitmapImage bitmapImage = new();
             bitmapImage.BeginInit();
 
-            // Load the saved image
-            if (IsOffline || App.Client is null)
+            Image? image = await CurrentProfile.GetProfileImageAsync();
+            if (image is not null)
             {
-                Image? savedImage = CurrentProfile.ProfileImage;
-                if (savedImage is null)     // Null when noting saved
-                    return;
-
-                bitmapImage.StreamSource = new MemoryStream();
-                await savedImage.SaveAsPngAsync(bitmapImage.StreamSource);
-
-                bitmapImage.EndInit();
-                ProfileImage = bitmapImage;
-                return;
-            }
-
-            (Image image, bool canRead, _) = await App.Client.GetOwnProfileImageAsync();
-
-            if (!canRead || image is null)
-            {
-                if (CurrentProfile.ProfileImage != null)
-                {
-                    CurrentProfile.ProfileImage = null;
-                    CurrentProfile.Update();
-                }
-                return;
-            }
-
-            if (image is null)
-            {
-                // Load the default image
-                bitmapImage.UriSource = new($"pack://application:,,,/{Assembly.GetExecutingAssembly().GetName().Name};component/Assets/person.png");
-            }
-            else
-            {
-                // Save the image
                 CurrentProfile.ProfileImage = image;
+                CurrentProfile.Update();
 
-                // Load the image
                 bitmapImage.StreamSource = new MemoryStream();
                 await image.SaveAsPngAsync(bitmapImage.StreamSource);
             }
+            else if (IsOffline || App.Client is null)     // Load saved
+            {
+                Image? savedImage = CurrentProfile.ProfileImage;
+                if (savedImage is not null)
+                {
+                    bitmapImage.StreamSource = new MemoryStream();
+                    await savedImage.SaveAsPngAsync(bitmapImage.StreamSource);
+                }
+            }
+
+            if (image is null && CurrentProfile.ShouldSerialize_ProfileImageEncoded())
+            {
+                CurrentProfile.ProfileImage = null;
+                CurrentProfile.Update();
+            }
+
+            // Load default
+            if (bitmapImage.StreamSource is null)
+                bitmapImage.UriSource = new($"pack://application:,,,/{typeof(MainWindow).Assembly.GetName().Name};component/Assets/person.png");
 
             bitmapImage.EndInit();
             ProfileImage = bitmapImage;
@@ -353,14 +340,22 @@ internal class MainWindowViewModel : WindowViewModelBase
     }
     private BitmapImage _profileImage = new(new($"pack://application:,,,/{Assembly.GetExecutingAssembly().GetName().Name};component/Assets/person.png"));
 
+    private static string ReturnDefaultWhenEmpty(string? value)
+    {
+        if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+            return LangHelper.GetString("MainWindow.Profile.NDA");
+
+        return value;
+    }
+
     // Generally account information
-    public string UserName { get => CurrentProfile.GeneralAccount.Name; }
+    public string UserName { get => ReturnDefaultWhenEmpty(CurrentProfile.GeneralAccount.Name); }
 
-    public string G_Email { get => CurrentProfile.GeneralAccount.Email; }
+    public string G_Email { get => ReturnDefaultWhenEmpty(CurrentProfile.GeneralAccount.Email); }
 
-    public string Language { get => LanguageFile.s_DefaultInstance[CurrentProfile.GeneralAccount.LanguageCode]?.FullName ?? "Err"; }
+    public string Language { get => ReturnDefaultWhenEmpty(LanguageFile.s_DefaultInstance[CurrentProfile.GeneralAccount.LanguageCode]?.FullName); }
 
-    public string UserGroup { get => CurrentProfile.GeneralAccount.UserGroup; }
+    public string UserGroup { get => ReturnDefaultWhenEmpty(CurrentProfile.GeneralAccount.UserGroup); }
 
     public string Department
     {
@@ -383,17 +378,17 @@ internal class MainWindowViewModel : WindowViewModelBase
     public bool NotifyTicketSystem { get => CurrentProfile.GeneralAccount.UserTaskNotifications; }
 
     // Contact details
-    public string CD_Email { get => CurrentProfile.ContactDetails.Email; }
+    public string CD_Email { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails.Email); }
 
-    public string PhoneNumber { get => CurrentProfile.ContactDetails.PhoneNumber; }
+    public string PhoneNumber { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails.PhoneNumber); }
 
-    public string MobilePhoneNumber { get => CurrentProfile.ContactDetails.MobileNumber; }
+    public string MobilePhoneNumber { get =>ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails.MobileNumber); }
 
-    public string Street { get => CurrentProfile.ContactDetails.Street; }
+    public string Street { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails.Street); }
 
-    public string ZipCode { get => CurrentProfile.ContactDetails.PostCode; }
+    public string ZipCode { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails.PostCode); }
 
-    public string City { get => CurrentProfile.ContactDetails.City; }
+    public string City { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails.City); }
     #endregion
 
     public MainWindowViewModel() : base()

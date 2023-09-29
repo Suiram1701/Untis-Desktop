@@ -482,6 +482,8 @@ public partial class MainWindow : Window
 
     private void ManageProfilesBtn_Click(object sender, RoutedEventArgs e)
     {
+        new ProfileManageDialog().ShowDialog(); 
+        e.Handled = true;
     }
 
     private void ToggleTimetableLoadingAnimation(bool turnOn)
@@ -632,6 +634,11 @@ public partial class MainWindow : Window
     protected override void OnClosing(CancelEventArgs e)
     {
         base.OnClosing(e);
-        Application.Current.Shutdown(0);
+
+        foreach (Window window in Application.Current.Windows
+            .Cast<Window>()
+            .Where(w => w.GetType() != typeof(LoginWindow) && !ReferenceEquals(w, this))
+            .ToArray())
+            window.Close();
     }
 }

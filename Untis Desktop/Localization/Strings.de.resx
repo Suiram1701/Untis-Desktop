@@ -529,4 +529,28 @@
   <data name="MainWindow.Profile.CD.PN" xml:space="preserve">
     <value>Telefonnummer</value>
   </data>
+  <data name="MainWindow.Profile.M" xml:space="preserve">
+    <value>Profile Verwalten</value>
+  </data>
+  <data name="ProfileManageDialog.Title" xml:space="preserve">
+    <value>Profile verwalten</value>
+  </data>
+  <data name="ProfileManageDialog.AddBtn" xml:space="preserve">
+    <value>Profil hinzufügen</value>
+  </data>
+  <data name="ProfileManageDialog.AbortBtn" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="ProfileControl.Active" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="ProfileControl.Selectable" xml:space="preserve">
+    <value>Wechseln</value>
+  </data>
+  <data name="MainWindow.Profile.NDA" xml:space="preserve">
+    <value>Keine Daten verfügbar</value>
+  </data>
+  <data name="ProfileControl.D" xml:space="preserve">
+    <value>Profil löschen</value>
+  </data>
 </root>
