@@ -1,12 +1,15 @@
-﻿using Data.Messages;
+﻿using Data.Extensions;
+using Data.Messages;
 using Data.Static;
 using Data.Timetable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using WebUntisAPI.Client;
+using TypeExtensions = Data.Extensions.TypeExtensions;
 
 namespace Data.Profiles;
 
@@ -43,43 +46,14 @@ public class ProfileCollection : FileCollectionBase<ProfileCollection, ProfileFi
             foreach (ProfileFile p in s_DefaultInstance)
                 p.Update();
 
-            // Statics
-            TeacherFile.SetProfile(profile);
-            Task teacherTask = TeacherFile.UpdateFromClientAsync(client);
+            List<Task> updateTasks = new();
+            foreach (Type type in TypeExtensions.GetProfileDependedTypes())
+            {
+                type.ExecuteSetProfile(profile);
+                updateTasks.Add(type.ExecuteUpdateFromClientAsync(client));
+            }
 
-            RoomFile.SetProfile(profile);
-            Task roomTask = RoomFile.UpdateFromClientAsync(client);
-
-            SubjectFile.SetProfile(profile);
-            Task subjectTask = SubjectFile.UpdateFromClientAsync(client);
-
-            ClassFile.SetProfile(profile);
-            Task classesTask = ClassFile.UpdateFromClientAsync(client);
-
-            StatusDataFile.SetProfile(profile);
-            Task statusDataTask = StatusDataFile.UpdateFromClientAsync(client);
-
-            LanguageFile.SetProfile(profile);
-            Task languageTask = LanguageFile.UpdateFromClientAsync(client);
-
-            // Timetable
-            SchoolYearFile.SetProfile(profile);
-            Task schoolYearsTask = SchoolYearFile.UpdateFromClientAsync(client);
-
-            TimegridFile.SetProfile(profile);
-            Task timegridTask = TimegridFile.UpdateFromClientAsync(client);
-
-            PeriodFile.SetProfile(profile);
-            Task periodsTask = PeriodFile.UpdateFromClientAsync(client);
-
-            HolidaysFile.SetProfile(profile);
-            Task holidaysTask = HolidaysFile.UpdateFromClientAsync(client);
-
-            // Messages
-            MessagePermissionsFile.SetProfile(profile);
-            Task messagePermissionTask = MessagePermissionsFile.UpdateFromClientAsync(client);
-
-            await Task.WhenAll(teacherTask, roomTask, subjectTask, classesTask, statusDataTask, languageTask, schoolYearsTask, timegridTask, periodsTask, holidaysTask, messagePermissionTask);
+            await Task.WhenAll(updateTasks);
         }
     }
 }
