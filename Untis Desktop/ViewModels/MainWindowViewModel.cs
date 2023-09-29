@@ -365,13 +365,13 @@ internal class MainWindowViewModel : WindowViewModelBase
     }
 
     // Generally account information
-    public string UserName { get => ReturnDefaultWhenEmpty(CurrentProfile.GeneralAccount.Name); }
+    public string UserName { get => ReturnDefaultWhenEmpty(CurrentProfile.GeneralAccount?.Name); }
 
-    public string G_Email { get => ReturnDefaultWhenEmpty(CurrentProfile.GeneralAccount.Email); }
+    public string G_Email { get => ReturnDefaultWhenEmpty(CurrentProfile.GeneralAccount?.Email); }
 
-    public string Language { get => ReturnDefaultWhenEmpty(LanguageFile.s_DefaultInstance[CurrentProfile.GeneralAccount.LanguageCode]?.FullName); }
+    public string Language { get => ReturnDefaultWhenEmpty(LanguageFile.s_DefaultInstance[CurrentProfile.GeneralAccount?.LanguageCode ?? string.Empty]?.FullName); }
 
-    public string UserGroup { get => ReturnDefaultWhenEmpty(CurrentProfile.GeneralAccount.UserGroup); }
+    public string UserGroup { get => ReturnDefaultWhenEmpty(CurrentProfile.GeneralAccount?.UserGroup); }
 
     public string Department
     {
@@ -385,26 +385,26 @@ internal class MainWindowViewModel : WindowViewModelBase
         }
     }
 
-    public int OpenBookings { get => CurrentProfile.GeneralAccount.OpenBookings; }
+    public int OpenBookings { get => CurrentProfile.GeneralAccount?.OpenBookings ?? 0; }
 
-    public int MaxOBookings { get => CurrentProfile.GeneralAccount.EffectiveMaxBookings; }
+    public int MaxOBookings { get => CurrentProfile.GeneralAccount?.EffectiveMaxBookings ?? 0; }
 
-    public bool NotifyMessageEmail { get => CurrentProfile.GeneralAccount.ForwardMessageToMail; }
+    public bool NotifyMessageEmail { get => CurrentProfile.GeneralAccount?.ForwardMessageToMail ?? false; }
 
-    public bool NotifyTicketSystem { get => CurrentProfile.GeneralAccount.UserTaskNotifications; }
+    public bool NotifyTicketSystem { get => CurrentProfile.GeneralAccount?.UserTaskNotifications ?? false; }
 
     // Contact details
-    public string CD_Email { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails.Email); }
+    public string CD_Email { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails?.Email); }
 
-    public string PhoneNumber { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails.PhoneNumber); }
+    public string PhoneNumber { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails?.PhoneNumber); }
 
-    public string MobilePhoneNumber { get =>ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails.MobileNumber); }
+    public string MobilePhoneNumber { get =>ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails?.MobileNumber); }
 
-    public string Street { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails.Street); }
+    public string Street { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails?.Street); }
 
-    public string ZipCode { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails.PostCode); }
+    public string ZipCode { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails?.PostCode); }
 
-    public string City { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails.City); }
+    public string City { get => ReturnDefaultWhenEmpty(CurrentProfile.ContactDetails?.City); }
     #endregion
 
     public MainWindowViewModel() : base()

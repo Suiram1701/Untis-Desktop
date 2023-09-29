@@ -107,7 +107,7 @@ public partial class App : Application
                 ProfileFile activeProfile = ProfileCollection.GetActiveProfile();
 
                 Client = await activeProfile.LoginAsync(CancellationToken.None);
-                _ = Task.Run(async () => await ProfileCollection.SetActiveProfileAsync(activeProfile));
+                await ProfileCollection.SetActiveProfileAsync(activeProfile, Client);
             }
             catch (UnauthorizedAccessException)     // Bad credentials
             {

@@ -26,11 +26,11 @@ namespace UntisDesktop.UserControls;
 
 public partial class ProfileControl : UserControl
 {
-    public bool IsActive { get; }
+    public bool IsDeleteAble { get => !ProfileFile.IsActive; }
 
-    public bool IsDeleteAble { get => !IsActive; }
+    public string ProfileName { get => ProfileFile.User.ForeName + ' ' + ProfileFile.User.LongName; }
 
-    public string ProfileName { get; }
+    public ProfileFile ProfileFile { get; }
 
     public static readonly DependencyProperty ProfileImageProperty = DependencyProperty.Register(
         name: "ProfileImage",
@@ -67,8 +67,7 @@ public partial class ProfileControl : UserControl
 
     public ProfileControl(ProfileFile profile)
     {
-        IsActive = profile.IsActive;
-        ProfileName = profile.User.ForeName + ' ' + profile.User.LongName;
+        ProfileFile = profile;
         Initialized += Control_InitializedAsync;
         InitializeComponent();
     }

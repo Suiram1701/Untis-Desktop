@@ -21,12 +21,14 @@ public class ProfileCollection : FileCollectionBase<ProfileCollection, ProfileFi
         else
         {
             ProfileFile file = s_DefaultInstance.First();
-            _ = SetActiveProfileAsync(file);
+            file.IsActive = true;
+            file.Update();
+
             return file;
         }
     }
 
-    public async static Task SetActiveProfileAsync(ProfileFile profile)
+    public async static Task SetActiveProfileAsync(ProfileFile profile, WebUntisClient client)
     {
         if (s_DefaultInstance.Any(p => p.Name == profile.Name))
         {
@@ -40,9 +42,6 @@ public class ProfileCollection : FileCollectionBase<ProfileCollection, ProfileFi
 
             foreach (ProfileFile p in s_DefaultInstance)
                 p.Update();
-
-            // Update all data
-            using WebUntisClient client = await profile.LoginAsync(CancellationToken.None);
 
             // Statics
             TeacherFile.SetProfile(profile);

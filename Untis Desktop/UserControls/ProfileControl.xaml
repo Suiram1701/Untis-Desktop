@@ -16,12 +16,12 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <Button Click="SwitchBtn_Click" Visibility="{Binding IsActive, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=InvHidden, Mode=OneTime}"
+            <Button Click="SwitchBtn_Click" Visibility="{Binding ProfileFile.IsActive, Converter={StaticResource BoolVisibilityConverter}, ConverterParameter=InvHidden, Mode=OneTime}"
                     VerticalAlignment="Center" Grid.Column="0" Template="{StaticResource Btn}">
                 <TextBlock Text="{Localization:Localize ProfileControl.Selectable}" FontSize="14" HorizontalAlignment="Center" Margin="-20,-5"/>
             </Button>
 
-            <Border CornerRadius="8" Background="{DynamicResource DisabledBtnColor}" Visibility="{Binding IsActive, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
+            <Border CornerRadius="8" Background="{DynamicResource DisabledBtnColor}" Visibility="{Binding ProfileFile.IsActive, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
                     Grid.Column="0" VerticalAlignment="Center" Padding="10,5">
                 <TextBlock Text="{Localization:Localize ProfileControl.Active}" FontSize="14" HorizontalAlignment="Center"/>
             </Border>

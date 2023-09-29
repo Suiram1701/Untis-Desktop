@@ -4,6 +4,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using UntisDesktop.UserControls;
 using UntisDesktop.ViewModels;
+using Data.Timetable;
+using UntisDesktop.Extensions;
 
 namespace UntisDesktop.Views;
 
@@ -30,7 +33,7 @@ public partial class ProfileManageDialog : Window
         foreach (ProfileFile profile in ProfileCollection.s_DefaultInstance)
         {
             ProfileControl control = new(profile);
-            control.Switch += ProfileSwitchBtn_Click;
+            control.Switch += ProfileSwitchBtn_ClickAsync;
             control.Delete += ProfileDeleteBtn_Click;
 
             Profiles.Children.Add(control);
@@ -44,8 +47,32 @@ public partial class ProfileManageDialog : Window
         e.Handled = true;
     }
 
-    private void ProfileSwitchBtn_Click(object sender, RoutedEventArgs e)
+    private async void ProfileSwitchBtn_ClickAsync(object sender, RoutedEventArgs e)
     {
+        ProfileControl profileControl = (ProfileControl)sender;
+
+        try
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+
+            App.Client = await profileControl.ProfileFile.LoginAsync(CancellationToken.None);
+            await ProfileCollection.SetActiveProfileAsync(profileControl.ProfileFile, App.Client);
+            await (Application.Current.Windows
+                .OfType<MainWindow>()
+                .FirstOrDefault()?
+                .UpdateTimetableAsync()
+                ?? Task.CompletedTask);
+        }
+        catch (Exception ex)
+        {
+            ex.HandleWithDefaultHandler(ViewModel, "Change profile");
+        }
+        finally
+        {
+            Mouse.OverrideCursor = null;
+        }
+
+        DialogResult = true;
         e.Handled = true;
     }
 

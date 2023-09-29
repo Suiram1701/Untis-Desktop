@@ -310,9 +310,9 @@ internal class LoginWindowViewModel : WindowViewModelBase
 
                     profile.Update();
                     ProfileCollection.s_DefaultInstance.ReloadCollection();
-                    await ProfileCollection.SetActiveProfileAsync(profile);
 
                     App.Client = await profile.LoginAsync(CancellationToken.None);
+                    await ProfileCollection.SetActiveProfileAsync(profile, App.Client);
 
                     Application.Current.MainWindow.Close();
                     new MainWindow(false).Show();
