@@ -1,4 +1,5 @@
-﻿using Data.Timetable;
+﻿using Data.Extensions;
+using Data.Timetable;
 using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using WebUntisAPI.Client;
 using WebUntisAPI.Client.Models;
+using TypeExtensions = Data.Extensions.TypeExtensions;
 
 namespace Data.Profiles;
 
@@ -39,6 +41,7 @@ public class ProfileFile : FileBase<ProfileFile>
     public bool ShouldSerialize_student() => Student != null;
 
     [XmlElement("teacherUser")]
+
     public Teacher? Teacher = null;
     public bool ShouldSerialize_teacher() => Teacher != null;
 
@@ -86,6 +89,40 @@ public class ProfileFile : FileBase<ProfileFile>
     {
         s_Overrides.Add(typeof(Gender), new(new CustomAttributeProvider(new XmlTypeAttribute("Gender"))));
         s_Overrides.Add(typeof(GeneralAccount.Gender), new(new CustomAttributeProvider(new XmlTypeAttribute("UserGender"))));
+    }
+
+    public override void Delete()
+    {
+        base.Delete();
+
+        // Delete all profile associated files
+        foreach (Type type in TypeExtensions.GetProfileDependedTypes())
+        {
+            FieldInfo defaultInstanceFieldInfo = type.GetField(nameof(PeriodFile.s_DefaultInstance), BindingFlags.Static | BindingFlags.Public)!;
+            MethodInfo deleteMethodInfo = type.GetMethod(nameof(Delete), BindingFlags.Instance | BindingFlags.Public)!;
+
+            try
+            {
+                deleteMethodInfo.Invoke(defaultInstanceFieldInfo.GetValue(null), null);
+            }
+            catch { }
+        }
+
+        // Delete the empty directories
+        IEnumerable<string> paths = typeof(ProfileFile).Assembly.GetTypes()
+            .Where(type => type.GetCustomAttribute<FileAttribute>() is not null)
+            .Select(type => type.GetCustomAttribute<FileAttribute>()!.DefaultPath)
+            .Select(path => path.Replace("{UserId}", User.Id.ToString()))
+            .Distinct();
+
+        foreach (string path in paths)
+        {
+            try
+            {
+                Directory.Delete(path);
+            }
+            catch { }
+        }
     }
 
     /// <summary>

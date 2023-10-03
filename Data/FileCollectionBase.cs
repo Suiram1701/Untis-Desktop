@@ -85,13 +85,19 @@ public abstract class FileCollectionBase<TCollection, TFile> : IEnumerable<TFile
 
     public void ReloadCollection()
     {
-        _list.Clear();
-        foreach (string path in Directory.EnumerateFiles(SavePath))
+        try
         {
-            if (FileBase<TFile>.Load(path) is TFile file)
-                _list.Add(file);
-            else
-                File.Delete(path);
+            _list.Clear();
+            foreach (string path in Directory.EnumerateFiles(SavePath))
+            {
+                if (FileBase<TFile>.Load(path) is TFile file)
+                    _list.Add(file);
+                else
+                    File.Delete(path);
+            }
+        }
+        catch
+        {
         }
     }
 

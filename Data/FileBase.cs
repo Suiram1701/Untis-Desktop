@@ -80,7 +80,7 @@ public abstract class FileBase<TFile>
     /// <summary>
     /// Update the file
     /// </summary>
-    public void Update()
+    public virtual void Update()
     {
         try
         {
@@ -98,7 +98,7 @@ public abstract class FileBase<TFile>
     /// <summary>
     /// Delete the file
     /// </summary>
-    public void Delete()
+    public virtual void Delete()
     {
         try
         {

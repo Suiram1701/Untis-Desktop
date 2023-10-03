@@ -78,6 +78,7 @@ public partial class ProfileManageDialog : Window
 
     private async void ProfileDeleteBtn_ClickAsync(object sender, RoutedEventArgs e)
     {
+        // Ask if the user want to continue
         if (MessageBox.Show(LangHelper.GetString("ProfileManageDialog.D.C"), LangHelper.GetString("ProfileManageDialog.D.T"), MessageBoxButton.YesNoCancel, MessageBoxImage.Question) != MessageBoxResult.Yes)
         {
             e.Handled = true;
