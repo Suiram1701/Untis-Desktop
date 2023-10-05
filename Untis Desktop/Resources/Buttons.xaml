@@ -49,6 +49,9 @@
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource PressedDarkBtnColor}"/>
             </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource DisabledBtnColor}"/>
+            </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 

@@ -38,6 +38,8 @@ internal class MainWindowViewModel : WindowViewModelBase
 
     public DelegateCommand OtherWeekBtnCommand { get; }
 
+    public DelegateCommand CurrentWeekCommand { get; }
+
     public DelegateCommand ReloadMailsCommand { get; }
 
     public DelegateCommand NewMailCommand { get; }
@@ -144,8 +146,8 @@ internal class MainWindowViewModel : WindowViewModelBase
             RaisePropertyChanged();
             RaisePropertyChanged(nameof(NextWeek));
             RaisePropertyChanged(nameof(CurrentSchoolYearString));
+            CurrentWeekCommand!.RaiseCanExecuteChanged();
         }
-
     }
     public DateTime NextWeek { get => SelectedWeek.AddDays(6); }
 
@@ -437,6 +439,13 @@ internal class MainWindowViewModel : WindowViewModelBase
                 
                 SelectedWeek = SelectedWeek.AddDays(result);
             }
+        });
+
+        CurrentWeekCommand = new(_ => DateTime.Now <= SelectedWeek && DateTime.Now.AddDays(7) > SelectedWeek, _ =>
+        {
+            int dayOffset = -(int)DateTime.Now.DayOfWeek;
+
+            SelectedWeek = DateTime.Now.Date.AddDays(dayOffset);
         });
 
         ReloadMailsCommand = new(async parameter =>

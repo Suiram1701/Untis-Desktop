@@ -559,4 +559,13 @@
   <data name="ProfileManageDialog.D.T" xml:space="preserve">
     <value>Profil löschen</value>
   </data>
+  <data name="MainWindow.Timetable.PW" xml:space="preserve">
+    <value>Vorherige Woche</value>
+  </data>
+  <data name="MainWindow.Timetable.NW" xml:space="preserve">
+    <value>Nächste Woche</value>
+  </data>
+  <data name="MainWindow.Timetable.CW" xml:space="preserve">
+    <value>Zur Aktuellen Woche springen</value>
+  </data>
 </root>

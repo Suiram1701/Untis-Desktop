@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModels="clr-namespace:UntisDesktop.ViewModels"
         xmlns:Localization="clr-namespace:UntisDesktop.Localization"
-        xmlns:UserControls="clr-namespace:UntisDesktop.UserControls"
         mc:Ignorable="d"
         Title="Untis Desktop"
         MinHeight="0" MinWidth="0" Height="600" Width="1000">
@@ -273,22 +272,32 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     
-                    <!-- Date selection -->
+                    <!-- Week selection -->
                     <StackPanel Orientation="Horizontal" Height="30" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left">
-                        <Button Template="{StaticResource MenuBtn}" Command="{Binding OtherWeekBtnCommand, Mode=OneTime}" CommandParameter="-7">
+
+                        <Button Template="{StaticResource MenuBtn}" Command="{Binding OtherWeekBtnCommand, Mode=OneTime}" CommandParameter="-7"
+                                ToolTip="{Localization:Localize MainWindow.Timetable.PW}">
                             <Image Source="/Assets/arrow_back_ios.png"/>
                         </Button>
+                        
                         <TextBlock Text="{Binding SelectedWeek, StringFormat=\{0:M\}, ConverterCulture={x:Static Localization:LangHelper.Culture}, Mode=OneWay}" FontSize="16"
                                    VerticalAlignment="Center" Margin="10,0,10,0"/>
                         <Line X1="0" X2="12" Stroke="Black" StrokeThickness="1.8" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding NextWeek, StringFormat=\{0:M\}, ConverterCulture={x:Static Localization:LangHelper.Culture}, Mode=OneWay}" FontSize="16"
                                    VerticalAlignment="Center" Margin="10,0,10,0"/>
-                        <Button Template="{StaticResource MenuBtn}" Command="{Binding OtherWeekBtnCommand, Mode=OneTime}" CommandParameter="7">
+
+                        <Button Template="{StaticResource MenuBtn}" Command="{Binding OtherWeekBtnCommand, Mode=OneTime}" CommandParameter="7"
+                                ToolTip="{Localization:Localize MainWindow.Timetable.NW}">
                             <Image Source="/Assets/arrow_forward_ios.png"/>
                         </Button>
 
+                        <!-- Current week -->
+                        <Button Template="{StaticResource MenuBtn}" Command="{Binding CurrentWeekCommand, Mode=OneTime}" Margin="10,0">
+                            <TextBlock Text="{Localization:Localize MainWindow.Timetable.CW}" FontSize="14"/>
+                        </Button>
+
                         <!-- Loading view -->
-                        <Image x:Name="TimetableLoadingProgressImg" Source="/Assets/progress_activity.png" Visibility="{Binding IsTimetableLoading, Converter={StaticResource BoolVisibilityConverter}}" Margin="20,0,0,0">
+                        <Image x:Name="TimetableLoadingProgressImg" Source="/Assets/progress_activity.png" Visibility="{Binding IsTimetableLoading, Converter={StaticResource BoolVisibilityConverter}}">
                             <Image.RenderTransform>
                                 <RotateTransform x:Name="Rotation" Angle="0"
                                                  CenterY="{Binding ElementName=TimetableLoadingProgressImg, Path=ActualHeight, Converter={StaticResource MathConverter}, ConverterParameter=/2}"
@@ -307,12 +316,13 @@
 
                         <!-- Reloading btn -->
                         <Button Visibility="{Binding ViewTimetableReloadBtn, Converter={StaticResource BoolVisibilityConverter}, Mode=OneWay}"
-                                ToolTip="{Localization:Localize MainWindow.G.Reload}" Command="{Binding OtherWeekBtnCommand, Mode=OneTime}" CommandParameter="0"
-                                Margin="20,0,0,0" Template="{StaticResource MenuBtn}">
+                                ToolTip="{Localization:Localize MainWindow.G.Reload}" Command="{Binding OtherWeekBtnCommand, Mode=OneTime}" CommandParameter="0" Template="{StaticResource MenuBtn}">
                             <Image Source="/Assets/refresh.png" Margin="-2"/>
                         </Button>
                     </StackPanel>
-                    <TextBlock Text="{Binding CurrentSchoolYearString, Mode=OneWay}" FontSize="20" Grid.Row="0" HorizontalAlignment="Center" Margin="10"/>
+                    
+                    <TextBlock Text="{Binding CurrentSchoolYearString, Mode=OneWay}" FontSize="20" Grid.Row="0" HorizontalAlignment="Right" Margin="30,10"/>
+                    
                     <Grid x:Name="Timegrid" Grid.Row="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
