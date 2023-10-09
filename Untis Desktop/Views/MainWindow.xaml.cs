@@ -29,6 +29,7 @@ using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows.Data;
 using UntisDesktop.Converter;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace UntisDesktop.Views;
 
@@ -117,53 +118,60 @@ public partial class MainWindow : Window
 
     public void SetupTimegrid()
     {
+        // Clear all exist rows / columns and set up default row / column
         Timegrid.RowDefinitions.Clear();
         Timegrid.RowDefinitions.Add(new() { Height = GridLength.Auto });
         Timegrid.ColumnDefinitions.Clear();
         Timegrid.ColumnDefinitions.Add(new() { Width = GridLength.Auto });
 
-        KeyValuePair<Day, WebUntis.SchoolHour[]>[] sortedTimegrid = TimegridFile.s_DefaultInstance.Timegrid.OrderBy(keyValue => (int)keyValue.Key).ToArray();
+        KeyValuePair<Day, WebUntis.SchoolHour[]>[] sortedTimegrid = TimegridFile.s_DefaultInstance.Timegrid
+            .OrderBy(keyValue => (int)keyValue.Key)
+            .ToArray();
         if (sortedTimegrid.Length == 0)
             return;
 
-        int currentRow = 1;
+        // Add the days
+        int currentColumn = 1;
         foreach (KeyValuePair<Day, WebUntis.SchoolHour[]> keyValue in sortedTimegrid)
         {
-            Timegrid.RowDefinitions.Add(new RowDefinition()
+            Timegrid.ColumnDefinitions.Add(new()
             {
                 Name = keyValue.Key.ToString(),
-                Height =  new GridLength(1, GridUnitType.Star)
+                Width = new GridLength(1, GridUnitType.Star)
             });
             int id = Timegrid.Children.Add(new TimegridDay(keyValue.Key));
-            Grid.SetRow(Timegrid.Children[id], currentRow++);
-            Grid.SetColumn(Timegrid.Children[id], 0);
+            Grid.SetRow(Timegrid.Children[id], 0);
+            Grid.SetColumn(Timegrid.Children[id], currentColumn++);
         }
 
+        // Some setups for the hours
         DateTime firstTime = sortedTimegrid[0].Value.MinBy(hour => hour.StartTime)?.StartTime ?? new DateTime(2020, 1, 1, 0, 0, 0);
         DateTime lastTime = sortedTimegrid[0].Value.MaxBy(hour => hour.EndTime)?.EndTime ?? new DateTime(2020, 1, 1, 0, 0, 0);
         TimeSpan totalSchoolTime = lastTime - firstTime;
 
-        int currentColumn = 1;
-        WebUntis.SchoolHour[] schoolHours = sortedTimegrid[0].Value;
+        // Add the hours
+        int currentRow = 1;
+        WebUntis.SchoolHour[] schoolHours = sortedTimegrid[0].Value;     // Use any day for the hours
         for (int i = 0; i <= schoolHours.Length - 1; i++)
         {
-            Timegrid.ColumnDefinitions.Add(new()
+            Timegrid.RowDefinitions.Add(new()
             {
                 Name = $"Hour{schoolHours[i].StartTime:HHmm}_{schoolHours[i].EndTime:HHmm}",
-                Width = new GridLength((schoolHours[i].EndTime - schoolHours[i].StartTime) / totalSchoolTime, GridUnitType.Star)
+                Height = new GridLength((schoolHours[i].EndTime - schoolHours[i].StartTime) / totalSchoolTime, GridUnitType.Star)
             });
             int id = Timegrid.Children.Add(new TimegridHour(schoolHours[i]));
-            Grid.SetRow(Timegrid.Children[id], 0);
-            Grid.SetColumn(Timegrid.Children[id], currentColumn++);
+            Grid.SetRow(Timegrid.Children[id], currentRow++);
+            Grid.SetColumn(Timegrid.Children[id], 0);
 
+            // When one or more hours left add a break
             if (schoolHours.Length - 1 < i + 1)
                 break;
-            Timegrid.ColumnDefinitions.Add(new()
+            Timegrid.RowDefinitions.Add(new()
             {
                 Name = $"Break{schoolHours[i].EndTime:HHmm}_{schoolHours[i + 1].StartTime:HHmm}",
-                Width = new GridLength((schoolHours[i + 1].StartTime - schoolHours[i].EndTime) / totalSchoolTime, GridUnitType.Star)
+                Height = new GridLength((schoolHours[i + 1].StartTime - schoolHours[i].EndTime) / totalSchoolTime, GridUnitType.Star)
             });
-            currentColumn++;
+            currentRow++;
         }
     }
 
@@ -194,21 +202,25 @@ public partial class MainWindow : Window
         }
 
         // Set holidays
-        for (DateTime date = SelectedWeek; date < SelectedWeek.AddDays(6); date = date.AddDays(1))
+        IEnumerable<DateTime> weekDates = Enumerable.Range(0, 6).Select(dc => ViewModel.SelectedWeek.AddDays(dc));
+        foreach (DateTime day in weekDates)
         {
-            if (holidays.FirstOrDefault(h => h.StartDate <= date && h.EndDate >= date) is WebUntis.Holidays holiday)
+            // Check if on the day is a holiday
+            WebUntis.Holidays? holiday = holidays.FirstOrDefault(h => h.StartDate <= day && h.EndDate >= day);
+            if (holiday is not null)
             {
-                int targetRow = Timegrid.RowDefinitions.IndexOf(Timegrid.RowDefinitions.FirstOrDefault(r => r.Name == date.DayOfWeek.ToString()));
-                if (targetRow == -1)
+                // Get the target day
+                int targetColumn = Timegrid.ColumnDefinitions.IndexOf(Timegrid.ColumnDefinitions.FirstOrDefault(r => r.Name == day.DayOfWeek.ToString()));
+                if (targetColumn == -1)
                     continue;
 
                 int id = Timegrid.Children.Add(new UserControls.Holidays(holiday.LongName));
-                Grid.SetRow(Timegrid.Children[id], targetRow);
-                Grid.SetColumn(Timegrid.Children[id], 1);
-                Grid.SetColumnSpan(Timegrid.Children[id], Timegrid.ColumnDefinitions.Count - 1);
+                Grid.SetRow(Timegrid.Children[id], 1);
+                Grid.SetColumn(Timegrid.Children[id], targetColumn);
+                Grid.SetRowSpan(Timegrid.Children[id], Timegrid.RowDefinitions.Count - 1);
 
                 // Remove overlayed periods
-                periods = periods.Where(p => date != p.Date).ToArray();
+                periods = periods.Where(p => day != p.Date).ToArray();
             }
         }
 
@@ -224,6 +236,7 @@ public partial class MainWindow : Window
                 return false;
             return ls.Date == p.Date && (ls.StartTime == p.StartTime || ls.EndTime == p.EndTime);
         })).ToArray();
+
         foreach (Period period in normalLessons)
         {
             if (addedHours.Contains(period.Id))
@@ -231,8 +244,8 @@ public partial class MainWindow : Window
 
             // Same lessons that follow to this lesson
             IEnumerable<Period> sameLessons = normalLessons.Where(p => p.Id != period.Id && p.Date == period.Date && periods.Any(ls => ls.StartTime >= p.StartTime || ls.EndTime <= p.EndTime) && p.IsSameLesson(period));
-            int targetRow = Timegrid.RowDefinitions.IndexOf(Timegrid.RowDefinitions.FirstOrDefault(r => r.Name == period.Date.DayOfWeek.ToString()));
-            int targetColumn = Timegrid.ColumnDefinitions.IndexOf(Timegrid.ColumnDefinitions.MinBy(c =>
+            int targetColumn = Timegrid.ColumnDefinitions.IndexOf(Timegrid.ColumnDefinitions.FirstOrDefault(r => r.Name == period.Date.DayOfWeek.ToString()));
+            int targetRow = Timegrid.RowDefinitions.IndexOf(Timegrid.RowDefinitions.MinBy(c =>
             {
                 Match nameMatch = HourColumnRegex().Match(c.Name);
                 if (!nameMatch.Success)
@@ -241,9 +254,9 @@ public partial class MainWindow : Window
                 DateTime hourStartTime = new(2020, 1, 1, int.Parse(nameMatch.Groups[1].Captures[0].Value), int.Parse(nameMatch.Groups[1].Captures[1].Value), 0);
                 return hourStartTime >= period.StartTime ? hourStartTime - period.StartTime : period.StartTime - hourStartTime;
             }));
-            int targetColumnSpan = (sameLessons.Count() * 2) + 1;
+            int targetRowSpan = (sameLessons.Count() * 2) + 1;
 
-            if (targetRow == -1 || targetColumn == -1)
+            if (targetColumn == -1 || targetRow == -1)
                 continue;
 
             period.StartTime = sameLessons.Append(period).Min(p => p.StartTime);
@@ -252,7 +265,7 @@ public partial class MainWindow : Window
             int id = Timegrid.Children.Add(new UserControls.SchoolHour(period));
             Grid.SetRow(Timegrid.Children[id], targetRow);
             Grid.SetColumn(Timegrid.Children[id], targetColumn);
-            Grid.SetColumnSpan(Timegrid.Children[id], targetColumnSpan);
+            Grid.SetRowSpan(Timegrid.Children[id], targetRowSpan);
 
             foreach (Period p in sameLessons)
                 addedHours.Add(p.Id);
@@ -266,8 +279,12 @@ public partial class MainWindow : Window
             if (addedHours.Contains(period.Id))
                 continue;
 
-            Period[] sameHourLessons = multipleLessons.Where(p => p.Date == period.Date && p.StartTime <= period.EndTime && p.EndTime >= period.StartTime).ToArray();
-            Period[] uniqueLessons = sameHourLessons.Distinct(new PeriodExtensions.PeriodEqualityComparer()).ToArray();
+            Period[] sameHourLessons = multipleLessons
+                .Where(p => p.Date == period.Date && p.StartTime <= period.EndTime && p.EndTime >= period.StartTime)
+                .ToArray();
+            Period[] uniqueLessons = sameHourLessons
+                .Distinct(new PeriodExtensions.PeriodEqualityComparer())
+                .ToArray();
 
             // Calc the needed rows and columns
             IEnumerable<IGrouping<DateTime, Period>> groups = uniqueLessons.GroupBy(p => p.StartTime);
@@ -276,9 +293,9 @@ public partial class MainWindow : Window
 
             Grid grid = new();
             for (int i = 0; i < rowCount; i++)
-                grid.RowDefinitions.Add(new() { Height = new(1, GridUnitType.Star) });
-            for (int i = 0; i < columnCount; i++)
                 grid.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
+            for (int i = 0; i < columnCount; i++)
+                grid.RowDefinitions.Add(new() { Height = new(1, GridUnitType.Star) });
 
             int currentRow = 0;
             int currentColumn = 0;
@@ -291,45 +308,49 @@ public partial class MainWindow : Window
                 int id = grid.Children.Add(new UserControls.SchoolHour(lesson));
                 Grid.SetRow(grid.Children[id], currentRow);
                 Grid.SetColumn(grid.Children[id], currentColumn);
-                Grid.SetColumnSpan(grid.Children[id], sameLessons.Length);
+                Grid.SetRowSpan(grid.Children[id], sameLessons.Length);
 
-                currentColumn += sameLessons.Length;
-                if (currentColumn >= columnCount)
+                currentRow += sameLessons.Length;
+                if (currentRow >= columnCount)
                 {
-                    currentColumn = 0;
-                    currentRow++;
+                    currentRow = 0;
+                    currentColumn++;
                 }
             }
 
             Period firstPeriod = sameHourLessons.MinBy(p => p.StartTime)!;
             Period lastPeriod = sameHourLessons.MaxBy(p => p.StartTime)!;
-            int targetRow = Timegrid.RowDefinitions.IndexOf(Timegrid.RowDefinitions.FirstOrDefault(r => r.Name == firstPeriod.Date.DayOfWeek.ToString()));
-            int targetColumn = Timegrid.ColumnDefinitions.IndexOf(Timegrid.ColumnDefinitions.MinBy(c =>
+            int targetColumn = Timegrid.ColumnDefinitions.IndexOf(Timegrid.ColumnDefinitions.FirstOrDefault(r => r.Name == firstPeriod.Date.DayOfWeek.ToString()));
+            int targetRow = Timegrid.RowDefinitions.IndexOf(Timegrid.RowDefinitions.MinBy(c =>
             {
                 Match nameMatch = HourColumnRegex().Match(c.Name);
                 if (!nameMatch.Success)
                     return new TimeSpan(9999, 9, 9);
 
                 DateTime hourStartTime = new(2020, 1, 1, int.Parse(nameMatch.Groups[1].Captures[0].Value), int.Parse(nameMatch.Groups[1].Captures[1].Value), 0);
-                return hourStartTime >= firstPeriod.StartTime ? hourStartTime - firstPeriod.StartTime : firstPeriod.StartTime - hourStartTime;
+                return hourStartTime >= firstPeriod.StartTime
+                ? hourStartTime - firstPeriod.StartTime
+                : firstPeriod.StartTime - hourStartTime;
             }));
-            int targetColumnSpan = Timegrid.ColumnDefinitions.IndexOf(Timegrid.ColumnDefinitions.MinBy(c =>
+            int targetRowSpan = Timegrid.RowDefinitions.IndexOf(Timegrid.RowDefinitions.MinBy(c =>
             {
                 Match nameMatch = HourColumnRegex().Match(c.Name);
                 if (!nameMatch.Success)
                     return new TimeSpan(9999, 9, 9);
 
                 DateTime hourStartTime = new(2020, 1, 1, int.Parse(nameMatch.Groups[1].Captures[0].Value), int.Parse(nameMatch.Groups[1].Captures[1].Value), 0);
-                return hourStartTime >= lastPeriod.StartTime ? hourStartTime - lastPeriod.StartTime : lastPeriod.StartTime - hourStartTime;
-            })) - targetColumn + 1;
+                return hourStartTime >= lastPeriod.StartTime
+                ? hourStartTime - lastPeriod.StartTime
+                : lastPeriod.StartTime - hourStartTime;
+            })) - targetRow + 1;
 
-            if (targetRow == -1 || targetColumn == -1)
+            if (targetColumn == -1 || targetRow == -1)
                 continue;
 
             _ = Timegrid.Children.Add(grid);
             Grid.SetRow(grid, targetRow);
             Grid.SetColumn(grid, targetColumn);
-            Grid.SetColumnSpan(grid, targetColumnSpan);
+            Grid.SetRowSpan(grid, targetRowSpan);
 
             foreach (Period p in sameHourLessons)
                 addedHours.Add(p.Id);

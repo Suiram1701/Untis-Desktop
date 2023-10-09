@@ -6,6 +6,12 @@
              mc:Ignorable="d" 
              DataContext="{Binding RelativeSource={RelativeSource Self}}" Margin="2">
     <Border CornerRadius="10" Background="#067ee7">
-        <TextBlock Text="{Binding HolidayName, Mode=OneTime}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Name="Text" Text="{Binding HolidayName, Mode=OneTime}" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock.LayoutTransform>
+                <RotateTransform Angle="90"
+                                 CenterY="{Binding ElementName=Text, Path=ActualHeight, Converter={StaticResource MathConverter}, ConverterParameter=/2}"
+                                 CenterX="{Binding ElementName=Text, Path=ActualWidth, Converter={StaticResource MathConverter}, ConverterParameter=/2}"/>
+            </TextBlock.LayoutTransform>
+        </TextBlock>
     </Border>
 </UserControl>

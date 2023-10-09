@@ -279,7 +279,6 @@
                                 ToolTip="{Localization:Localize MainWindow.Timetable.PW}">
                             <Image Source="/Assets/arrow_back_ios.png"/>
                         </Button>
-                        
                         <TextBlock Text="{Binding SelectedWeek, StringFormat=\{0:M\}, ConverterCulture={x:Static Localization:LangHelper.Culture}, Mode=OneWay}" FontSize="16"
                                    VerticalAlignment="Center" Margin="10,0,10,0"/>
                         <Line X1="0" X2="12" Stroke="Black" StrokeThickness="1.8" VerticalAlignment="Center"/>

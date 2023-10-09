@@ -566,6 +566,6 @@
     <value>Nächste Woche</value>
   </data>
   <data name="MainWindow.Timetable.CW" xml:space="preserve">
-    <value>Zur Aktuellen Woche springen</value>
+    <value>Zur Aktuellen Woche</value>
   </data>
 </root>
