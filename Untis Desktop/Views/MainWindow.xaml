@@ -7,7 +7,7 @@
         xmlns:Localization="clr-namespace:UntisDesktop.Localization"
         mc:Ignorable="d"
         Title="Untis Desktop"
-        MinHeight="0" MinWidth="0" Height="600" Width="1000">
+        MinHeight="600" MinWidth="1000">
     <Window.DataContext>
         <ViewModels:MainWindowViewModel/>
     </Window.DataContext>

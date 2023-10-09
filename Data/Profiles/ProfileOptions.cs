@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,4 +51,22 @@ public class ProfileOptions
     /// </summary>
     [XmlElement("notifyNews")]
     public bool NotifyOnNews { get; set; } = true;
+
+    /// <summary>
+    /// The saved size of the mainWindow
+    /// </summary>
+    [XmlElement("mwSize")]
+    public Size MainWindowSize { get; set; } = new(1000, 600);
+
+    /// <summary>
+    /// The saved size of the messageWindow
+    /// </summary>
+    [XmlElement("meWSize")]
+    public Size MessageWindowSize { get; set; } = new(800, 450);
+
+    /// <summary>
+    /// The saved size of the periodWindow
+    /// </summary>
+    [XmlElement("pwSize")]
+    public Size PeriodWindowSize { get; set; } = new(465, 500);
 }

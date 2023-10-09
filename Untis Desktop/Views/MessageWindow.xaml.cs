@@ -21,6 +21,7 @@ using UntisDesktop.ViewModels;
 using WebUntisAPI.Client.Models.Messages;
 using System.Windows.Threading;
 using System.ComponentModel;
+using Data.Profiles;
 
 namespace UntisDesktop.Views;
 
@@ -52,6 +53,11 @@ public partial class MessageWindow : Window
                 }
             }
         };
+
+        // Apply saved size
+        ProfileOptions options = ProfileCollection.GetActiveProfile().Options;
+        Height = options.MessageWindowSize.Height;
+        Width = options.MessageWindowSize.Width;
     }
 
     /// <summary>
@@ -533,5 +539,15 @@ public partial class MessageWindow : Window
         }
 
         return string.Format("{0:0.##} {1}", fileSize, sizes[order]);
+    }
+
+    protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+    {
+        // Save window size
+        ProfileFile profile = ProfileCollection.GetActiveProfile();
+        int height = (int)Math.Round(sizeInfo.NewSize.Height, 0);
+        int width = (int)Math.Round(sizeInfo.NewSize.Width, 0);
+        profile.Options.MessageWindowSize = new(width, height);
+        profile.Update();
     }
 }

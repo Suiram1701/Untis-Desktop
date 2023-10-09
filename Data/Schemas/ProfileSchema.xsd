@@ -145,6 +145,30 @@
                             <xs:element name="preloadWeeks" type="xs:unsignedInt"/>
                             <xs:element name="notifyMsg" type="xs:boolean"/>
                             <xs:element name="notifyNews" type="xs:boolean"/>
+							<xs:element name="mwSize">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Width" type="xs:int"/>
+										<xs:element name="Height" type="xs:int"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="meWSize">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Width" type="xs:int"/>
+										<xs:element name="Height" type="xs:int"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="pwSize">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Width" type="xs:int"/>
+										<xs:element name="Height" type="xs:int"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>

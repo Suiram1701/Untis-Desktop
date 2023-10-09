@@ -29,7 +29,6 @@ using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows.Data;
 using UntisDesktop.Converter;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace UntisDesktop.Views;
 
@@ -111,6 +110,11 @@ public partial class MainWindow : Window
 
         DisplayLastMenuItem(options.SelectedMenuItem);
         DisplayLastOptionsMenuItem(options.SelectedOptionsMenuItems);
+
+        // Apply saved size
+        Size size = options.MainWindowSize.ConvertToWinSize();
+        Height = size.Height;
+        Width = size.Width;
     }
 
     [GeneratedRegex(@"^Hour(\d{2}){2}_(?:\d{2}){2}$")]
@@ -656,6 +660,15 @@ public partial class MainWindow : Window
         }
 
         licenses.Last().AddToPanel(ThirdParty);
+    }
+
+    protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+    {
+        // Save window size
+        int height = (int)Math.Round(sizeInfo.NewSize.Height, 0);
+        int width = (int)Math.Round(sizeInfo.NewSize.Width, 0);
+        ViewModel.CurrentProfile.Options.MainWindowSize = new(width, height);
+        ViewModel.CurrentProfile.Update();
     }
 
     protected override void OnClosing(CancelEventArgs e)

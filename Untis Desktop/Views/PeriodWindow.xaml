@@ -7,14 +7,13 @@
         xmlns:Localization="clr-namespace:UntisDesktop.Localization"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="{Binding WindowTitle, Mode=OneTime}"
-        MinHeight="350" MinWidth="465">
-    <Grid>
+        Title="{Binding WindowTitle, Mode=OneTime}" MinHeight="500" Height="500" MinWidth="465" Width="465">
+    <Grid x:Name="Grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <!-- >Irregular lessons -->
         <Border Background="{Binding Source={x:Static Views:PeriodWindow.IrregularColor}, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}"
                 Visibility="{Binding IsIrregular, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
@@ -44,7 +43,7 @@
 
                 <!-- Subjects -->
                 <Border Visibility="{Binding HasSubjects, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
-                Grid.Row="0" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                        Grid.Row="0" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -57,7 +56,7 @@
 
                 <!-- Teachers -->
                 <Border Visibility="{Binding HasTeachers, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
-                Grid.Row="1" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                        Grid.Row="1" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -70,7 +69,7 @@
 
                 <!-- Rooms -->
                 <Border Visibility="{Binding HasRooms, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
-                Grid.Row="2" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                        Grid.Row="2" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -83,7 +82,7 @@
 
                 <!-- Classes -->
                 <Border Visibility="{Binding HasClasses, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
-                Grid.Row="3" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                        Grid.Row="3" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -96,7 +95,7 @@
 
                 <!-- Lesson informations -->
                 <Border Visibility="{Binding HasLessonText, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
-                Grid.Row="5" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                        Grid.Row="5" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -109,7 +108,7 @@
 
                 <!-- Additional informations -->
                 <Border Visibility="{Binding HasInfo, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
-                Grid.Row="4" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                        Grid.Row="4" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -122,7 +121,7 @@
 
                 <!-- Substitution text -->
                 <Border Visibility="{Binding HasSubstitutionInfo, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
-                Grid.Row="6" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                        Grid.Row="6" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -135,7 +134,7 @@
 
                 <!-- Activity type -->
                 <Border Visibility="{Binding HasActivityType, Converter={StaticResource BoolVisibilityConverter}, Mode=OneTime}"
-                Grid.Row="7" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
+                        Grid.Row="7" HorizontalAlignment="Left" Style="{StaticResource InformationStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
