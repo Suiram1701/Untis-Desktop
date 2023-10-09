@@ -33,12 +33,13 @@ namespace UntisDesktop.UserControls
             int counter = 0;
 
             // Subjects
-            foreach ((string subjectString, Code code, Color? color) in period.GetSubjects())
+            foreach ((string subjectString, Code code, Color? color) in period.GetSubjects(false))
             {
                 Subjects.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
                 int objId = Subjects.Children.Add(new PeriodInformation(code, subjectString, color));
                 Grid.SetColumn(Subjects.Children[objId], Subjects.ColumnDefinitions.Count - 1);
 
+                // Add a separator
                 if (counter < period.SubjectsIds.Length - 1)
                 {
                     Subjects.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
@@ -51,12 +52,13 @@ namespace UntisDesktop.UserControls
 
             // Teachers
             counter = 0;
-            foreach ((string teacherString, Code code) in period.GetTeachers())
+            foreach ((string teacherString, Code code) in period.GetTeachers(false))
             {
                 Teachers.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
                 int objId = Teachers.Children.Add(new PeriodInformation(code, teacherString));
                 Grid.SetColumn(Teachers.Children[objId], Teachers.ColumnDefinitions.Count - 1);
 
+                // Add a separator
                 if (counter < period.TeacherIds.Length - 1)
                 {
                     Teachers.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
@@ -69,12 +71,13 @@ namespace UntisDesktop.UserControls
 
             // Rooms
             counter = 0;
-            foreach ((string roomString, Code code) in period.GetRooms())
+            foreach ((string roomString, Code code) in period.GetRooms(false))
             {
                 Rooms.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
                 int objId = Rooms.Children.Add(new PeriodInformation(code, roomString));
                 Grid.SetColumn(Rooms.Children[objId], Rooms.ColumnDefinitions.Count - 1);
 
+                // Add a separator
                 if (counter < period.RoomIds.Length - 1)
                 {
                     Rooms.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
@@ -87,12 +90,13 @@ namespace UntisDesktop.UserControls
 
             // Classes
             counter = 0;
-            foreach ((string classString, Code code) in period.GetClasses())
+            foreach ((string classString, Code code) in period.GetClasses(false))
             {
                 Classes.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
                 int objId = Classes.Children.Add(new PeriodInformation(code, classString));
                 Grid.SetColumn(Classes.Children[objId], Classes.ColumnDefinitions.Count - 1);
 
+                // Add a separator
                 if (counter < period.ClassIds.Length - 1)
                 {
                     Classes.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });

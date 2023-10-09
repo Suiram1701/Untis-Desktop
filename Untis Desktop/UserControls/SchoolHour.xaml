@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
-             Margin="2">
-    <Border Name="Border" BorderBrush="{Binding BorderColor, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}" BorderThickness="4" Background="{Binding BackgroundColor, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}"
-            CornerRadius="10">
+             Margin="1">
+    <Border Name="Border" BorderBrush="{Binding BorderColor, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}" BorderThickness="4"
+            Background="{Binding BackgroundColor, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}" CornerRadius="6">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -15,6 +15,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            
             <Grid x:Name="Subjects" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <Grid x:Name="Teachers" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <Grid x:Name="Rooms" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -23,7 +24,8 @@
             <!-- Cross lines for cancelled lessons -->
             <Line X1="0" X2="{Binding ElementName=Border, Path=ActualWidth, Mode=OneWay}" Y1="0" Y2="{Binding ElementName=Border, Path=ActualHeight, Mode=OneWay}"
                   Stroke="{Binding CrossLineColor, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}" StrokeThickness="4" Grid.RowSpan="4"/>
-            <Line X1="0" X2="{Binding ElementName=Border, Path=ActualWidth, Mode=OneWay}" Y2="0" Y1="{Binding ElementName=Border, Path=ActualHeight, Mode=OneWay}"
+            
+            <Line X1="-10" X2="{Binding ElementName=Border, Path=ActualWidth, Mode=OneWay}" Y2="-2" Y1="{Binding ElementName=Border, Path=ActualHeight, Mode=OneWay}"
                   Stroke="{Binding CrossLineColor, Converter={StaticResource DrawingBrushConverter}, Mode=OneTime}" StrokeThickness="4" Grid.RowSpan="4"/>
         </Grid>
     </Border>

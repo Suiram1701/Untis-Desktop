@@ -28,7 +28,6 @@ public partial class PeriodInformation : UserControl
 
     public PeriodInformation(Code code, string infString, Color? normalColor = default)
     {
-
         TargetColor = code switch
         {
             Code.None => normalColor ?? Color.Transparent,

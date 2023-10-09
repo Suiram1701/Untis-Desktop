@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
-using UntisDesktop.Extensions;
 using WebUntisAPI.Client;
 using WebUntisAPI.Client.Models;
 
@@ -36,19 +35,26 @@ internal static class PeriodExtensions
         return color.Value;
     }
 
-    public static IEnumerable<(string subjectString, Code code, Color? color)> GetSubjects(this Period period)
+    public static IEnumerable<(string subjectString, Code code, Color? color)> GetSubjects(this Period period) => GetSubjects(period, true);
+
+    public static IEnumerable<(string subjectString, Code code, Color? color)> GetSubjects(this Period period, bool useLongString)
     {
         return period.SubjectsIds.Select(subject =>
         {
             Subject? nSubject = SubjectFile.s_DefaultInstance[subject.Id];
             Subject? orgSubject = SubjectFile.s_DefaultInstance[subject.OriginalId ?? -1];
 
-            string? subjectStr = nSubject?.LongName;
-            string? orgSubjectStr = orgSubject?.LongName;
+            // Read the strings
+            string? subjectStr = useLongString
+                ? nSubject?.LongName
+                : nSubject?.Name;
+            string? orgSubjectStr = useLongString
+                ? orgSubject?.LongName
+                : orgSubject?.Name;
 
             Color? subjectColor = nSubject?.BackColor.IsEmpty ?? true
-            ? null
-            : nSubject.BackColor;
+                ? null
+                : nSubject.BackColor;
 
             if ((subjectStr is null && subject.Id != 0) || (subject.OriginalId is not null && orgSubjectStr is null))     // One of the subjects was not found
                 Logger.LogWarning($"Period load: period = {period.Id}{(subjectStr is null ? $", subject not found = {subject.Id}" : string.Empty)}{((orgSubjectStr is null && subject.OriginalId is not null) ? $", original subject not found = {subject.OriginalId}" : string.Empty)}");
@@ -56,6 +62,7 @@ internal static class PeriodExtensions
             Code code;
             string subjectString;
 
+            // Modify the strings in the different cases
             if (subject.Id != 0 && subject.OriginalId is null)     // Normal
             {
                 code = Code.None;
@@ -84,14 +91,22 @@ internal static class PeriodExtensions
         });
     }
 
-    public static IEnumerable<(string teacherString, Code code)> GetTeachers(this Period period)
+    public static IEnumerable<(string teacherString, Code code)> GetTeachers(this Period period) => GetTeachers(period, true);
+
+    public static IEnumerable<(string teacherString, Code code)> GetTeachers(this Period period, bool useLongString)
     {
         return period.TeacherIds.Select(teachers =>
         {
             Teacher? teacher = TeacherFile.s_DefaultInstance[teachers.Id];
             Teacher? orgTeacher = TeacherFile.s_DefaultInstance[teachers.OriginalId ?? - 1];
-            string? teacherStr = teacher?.LongName;
-            string? orgTeacherStr = orgTeacher?.LongName;
+
+            // Read the strings
+            string? teacherStr = useLongString
+                ? teacher?.LongName
+                : teacher?.Name;
+            string? orgTeacherStr = useLongString
+                ? orgTeacher?.LongName
+                : orgTeacher?.Name;
 
             if ((teacherStr is null && teachers.Id != 0) || (teachers.OriginalId is not null && orgTeacherStr is null))
                 Logger.LogWarning($"Period load: period = {period.Id}{(teacherStr is null ? $", teacher not found = {teachers.Id}" : string.Empty)}{((orgTeacherStr is null && teachers.OriginalId is not null) ? $", original teacher not found = {teachers.OriginalId}" : string.Empty)}");
@@ -99,6 +114,7 @@ internal static class PeriodExtensions
             Code code;
             string teacherString;
 
+            // Modify the strings in the different cases
             if (teachers.Id != 0 && teachers.OriginalId is null)     // Normal
             {
                 code = Code.None;
@@ -124,30 +140,41 @@ internal static class PeriodExtensions
         });
     }
 
-    public static IEnumerable<(string roomString, Code code)> GetRooms(this Period period)
-    {
-        return period.RoomIds.Select(room =>
-        {
-            string? roomStr = RoomFile.s_DefaultInstance[room.Id]?.LongName;
-            string? orgRoomStr = RoomFile.s_DefaultInstance[room.OriginalId ?? -1]?.LongName;
+    public static IEnumerable<(string roomString, Code code)> GetRooms(this Period period) => GetRooms(period, true);
 
-            if ((roomStr is null && room.Id != 0) || (room.OriginalId is not null && orgRoomStr is null))     // One of the subjects was not found
-                Logger.LogWarning($"Period load: period = {period.Id}{(roomStr is null ? $", room not found = {room.Id}" : string.Empty)}{((orgRoomStr is null && room.OriginalId is not null) ? $", original room not found = {room.OriginalId}" : string.Empty)}");
+    public static IEnumerable<(string roomString, Code code)> GetRooms(this Period period, bool useLongString)
+    {
+        return period.RoomIds.Select(rooms =>
+        {
+            Room? room = RoomFile.s_DefaultInstance[rooms.Id];
+            Room? orgRoom = RoomFile.s_DefaultInstance[rooms.OriginalId ?? -1];
+
+            // Read the strings
+            string? roomStr = useLongString
+                ? room?.LongName
+                : room?.Name;
+            string? orgRoomStr = useLongString
+                ? orgRoom?.LongName
+                : orgRoom?.Name;
+
+            if ((roomStr is null && rooms.Id != 0) || (rooms.OriginalId is not null && orgRoomStr is null))     // One of the subjects was not found
+                Logger.LogWarning($"Period load: period = {period.Id}{(roomStr is null ? $", room not found = {rooms.Id}" : string.Empty)}{((orgRoomStr is null && rooms.OriginalId is not null) ? $", original room not found = {rooms.OriginalId}" : string.Empty)}");
 
             Code code;
             string roomString;
 
-            if (room.Id != 0 && room.OriginalId is null)     // Normal
+            // Modify the strings in the different cases
+            if (rooms.Id != 0 && rooms.OriginalId is null)     // Normal
             {
                 code = Code.None;
                 roomString = roomStr ?? "Err";
             }
-            else if (room.Id != 0 && room.OriginalId is not null)     // Irregular
+            else if (rooms.Id != 0 && rooms.OriginalId is not null)     // Irregular
             {
                 code = Code.Irregular;
                 roomString = (roomStr ?? "Err") + $" ({orgRoomStr ?? "Err"})";
             }
-            else if (room.Id == 0 && room.OriginalId is not null)      // Cancelled
+            else if (rooms.Id == 0 && rooms.OriginalId is not null)      // Cancelled
             {
                 code = Code.Cancelled;
                 roomString = orgRoomStr ?? "Err";
@@ -162,30 +189,41 @@ internal static class PeriodExtensions
         });
     }
 
-    public static IEnumerable<(string classString, Code code)> GetClasses(this Period period)
-    {
-        return period.ClassIds.Select(@class =>
-        {
-            string? classStr = ClassFile.s_DefaultInstance[@class.Id]?.LongName;
-            string? orgClassStr = ClassFile.s_DefaultInstance[@class.OriginalId ?? -1]?.LongName;
+    public static IEnumerable<(string classString, Code code)> GetClasses(this Period period) => GetClasses(period, true);
 
-            if ((classStr is null && @class.Id != 0) || (@class.OriginalId is not null && orgClassStr is null))     // One of the subjects was not found
-                Logger.LogWarning($"Period load: period = {period.Id}{(classStr is null ? $", class not found = {@class.Id}" : string.Empty)}{((orgClassStr is null && @class.OriginalId is not null) ? $", original class not found = {@class.OriginalId}" : string.Empty)}");
+    public static IEnumerable<(string classString, Code code)> GetClasses(this Period period, bool useLongString)
+    {
+        return period.ClassIds.Select(classes =>
+        {
+            Class? @class = ClassFile.s_DefaultInstance[classes.Id];
+            Class? orgClass = ClassFile.s_DefaultInstance[classes.OriginalId ?? -1];
+
+            // Read the strings
+            string? classStr = useLongString
+                ? @class?.LongName
+                : @class?.Name;
+            string? orgClassStr = useLongString
+                ? orgClass?.LongName
+                : orgClass?.Name;
+
+            if ((classStr is null && classes.Id != 0) || (classes.OriginalId is not null && orgClassStr is null))     // One of the subjects was not found
+                Logger.LogWarning($"Period load: period = {period.Id}{(classStr is null ? $", class not found = {classes.Id}" : string.Empty)}{((orgClassStr is null && classes.OriginalId is not null) ? $", original class not found = {classes.OriginalId}" : string.Empty)}");
 
             Code code;
             string classString;
 
-            if (@class.Id != 0 && @class.OriginalId is null)     // Normal
+            // Modify the strings in the different cases
+            if (classes.Id != 0 && classes.OriginalId is null)     // Normal
             {
                 code = Code.None;
                 classString = classStr ?? "Err";
             }
-            else if (@class.Id != 0 && @class.OriginalId is not null)     // Irregular
+            else if (classes.Id != 0 && classes.OriginalId is not null)     // Irregular
             {
                 code = Code.Irregular;
                 classString = (classStr ?? "Err") + $" ({orgClassStr ?? "Err"})";
             }
-            else if (@class.Id == 0 && @class.OriginalId is not null)      // Cancelled
+            else if (classes.Id == 0 && classes.OriginalId is not null)      // Cancelled
             {
                 code = Code.Cancelled;
                 classString = orgClassStr ?? "Err";
